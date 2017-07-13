@@ -29,7 +29,7 @@ public class PreferenceActivity extends AppCompatActivity {
         rvFilters.setHasFixedSize(true);
 
         // Define 2 column grid layout
-        final GridLayoutManager layout = new GridLayoutManager(PreferenceActivity.this, 2);
+        final GridLayoutManager layout = new GridLayoutManager(PreferenceActivity.this, 1);
 
         // Unlike ListView, you have to explicitly give a LayoutManager to the RecyclerView to position items on the screen.
         // There are three LayoutManager provided at the moment: GridLayoutManager, StaggeredGridLayoutManager and LinearLayoutManager.

@@ -62,20 +62,7 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.VH> {
             ivBackground = (ImageView)itemView.findViewById(R.id.ivBackground);
             tvType = (TextView)itemView.findViewById(R.id.tvType);
 
-            // Navigate to contact details activity on click of card view.
-//            itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    final Type type = (Type) v.getTag();
-//                    if (type != null) {
-//                        // Fire an intent when a contact is selected
-//                        Intent intent = new Intent(com.codepath.goingout.adapters.ContactsAdapter.this.context, DetailsActivity.class);
-//                        // Pass contact object in the bundle and populate details activity.
-//                        intent.putExtra("EXTRA_CONTACT", type);
-//                        com.codepath.android.lollipopexercise.adapters.ContactsAdapter.this.context.startActivity(intent);
-//                    }
-//                }
-//            });
+        // on Click Method goes here TODO
         }
     }
 }
