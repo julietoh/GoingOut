@@ -3,69 +3,104 @@ package codepath.com.goingout;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
+
+import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.Profile;
+import com.facebook.ProfileTracker;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 
 public class LoginActivity extends AppCompatActivity {
-    // arbitrary request code value
-    private static final int RC_SIGN_IN = 123;
+
+    private CallbackManager callbackManager;
+    private AccessTokenTracker accessTokenTracker;
+    private ProfileTracker profileTracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_login);
 
+        callbackManager = CallbackManager.Factory.create();
+        accessTokenTracker = new AccessTokenTracker() {
+            @Override
+            protected void onCurrentAccessTokenChanged(AccessToken oldToken, AccessToken newToken) {
+            }
+        };
+
+        profileTracker = new ProfileTracker() {
+            @Override
+            protected void onCurrentProfileChanged(Profile oldProfile, Profile newProfile) {
+                nextActivity(newProfile);
+            }
+        };
+        accessTokenTracker.startTracking();
+        profileTracker.startTracking();
 
 
-//        // check whether user is already sign in from previous session
-//        FirebaseAuth auth = FirebaseAuth.getInstance();
-//        if (auth.getCurrentUser() != null) {
-//            // already signed in
-//        } else {
-//            // not signed in, start sign in process
-//            // create a sign-in intent
-//            startActivityForResult(
-//                    AuthUI.getInstance()
-//                            .createSignInIntentBuilder() // builder instance retrieved
-//                            .setIsSmartLockEnabled(false) // disable smart lock for testing purposes
-//                            .setAvailableProviders(
-//                                    Arrays.asList( new AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build(),
-//                                            // new AuthUI.IdpConfig.Builder(AuthUI.PHONE_VERIFICATION_PROVIDER).build(),
-//                                            // new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build(),
-//                                            // new AuthUI.IdpConfig.Builder(AuthUI.TWITTER_PROVIDER).build())).build(),
-//                    RC_SIGN_IN);
-//        }
+        LoginButton loginButton = (LoginButton)findViewById(R.id.login_button);
+        FacebookCallback<LoginResult> callback = new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                Profile profile = Profile.getCurrentProfile();
+                nextActivity(profile);
+                Toast.makeText(getApplicationContext(), "Logging in...", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCancel() {
+            }
+
+            @Override
+            public void onError(FacebookException e) {
+            }
+        };
+        loginButton.setReadPermissions("user_friends");
+        loginButton.registerCallback(callbackManager, callback);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //Facebook login
+        Profile profile = Profile.getCurrentProfile();
+        nextActivity(profile);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    protected void onStop() {
+        super.onStop();
+        //Facebook login
+        accessTokenTracker.stopTracking();
+        profileTracker.stopTracking();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int responseCode, Intent intent) {
+        super.onActivityResult(requestCode, responseCode, intent);
+        //Facebook login
+        callbackManager.onActivityResult(requestCode, responseCode, intent);
 
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-//        // RC_SIGN_IN is the request code you passed into startActivityForResult(...) when starting the sign in flow.
-//        if (requestCode == RC_SIGN_IN) {
-//            IdpResponse response = IdpResponse.fromResultIntent(data);
-//
-//            // Successfully signed in
-//            if (resultCode == ResultCodes.OK) {
-//                startActivity(SignedInActivity.createIntent(this, response));
-//                finish();
-//                return;
-//            } else {
-//                // Sign in failed
-//                if (response == null) {
-//                    // User pressed back button
-//                    showSnackbar(R.string.sign_in_cancelled);
-//                    return;
-//                }
-//
-//                if (response.getErrorCode() == ErrorCodes.NO_NETWORK) {
-//                    showSnackbar(R.string.no_internet_connection);
-//                    return;
-//                }
-//
-//                if (response.getErrorCode() == ErrorCodes.UNKNOWN_ERROR) {
-//                    showSnackbar(R.string.unknown_error);
-//                    return;
-//                }
-//            }
-
-//            showSnackbar(R.string.unknown_sign_in_response);
-            }
+    private void nextActivity(Profile profile){
+        if(profile != null){
+            Intent main = new Intent(LoginActivity.this, MainActivity.class);
+            main.putExtra("name", profile.getFirstName());
+            main.putExtra("surname", profile.getLastName());
+            main.putExtra("imageUrl", profile.getProfilePictureUri(200,200).toString());
+            startActivity(main);
         }
+    }
+}
