@@ -17,6 +17,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+<<<<<<< HEAD
 
         <activity android:name=".PreferenceActivity" />
         <activity android:name=".LoginActivity" />
@@ -40,6 +41,10 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
+=======
+        <activity android:name=".FeedActivity"></activity>
+        <activity android:name=".PreferenceActivity"></activity>
+>>>>>>> 237e168497f03b0903161d16b266aaf887844da3
     </application>
 
 </manifest>

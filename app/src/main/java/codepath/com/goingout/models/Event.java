@@ -6,7 +6,7 @@ package codepath.com.goingout.models;
 
 public class Event {
     private String title;
-    private String category;
+    private Preference category;
     private String date;
     private String location;
     private String image;
@@ -25,11 +25,11 @@ public class Event {
         this.title = title;
     }
 
-    public String getCategory() {
+    public Preference getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(Preference category) {
         this.category = category;
     }
 

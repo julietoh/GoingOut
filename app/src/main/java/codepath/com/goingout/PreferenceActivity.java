@@ -10,12 +10,12 @@ import android.view.MenuItem;
 import java.util.List;
 
 import codepath.com.goingout.adapters.FilterAdapter;
-import codepath.com.goingout.models.Type;
+import codepath.com.goingout.models.Preference;
 
 public class PreferenceActivity extends AppCompatActivity {
     private RecyclerView rvFilters;
     private FilterAdapter adapter;
-    private List<Type> types;
+    private List<Preference> preferences;
 
 
     @Override
@@ -36,10 +36,10 @@ public class PreferenceActivity extends AppCompatActivity {
         rvFilters.setLayoutManager(layout);
 
         // get data
-        types = Type.getTypes();
+        preferences = Preference.getTypes();
 
         // Create an adapter
-        adapter = new FilterAdapter(PreferenceActivity.this, types);
+        adapter = new FilterAdapter(PreferenceActivity.this, preferences);
 
         // Bind adapter to list
         rvFilters.setAdapter(adapter);
