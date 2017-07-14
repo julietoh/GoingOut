@@ -13,13 +13,19 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/ivBackground"
             android:layout_width="match_parent"
             android:layout_height="@dimen/grid_profile_height"
             android:scaleType="centerCrop" />
+
+        <ImageView
+            android:id="@+id/ivOverlay"
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:alpha=".4" />
 
         <TextView
             android:id="@+id/tvType"
