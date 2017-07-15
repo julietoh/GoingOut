@@ -12,6 +12,7 @@ import codepath.com.goingout.R;
 public class Preference {
     private String name;
     private int thumbnailImage;
+    public boolean isSelected = false;
 
     public Preference(String name, int thumbnailImage) {
         this.name = name;
@@ -50,4 +51,10 @@ public class Preference {
         filter.add(new Preference("Wellness", R.drawable.wellness));
         return filter;
     }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+
 }

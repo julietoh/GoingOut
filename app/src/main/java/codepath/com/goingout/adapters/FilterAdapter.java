@@ -2,6 +2,7 @@ package codepath.com.goingout.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,8 @@ import codepath.com.goingout.models.Preference;
 public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.VH> {
     private Activity context;
     private List<Preference> preferences;
+    private int oldColor = Color.BLACK;
+
 
     public FilterAdapter(Activity context, List<Preference> preferences) {
         this.context = context;
@@ -39,10 +42,10 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.VH> {
     // Display data at the specified position
     @Override
     public void onBindViewHolder(final VH holder, int position) {
-        final Preference contact = preferences.get(position);
-        holder.rootView.setTag(contact);
-        holder.tvType.setText(contact.getName());
-        Glide.with(context).load(contact.getThumbnailImage()).centerCrop().into(holder.ivBackground);
+        final Preference type = preferences.get(position);
+        holder.rootView.setTag(type);
+        holder.tvType.setText(type.getName());
+        Glide.with(context).load(type.getThumbnailImage()).centerCrop().into(holder.ivBackground);
     }
 
     @Override
@@ -55,14 +58,34 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.VH> {
         final View rootView;
         final ImageView ivBackground;
         final TextView tvType;
+        final ImageView ivOverlay;
 
-        public VH(View itemView, final Context context) {
+        public VH(final View itemView, final Context context) {
             super(itemView);
             rootView = itemView;
-            ivBackground = (ImageView)itemView.findViewById(R.id.ivBackground);
-            tvType = (TextView)itemView.findViewById(R.id.tvType);
+            ivBackground = (ImageView) itemView.findViewById(R.id.ivBackground);
+            ivOverlay = (ImageView) itemView.findViewById(R.id.ivOverlay);
+            ivOverlay.setBackgroundColor(oldColor);
+            ivOverlay.bringToFront();
+            tvType = (TextView) itemView.findViewById(R.id.tvType);
+            tvType.bringToFront();
 
-        // on Click Method goes here TODO
+            // on Click Method goes here TODO
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ivOverlay.setBackgroundColor(getNextColor());
+
+                }
+            });
         }
+
+        private int getNextColor() {
+            int newColor = (oldColor == Color.BLACK) ? Color.GREEN : Color.BLACK;
+            oldColor = newColor;
+            return newColor;
+        }
+
     }
 }
