@@ -33,6 +33,7 @@
         <provider android:authorities="com.facebook.app.FacebookContentProvider148851038810437"
             android:name="com.facebook.FacebookContentProvider"
             android:exported="true" />
+        <activity android:name=".PreferenceActivity" />
 
         <activity
             android:name=".MainActivity"

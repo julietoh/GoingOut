@@ -46,6 +46,11 @@ public class MainActivity extends AppCompatActivity {
         new MainActivity.DownloadImage((ImageView)findViewById(R.id.profileImage)).execute(imageUrl);
     }
 
+    public void toPreferences(View view) {
+        Intent intent = new Intent(this, PreferenceActivity.class);
+        this.startActivity(intent);
+    }
+
 
     // get profile image URL
     public class DownloadImage extends AsyncTask<String, Void, Bitmap> {
