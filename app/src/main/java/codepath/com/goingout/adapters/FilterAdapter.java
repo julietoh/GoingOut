@@ -22,12 +22,13 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.VH> {
     private Activity context;
     private List<Preference> preferences;
     private int oldColor = Color.BLACK;
+    private int selectedPos = 0;
 
 
     public FilterAdapter(Activity context, List<Preference> preferences) {
         this.context = context;
         if (preferences == null) {
-            throw new IllegalArgumentException("contacts must not be null");
+            throw new IllegalArgumentException("types must not be null");
         }
         this.preferences = preferences;
     }
@@ -46,6 +47,7 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.VH> {
         holder.rootView.setTag(type);
         holder.tvType.setText(type.getName());
         Glide.with(context).load(type.getThumbnailImage()).centerCrop().into(holder.ivBackground);
+        holder.itemView.setSelected(selectedPos == position);
     }
 
     @Override
@@ -75,7 +77,10 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.VH> {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    notifyItemChanged(selectedPos);
                     ivOverlay.setBackgroundColor(getNextColor());
+                    selectedPos = getLayoutPosition();
+                    notifyItemChanged(selectedPos);
 
                 }
             });
