@@ -32,8 +32,9 @@ public class FacebookClient extends OAuthBaseClient {
                         context.getString(R.string.intent_scheme), context.getPackageName(), FALLBACK_URL));
     }
 
+    // DEFINE METHODS for different API endpoints here
     public void getUserEvents(AsyncHttpResponseHandler handler) {
-
+        
     }
 
 }
