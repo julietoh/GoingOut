@@ -1,21 +1,21 @@
 package codepath.com.goingout;
 
 
-        import android.os.Bundle;
-        import android.support.v7.app.AppCompatActivity;
-        import android.support.v7.widget.GridLayoutManager;
-        import android.support.v7.widget.RecyclerView;
-        import android.view.Menu;
-        import android.view.MenuItem;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 
-        import java.util.List;
+import java.util.List;
 
-        import codepath.com.goingout.adapters.FilterAdapter;
-        import codepath.com.goingout.models.Feeds;
+import codepath.com.goingout.adapters.FeedAdapter;
+import codepath.com.goingout.models.Feeds;
 
 public class FeedActivity extends AppCompatActivity {
     private RecyclerView rvFeeds;
-    private FilterAdapter adapter;
+    private FeedAdapter adapter;
     private List<Feeds> events;
 
 
@@ -40,7 +40,7 @@ public class FeedActivity extends AppCompatActivity {
         events = Feeds.getFeeds();
 
         // Create an adapter
-        adapter = new FilterAdapter(FeedActivity.this, events);
+        adapter = new FeedAdapter(FeedActivity.this, events);
 
         // Bind adapter to list
         rvFeeds.setAdapter(adapter);
