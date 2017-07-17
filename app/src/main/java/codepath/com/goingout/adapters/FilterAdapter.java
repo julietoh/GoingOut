@@ -15,11 +15,13 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 import codepath.com.goingout.R;
+import codepath.com.goingout.Type;
 import codepath.com.goingout.models.Preference;
 
 // Provide the underlying view for an individual list item.
 public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.VH> {
     private Activity context;
+    private List<Type> types;
     private List<Preference> preferences;
     private int oldColor = Color.BLACK;
     private int selectedPos = 0;
@@ -85,6 +87,7 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.VH> {
                 }
             });
         }
+    }
 
         private int getNextColor() {
             int newColor = (oldColor == Color.BLACK) ? Color.GREEN : Color.BLACK;
@@ -92,5 +95,4 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.VH> {
             return newColor;
         }
 
-    }
 }
