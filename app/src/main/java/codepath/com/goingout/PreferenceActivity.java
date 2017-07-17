@@ -1,11 +1,13 @@
 package codepath.com.goingout;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import java.util.List;
 
@@ -43,6 +45,9 @@ public class PreferenceActivity extends AppCompatActivity {
 
         // Bind adapter to list
         rvFilters.setAdapter(adapter);
+
+
+
     }
 
     @Override
@@ -60,5 +65,10 @@ public class PreferenceActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void toFeed(View view) {
+        Intent intent = new Intent(PreferenceActivity.this, FeedActivity.class);
+        startActivity(intent);
     }
 }
