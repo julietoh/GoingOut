@@ -1,1 +1,1 @@
-include ':app', ':eventfulapi'
+include ':app'
