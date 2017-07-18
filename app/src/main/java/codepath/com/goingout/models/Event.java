@@ -1,5 +1,8 @@
 package codepath.com.goingout.models;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Created by joh on 7/12/17.
  */
@@ -12,6 +15,16 @@ public class Event {
     private String image;
     private String price;
     private String rating;
+
+    public Event(JSONObject object) throws JSONException {
+        title = object.getString("title");
+        category = null;
+        date = object.getString("start_time");
+        location =  object.getString("city_name") + ", " + object.getString("region_abbr");
+        image = null;
+        price = null;
+        rating = null;
+    }
 
     // deserialize json
     // extract the values from JSON

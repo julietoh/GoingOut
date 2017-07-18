@@ -15,13 +15,13 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 import codepath.com.goingout.R;
-import codepath.com.goingout.Type;
+import codepath.com.goingout.EventType;
 import codepath.com.goingout.models.Preference;
 
 // Provide the underlying view for an individual list item.
 public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.VH> {
     private Activity context;
-    private List<Type> types;
+    private List<EventType> eventTypes;
     private List<Preference> preferences;
     private int oldColor = Color.BLACK;
     private int selectedPos = 0;
@@ -30,7 +30,7 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.VH> {
     public FilterAdapter(Activity context, List<Preference> preferences) {
         this.context = context;
         if (preferences == null) {
-            throw new IllegalArgumentException("types must not be null");
+            throw new IllegalArgumentException("eventTypes must not be null");
         }
         this.preferences = preferences;
     }
