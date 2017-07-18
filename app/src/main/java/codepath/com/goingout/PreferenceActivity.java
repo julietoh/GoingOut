@@ -68,7 +68,7 @@ public class PreferenceActivity extends AppCompatActivity {
     }
 
     public void toFeed(View view) {
-        Intent intent = new Intent(PreferenceActivity.this, FeedActivity.class);
+        Intent intent = new Intent(PreferenceActivity.this, EventListActivity.class);
         startActivity(intent);
     }
 }
