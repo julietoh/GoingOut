@@ -7,4 +7,6 @@ package codepath.com.goingout;
 
 public class FacebookClient {
     //
+
 }
+

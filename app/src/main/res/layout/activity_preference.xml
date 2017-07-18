@@ -15,6 +15,7 @@
     <!--app:scrollable_autoMaxScroll="true"-->
     <!--app:scrollable_defaultCloseUp="true">-->
 
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -42,6 +43,7 @@
         android:id="@+id/floatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@id/rvFilters"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
@@ -51,6 +53,8 @@
         android:onClick="toFeed"
         android:src="@drawable/ic_chevron_right_black_24dp"
         android:visibility="visible"
-        app:backgroundTint="@android:color/black"
+        app:backgroundTint="@android:color/white"
         app:fabSize="normal" />
+
+
 </RelativeLayout>
