@@ -14,8 +14,8 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
-import codepath.com.goingout.R;
 import codepath.com.goingout.EventType;
+import codepath.com.goingout.R;
 import codepath.com.goingout.models.Preference;
 
 // Provide the underlying view for an individual list item.
@@ -73,6 +73,8 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.VH> {
             ivOverlay.bringToFront();
             tvType = (TextView) itemView.findViewById(R.id.tvType);
             tvType.bringToFront();
+
+
 
             // on Click Method goes here TODO
 

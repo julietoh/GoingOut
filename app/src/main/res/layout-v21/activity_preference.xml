@@ -28,6 +28,22 @@
             app:titleTextColor="@android:color/white" />
     <!--</ru.noties.scrollable.ScrollableLayout>-->
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginRight="15dp"
+        android:onClick="toFeed"
+        android:src="@drawable/ic_chevron_right_black_24dp"
+        android:visibility="visible"
+        app:backgroundTint="@android:color/white"
+        app:fabSize="normal" />
+
     <android.support.v7.widget.RecyclerView
             android:id="@+id/rvFilters"
         android:layout_below="@+id/toolbar"
