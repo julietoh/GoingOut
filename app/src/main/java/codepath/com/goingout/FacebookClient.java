@@ -7,6 +7,7 @@ import com.github.scribejava.apis.TwitterApi;
 import com.github.scribejava.core.builder.api.BaseApi;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
+
 /**
  * Created by joh on 7/13/17.
  */
@@ -34,7 +35,8 @@ public class FacebookClient extends OAuthBaseClient {
 
     // DEFINE METHODS for different API endpoints here
     public void getUserEvents(AsyncHttpResponseHandler handler) {
-        
+
     }
 
 }
+
