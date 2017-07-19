@@ -4,4 +4,6 @@
     <color name="colorPrimaryDark">@android:color/black</color>
     <color name="colorAccent">#000000</color>
     <color name="black">#000000</color>
+    <drawable name="notSelected">#64000000</drawable>
+    <drawable name="selected">#6466ff33</drawable>
 </resources>

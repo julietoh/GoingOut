@@ -24,9 +24,9 @@ public class PreferenceActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preference);
+
         // Bind recycler view to adapter
         rvFilters = (RecyclerView) findViewById(R.id.rvFilters);
-
         // allows for optimizations
         rvFilters.setHasFixedSize(true);
 
@@ -45,8 +45,6 @@ public class PreferenceActivity extends AppCompatActivity {
 
         // Bind adapter to list
         rvFilters.setAdapter(adapter);
-
-
 
     }
 
