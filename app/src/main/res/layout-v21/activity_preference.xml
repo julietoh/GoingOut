@@ -46,12 +46,11 @@
 
     <android.support.v7.widget.RecyclerView
             android:id="@+id/rvFilters"
-        android:layout_below="@+id/toolbar"
-            android:layout_width="match_parent"
+        android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:layout_editor_absoluteY="0dp"
             tools:layout_editor_absoluteX="0dp"
-        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/toolbar" />
 </RelativeLayout>

@@ -19,22 +19,22 @@ import codepath.com.goingout.EventType;
 import codepath.com.goingout.R;
 import codepath.com.goingout.models.Preference;
 
-import static codepath.com.goingout.R.drawable.selected;
-
 // Provide the underlying view for an individual list item.
-public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.VH> {
+public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.VH>
+{
     private Activity context;
     private List<EventType> eventTypes;
     private List<Preference> preferences;
     private ArrayList<String> filter= new ArrayList<>();
     private String type;
-    //    private int oldColor = Color.BLACK;
     private int selectedPos = -1;
 
 
-    public FilterAdapter(Activity context, List<Preference> preferences) {
+    public FilterAdapter(Activity context, List<Preference> preferences)
+    {
         this.context = context;
-        if (preferences == null) {
+        if (preferences == null)
+        {
             throw new IllegalArgumentException("eventTypes must not be null");
         }
         this.preferences = preferences;
@@ -42,86 +42,79 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.VH> {
 
     // Inflate the view based on the viewType provided.
     @Override
-    public VH onCreateViewHolder(ViewGroup parent, int viewType) {
+    public VH onCreateViewHolder(ViewGroup parent, int viewType)
+    {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_filter, parent, false);
         return new VH(itemView, context);
     }
 
     // Display data at the specified position
     @Override
-    public void onBindViewHolder(final VH holder, int position) {
+    public void onBindViewHolder(final VH holder, int position)
+    {
         final Preference type = preferences.get(position);
         holder.rootView.setTag(type);
-//        holder.tvType.setText(type.getName());
         holder.tBtnOverlay.setText(type.getName());
         holder.tBtnOverlay.setTextOff(type.getName());
         holder.tBtnOverlay.setTextOn(type.getName());
+        if(holder.tBtnOverlay.isChecked())
+        {
+            holder.tBtnOverlay.setBackgroundResource(R.drawable.my_selecter);
+        } else {
+            holder.tBtnOverlay.setBackgroundResource(R.drawable.my_selecter);;
+        }
         Glide.with(context).load(type.getThumbnailImage()).centerCrop().into(holder.ivBackground);
         holder.itemView.setSelected(selectedPos == position);
     }
 
     @Override
-    public int getItemCount() {
+    public int getItemCount()
+    {
         return preferences.size();
     }
 
     // Provide a reference to the views for each contact item
-    public class VH extends RecyclerView.ViewHolder {
+    public class VH extends RecyclerView.ViewHolder
+    {
         final View rootView;
         final ImageView ivBackground;
-//        final TextView tvType;
         final ToggleButton tBtnOverlay;
 
-        public VH(final View itemView, final Context context) {
+        public VH(final View itemView, final Context context)
+        {
             super(itemView);
             itemView.setClickable(true);
             rootView = itemView;
             ivBackground = (ImageView) itemView.findViewById(R.id.ivBackground);
             tBtnOverlay = (ToggleButton) itemView.findViewById(R.id.tBtnOverlay);
-//            ivOverlay.setBackgroundColor(oldColor);
             tBtnOverlay.bringToFront();
-//            tvType = (TextView) itemView.findViewById(R.id.tvType);
-//            tvType.bringToFront();
 
-
-
+//            fix the multiple cell selector
+//            if (tBtnOverlay.isChecked())
+//            {
+//                tBtnOverlay.setBackground();
+//            }
 
             // on Click Method goes here TODO
-            if (tBtnOverlay.isChecked()){
-                tBtnOverlay.setBackground(drawable.selected);
-            }else{
-
-            }
-
-            tBtnOverlay.setOnClickListener(new View.OnClickListener() {
-
+            tBtnOverlay.setOnClickListener(new View.OnClickListener()
+            {
                 @Override
-                public void onClick(View view) {
-                    if (tBtnOverlay.isChecked()) {
+                public void onClick(View view)
+                {
+                    if (tBtnOverlay.isChecked())
+                    {
                         type = tBtnOverlay.getText()+"";
                         Toast.makeText(context, tBtnOverlay.getText()+" has been selected.",Toast.LENGTH_SHORT).show();
+                        tBtnOverlay.setBackgroundResource(R.drawable.my_selecter);
                         filter.add(type);
-                    }else {
+                    }
+                    else
+                    {
                         type = tBtnOverlay.getText()+"";
                         Toast.makeText(context, tBtnOverlay.getText()+" has been unselected.",Toast.LENGTH_SHORT).show();
+                        tBtnOverlay.setBackgroundResource(R.drawable.my_selecter);
                         filter.remove(type);
-
                     }
-
-//                    view.setSelected(true);
-
-
-//                    notifyItemChanged(selectedPos);
-//                    selectedPos = getLayoutPosition();
-//                    Toast.makeText(context, tvType.getText()+" has been selected.",Toast.LENGTH_SHORT).show();
-//                    if (ivOverlay.isSelected())
-//                    {
-//                        ivOverlay.setBackgroundColor(getNextColor());
-//                    } else {
-//                        ivOverlay.setBackgroundColor(Color.BLACK);
-//                    }
-//                    notifyItemChanged(selectedPos);
-
                 }
             });
         }

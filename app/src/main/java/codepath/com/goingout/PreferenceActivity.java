@@ -27,7 +27,6 @@ public class PreferenceActivity extends AppCompatActivity {
 
         // Bind recycler view to adapter
         rvFilters = (RecyclerView) findViewById(R.id.rvFilters);
-
         // allows for optimizations
         rvFilters.setHasFixedSize(true);
 
@@ -46,7 +45,6 @@ public class PreferenceActivity extends AppCompatActivity {
 
         // Bind adapter to list
         rvFilters.setAdapter(adapter);
-
 
     }
 
