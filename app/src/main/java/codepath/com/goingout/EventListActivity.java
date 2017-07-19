@@ -78,6 +78,9 @@ public class EventListActivity extends AppCompatActivity {
 
         // get the configuration on app creation
         //getConfiguration();
+
+        ArrayList<String> filter = getIntent().getStringArrayListExtra("preferences");
+        Toast.makeText(this, "There are "+filter.size()+" filters you chose", Toast.LENGTH_LONG).show();
     }
 
     // get the list of nearby events according to preferences
