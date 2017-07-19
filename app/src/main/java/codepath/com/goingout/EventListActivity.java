@@ -70,11 +70,17 @@ public class EventListActivity extends AppCompatActivity {
         // get data
         events2 = Feeds.getFeeds();
 
+        events = new ArrayList<>();
+
         // Create an adapter
-        adapter = new FeedAdapter(EventListActivity.this, events2);
+        adapter = new FeedAdapter(events);
 
         // Bind adapter to list
         rvFeeds.setAdapter(adapter);
+
+        getEvents();
+
+
 
         // get the configuration on app creation
         //getConfiguration();
@@ -101,14 +107,14 @@ public class EventListActivity extends AppCompatActivity {
                         // notify adapter that a row was added
                         adapter.notifyItemInserted(events.size() - 1);
                     }
-                    Log.i(TAG, String.format("Loaded %s movies", results.length()));
+                    Log.i(TAG, String.format("Loaded %s events", results.length()));
                 } catch (JSONException e) {
-                    logError("Failed to parse now playing movies", e, true);
+                    logError("Failed to parse events", e, true);
                 }
             }
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                logError("Failed to get data from now_playing endpoint", throwable, true);
+                logError("Failed to get data from endpoint", throwable, true);
             }
         });
     }
