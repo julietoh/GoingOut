@@ -18,7 +18,7 @@
         <ImageView
             android:id="@+id/ivBackground"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/grid_profile_height"
+            android:layout_height="@dimen/grid_feed_height"
             android:scaleType="centerCrop"/>
 
         <LinearLayout

@@ -25,7 +25,7 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.VH>
     private Activity context;
     private List<EventType> eventTypes;
     private List<Preference> preferences;
-    private ArrayList<String> filter= new ArrayList<>();
+    public ArrayList<String> filter= new ArrayList<>();
     private String type;
     private int selectedPos = -1;
 
@@ -118,6 +118,10 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.VH>
                 }
             });
         }
+    }
+
+    public ArrayList<String> getAdapter(){
+        return filter;
     }
 
 }

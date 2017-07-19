@@ -2,6 +2,7 @@ package codepath.com.goingout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import codepath.com.goingout.adapters.FilterAdapter;
@@ -18,6 +20,7 @@ public class PreferenceActivity extends AppCompatActivity {
     private RecyclerView rvFilters;
     private FilterAdapter adapter;
     private List<Preference> preferences;
+    private FloatingActionButton floatingActionButton;
 
 
     @Override
@@ -25,13 +28,15 @@ public class PreferenceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preference);
 
+        floatingActionButton = (FloatingActionButton) findViewById(R.id.floatingActionButton);
+
         // Bind recycler view to adapter
         rvFilters = (RecyclerView) findViewById(R.id.rvFilters);
         // allows for optimizations
         rvFilters.setHasFixedSize(true);
 
         // Define 2 column grid layout
-        final GridLayoutManager layout = new GridLayoutManager(PreferenceActivity.this, 2);
+        final GridLayoutManager layout = new GridLayoutManager(PreferenceActivity.this, 3);
 
         // Unlike ListView, you have to explicitly give a LayoutManager to the RecyclerView to position items on the screen.
         // There are three LayoutManager provided at the moment: GridLayoutManager, StaggeredGridLayoutManager and LinearLayoutManager.
@@ -45,6 +50,14 @@ public class PreferenceActivity extends AppCompatActivity {
 
         // Bind adapter to list
         rvFilters.setAdapter(adapter);
+
+//        if (adapter.filter.size()>=1){
+//            floatingActionButton.setClickable(true);
+//        }else{
+//            floatingActionButton.setBackgroundColor(Color.BLACK);
+//            floatingActionButton.setClickable(true);
+//
+//        }
 
     }
 
@@ -66,7 +79,9 @@ public class PreferenceActivity extends AppCompatActivity {
     }
 
     public void toFeed(View view) {
+        ArrayList<String> filter = adapter.getAdapter();
         Intent intent = new Intent(PreferenceActivity.this, EventListActivity.class);
+        intent.putStringArrayListExtra("preferences", filter);
         startActivity(intent);
     }
 }
