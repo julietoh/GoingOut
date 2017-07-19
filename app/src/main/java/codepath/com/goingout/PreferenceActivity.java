@@ -48,7 +48,6 @@ public class PreferenceActivity extends AppCompatActivity {
         rvFilters.setAdapter(adapter);
 
 
-
     }
 
     @Override
