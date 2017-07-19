@@ -84,6 +84,10 @@ public class EventListActivity extends AppCompatActivity {
 
         // get the configuration on app creation
         //getConfiguration();
+
+        ArrayList<String> filter = getIntent().getStringArrayListExtra("preferences");
+//        String list = getFilterList(filter);
+        Toast.makeText(this, "There are "+filter.size()+" filters you chose", Toast.LENGTH_LONG).show();
     }
 
     // get the list of nearby events according to preferences
@@ -119,6 +123,17 @@ public class EventListActivity extends AppCompatActivity {
         });
     }
 
+
+//    private String getFilterList(ArrayList<String> filter){
+//        String string = "";
+//        for(int i = 0; i< filter.size()-1; i++)
+//        {
+//            String item = filter.get(i);
+//            string = string + item + " ";
+//        }
+//
+//        return string;
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

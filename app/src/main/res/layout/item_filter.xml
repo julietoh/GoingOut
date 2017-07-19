@@ -23,12 +23,12 @@
         <ToggleButton
             android:id="@+id/tBtnOverlay"
             android:layout_width="match_parent"
-            android:layout_height="160dp"
+            android:layout_height="@dimen/grid_profile_height"
             android:background="@drawable/my_selecter"
             android:checked="false"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <!--<TextView-->
             <!--android:id="@+id/tvType"-->
