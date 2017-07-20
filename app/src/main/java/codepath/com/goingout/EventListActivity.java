@@ -27,6 +27,7 @@ import cz.msebera.android.httpclient.Header;
 public class EventListActivity extends AppCompatActivity {
     private RecyclerView rvFeeds;
     private FeedAdapter adapter;
+    ArrayList<String> filter;
     // Rafael!!
 //    private List<Event> events2;
 
@@ -51,6 +52,8 @@ public class EventListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed);
 
+        filter = getIntent().getStringArrayListExtra("preferences");
+
         //initialize the client
         client = new AsyncHttpClient();
         //initialize the list of movies
@@ -64,7 +67,6 @@ public class EventListActivity extends AppCompatActivity {
         rvFeeds.setAdapter(adapter);
         getEvents();
 
-        ArrayList<String> filter = getIntent().getStringArrayListExtra("preferences");
 //        String list = getFilterList(filter);
         Toast.makeText(this, "There are "+filter.size()+" filters you chose", Toast.LENGTH_LONG).show();
 
@@ -80,6 +82,7 @@ public class EventListActivity extends AppCompatActivity {
         RequestParams params = new RequestParams();
         params.put(APP_KEY_PARAM, "8KFwLj3XshfZCdLP"); // API key, always required
         params.put("page_size", 25);
+        params.put("q", filter.get(0));
         params.put(LOCATION_PARAM, "San Francisco");
         // execute a GET request expecting a JSON object response
         client.get(url, params, new JsonHttpResponseHandler() {
@@ -107,6 +110,8 @@ public class EventListActivity extends AppCompatActivity {
             }
         });
     }
+
+
 
 
 //    private String getFilterList(ArrayList<String> filter){
