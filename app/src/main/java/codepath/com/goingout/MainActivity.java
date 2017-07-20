@@ -18,7 +18,6 @@ import java.io.InputStream;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button logout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
 
         TextView nameView = (TextView)findViewById(R.id.nameAndSurname);
         nameView.setText("" + name + " " + surname);
+
+        // logout function
         Button logout = (Button)findViewById(R.id.logout);
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
