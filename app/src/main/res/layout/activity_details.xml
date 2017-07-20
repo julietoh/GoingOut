@@ -6,6 +6,21 @@
     android:layout_height="match_parent"
     tools:context="codepath.com.goingout.DetailsActivity">
 
+    <Button
+        android:id="@+id/btnReviews"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="5dp"
+        android:text="See Reviews"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:clickable="true"
+        android:onClick="toReviews"/>
+
     <ImageView
         android:id="@+id/match"
         android:layout_width="match_parent"
@@ -59,17 +74,4 @@
         android:layout_alignRight="@+id/textView4"
         android:layout_alignEnd="@+id/textView4" />
 
-    <Button
-        android:id="@+id/btnReviews"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_margin="5dp"
-        android:text="See Reviews"
-        android:textColor="@android:color/black"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        android:onClick="toReviews"/>
 </RelativeLayout>

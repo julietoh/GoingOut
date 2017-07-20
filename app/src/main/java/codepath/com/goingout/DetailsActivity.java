@@ -14,6 +14,7 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
     public void toReviews(View view) {
-        Intent intent = new Intent(this, ReviewActivity.class);
+        Intent intent = new Intent(DetailsActivity.this, ReviewActivity.class);
+        startActivity(intent);
     }
 }
