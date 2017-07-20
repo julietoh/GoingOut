@@ -1,14 +1,14 @@
 package codepath.com.goingout.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
@@ -30,25 +30,36 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.VH> {
             //    throw new IllegalArgumentException("contacts must not be null");
             //}
             //this.events = events;
+
+
         }
 
         // Inflate the view based on the viewType provided.
         @Override
         public VH onCreateViewHolder(ViewGroup parent, int viewFeeds) {
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_feed, parent, false);
-            return new VH(itemView, context);
+//            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_feed, parent, false);
+//            return new VH(itemView, context);
+            //get the context and create the inflator
+            context = parent.getContext();
+            LayoutInflater inflater = LayoutInflater.from(context);
+            //create the view using the item_movie layout
+            View eventView = inflater.inflate(R.layout.item_feed, parent, false);
+            //return a new ViewHolder
+            return new VH(eventView,context);
         }
 
         // Display data at the specified position
         @Override
         public void onBindViewHolder(final VH holder, int position) {
-            final Event contact = events.get(position);
-            holder.rootView.setTag(contact);
-            holder.tvFeeds.setText(contact.getTitle());
-            holder.tvTime.setText(contact.getDate());
-            holder.tvPrice.setText(contact.getPrice());
+            final Event event = events.get(position);
+            holder.rootView.setTag(event);
+            holder.tvTitle.setText(event.getTitle());
+            holder.tvTime.setText(event.getDate());
+            holder.tvLocation.setText(event.getLocation());
 //        holder.tvRating.getNumStars();
-            Glide.with(context).load(contact.getImage()).centerCrop().into(holder.ivBackground);
+            holder.ivBackground.setBackgroundColor(Color.BLACK);
+//            Glide.with(context).load(R.drawable.art.into(holder.ivBackground);
+
         }
 
         @Override
@@ -57,21 +68,21 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.VH> {
         }
 
         // Provide a reference to the views for each contact item
-        public class VH extends RecyclerView.ViewHolder {
+        public class VH extends ViewHolder {
             final View rootView;
             final ImageView ivBackground;
-            final TextView tvFeeds;
+            final TextView tvTitle;
             final TextView tvTime;
-            final TextView tvPrice;
+            final TextView tvLocation;
             //final RatingBar tvRating;
 
             public VH(View itemView, final Context context) {
                 super(itemView);
                 rootView = itemView;
                 ivBackground = (ImageView)itemView.findViewById(R.id.ivBackground);
-                tvFeeds = (TextView)itemView.findViewById(R.id.tvFeeds);
+                tvTitle = (TextView)itemView.findViewById(R.id.tvTitle);
                 tvTime = (TextView)itemView.findViewById(R.id.tvTime);
-                tvPrice = (TextView)itemView.findViewById(R.id.tvPrice);
+                tvLocation = (TextView)itemView.findViewById(R.id.tvLocation);
                 //tvRating = (RatingBar) itemView.findViewById(R.id.tvRating);
 
                 // on Click Method goes here TODO

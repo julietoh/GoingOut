@@ -3,7 +3,7 @@ package codepath.com.goingout;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
@@ -19,23 +19,22 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import codepath.com.goingout.adapters.FeedAdapter;
 import codepath.com.goingout.models.Event;
-import codepath.com.goingout.models.Feeds;
 import cz.msebera.android.httpclient.Header;
 
 public class EventListActivity extends AppCompatActivity {
     private RecyclerView rvFeeds;
     private FeedAdapter adapter;
     // Rafael!!
-    private List<Feeds> events2;
+//    private List<Event> events2;
 
     // the base URL for the API
-    public final static String API_BASE_URL = "http://api.eventful.com/json/events/search?/app_key=";
+    public final static String API_BASE_URL = "http://api.eventful.com/json/events/search?";
     // the parameter name for the API key
-    public final static String API_KEY_PARAM = "api_key";
+    public final static String APP_KEY_PARAM = "app_key";
+    public final static String LOCATION_PARAM = "location";
     // tag for logging from this activity
     public final static String TAG = "EventListActivity";
     // image config
@@ -46,6 +45,7 @@ public class EventListActivity extends AppCompatActivity {
     // the list of events
     ArrayList<Event> events;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,42 +53,24 @@ public class EventListActivity extends AppCompatActivity {
 
         //initialize the client
         client = new AsyncHttpClient();
-
-        // Bind recycler view to adapter
-        rvFeeds = (RecyclerView) findViewById(R.id.rvFeeds);
-
-        // allows for optimizations
-        rvFeeds.setHasFixedSize(true);
-
-        // Define 2 column grid layout
-        final GridLayoutManager layout = new GridLayoutManager(EventListActivity.this, 1);
-
-        // Unlike ListView, you have to explicitly give a LayoutManager to the RecyclerView to position items on the screen.
-        // There are three LayoutManager provided at the moment: GridLayoutManager, StaggeredGridLayoutManager and LinearLayoutManager.
-        rvFeeds.setLayoutManager(layout);
-
-        // get data
-        events2 = Feeds.getFeeds();
-
+        //initialize the list of movies
         events = new ArrayList<>();
-
-        // Create an adapter
+        //initialize the adapter -- movies array list cannot be reinitialized after this point
         adapter = new FeedAdapter(events);
 
-        // Bind adapter to list
+        //resolve the recycler view and connect a layout manager and the adapter
+        rvFeeds = (RecyclerView) findViewById(R.id.rvFeeds);
+        rvFeeds.setLayoutManager(new LinearLayoutManager(this));
         rvFeeds.setAdapter(adapter);
-
         getEvents();
-
-
-
-        // get the configuration on app creation
-        //getConfiguration();
 
         ArrayList<String> filter = getIntent().getStringArrayListExtra("preferences");
 //        String list = getFilterList(filter);
         Toast.makeText(this, "There are "+filter.size()+" filters you chose", Toast.LENGTH_LONG).show();
+
+
     }
+
 
     // get the list of nearby events according to preferences
     private void getEvents() {
@@ -96,16 +78,19 @@ public class EventListActivity extends AppCompatActivity {
         String url = API_BASE_URL;
         // set the request parameters
         RequestParams params = new RequestParams();
-        params.put(API_KEY_PARAM, getString(R.string.api_key)); // API key, always required
+        params.put(APP_KEY_PARAM, "8KFwLj3XshfZCdLP"); // API key, always required
+        params.put(LOCATION_PARAM, "San Francisco");
+        params.put("page_size", 9);
         // execute a GET request expecting a JSON object response
         client.get(url, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 // load the results into movies list
                 try {
-                    JSONArray results = response.getJSONArray("event");
+                    JSONObject events1 = response.getJSONObject("events");
+                    JSONArray results = events1.getJSONArray("event");
                     // iterate through result set and create Movie objects
-                    for (int i = 0; i < results.length(); i++) {
+                    for (int i = 0; i < results.length()-1; i++) {
                         Event event = new Event(results.getJSONObject(i));
                         events.add(event);
                         // notify adapter that a row was added
