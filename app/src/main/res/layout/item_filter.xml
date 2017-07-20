@@ -1,13 +1,12 @@
 <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/cvRoot"
-    android:layout_marginLeft="@dimen/grid_margin"
-    android:layout_marginRight="@dimen/grid_margin"
-    android:layout_marginTop="@dimen/cell_margin"
+    android:layout_margin="10dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:clickable="true"
-    android:foreground="?android:attr/selectableItemBackground">
+    android:background="@drawable/my_selecter"
+    android:foreground="?android:attr/selectableItemBackground"
     card_view:cardCornerRadius="@dimen/card_corner_radius"
     card_view:cardElevation="@dimen/card_elevation">
 
@@ -21,23 +20,27 @@
             android:layout_height="@dimen/grid_profile_height"
             android:scaleType="centerCrop" />
 
-        <ImageView
-            android:id="@+id/ivOverlay"
+        <ToggleButton
+            android:id="@+id/tBtnOverlay"
             android:layout_width="match_parent"
-            android:layout_height="160dp"
-            android:alpha=".4" />
-
-        <TextView
-            android:id="@+id/tvType"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:textAlignment="center"
+            android:layout_height="@dimen/grid_profile_height"
+            android:background="@drawable/my_selecter"
+            android:checked="false"
+            android:textAllCaps="false"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/contact_text_size"
-            android:textStyle="bold|italic" />
+            android:textSize="16sp" />
+
+        <!--<TextView-->
+            <!--android:id="@+id/tvType"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentLeft="true"-->
+            <!--android:layout_alignParentStart="true"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:textAlignment="center"-->
+            <!--android:textColor="@android:color/white"-->
+            <!--android:textSize="@dimen/contact_text_size"-->
+            <!--android:textStyle="bold|italic" />-->
 
     </RelativeLayout>
 </android.support.v7.widget.CardView>

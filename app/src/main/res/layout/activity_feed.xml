@@ -4,9 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="codepath.com.goingout.FeedActivity">
+    android:background="@color/black"
+    tools:context="codepath.com.goingout.EventListActivity">
 
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvFeeds"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </RelativeLayout>

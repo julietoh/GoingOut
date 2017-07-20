@@ -49,17 +49,19 @@
 
     </LinearLayout>
 
-    android:id="@+id/to"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_alignParentBottom="true"
-    android:layout_alignParentEnd="true"
-    android:layout_marginBottom="15dp"
-    android:layout_marginEnd="15dp"
-    android:src="@drawable/ic_chevron_right_black_24dp"
-    android:onClick="toPreferences"
-    app:fabSize="normal"
-    android:layout_alignParentRight="true"
-    android:layout_marginRight="15dp" />
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/to"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="15dp"
+        android:layout_marginEnd="15dp"
+        android:src="@drawable/ic_chevron_right_white_24dp"
+        android:onClick="toPreferences"
+        app:fabSize="normal"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="15dp" />
+
 
 </RelativeLayout>
