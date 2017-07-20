@@ -12,7 +12,6 @@ import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,7 +32,7 @@ public class EventListActivity extends AppCompatActivity {
     private List<Feeds> events2;
 
     // the base URL for the API
-    public final static String API_BASE_URL = "http://api.eventful.com/json/events/search?/app_key=";
+    public final static String API_BASE_URL = "http://api.eventful.com/json/events/search?/app_key=8KFwLj3XshfZCdLP";
     // the parameter name for the API key
     public final static String API_KEY_PARAM = "api_key";
     // tag for logging from this activity
@@ -84,11 +83,13 @@ public class EventListActivity extends AppCompatActivity {
     private void getEvents() {
         // create the url
         String url = API_BASE_URL;
+        url +="&location=san+francisco";
+
         // set the request parameters
-        RequestParams params = new RequestParams();
-        params.put(API_KEY_PARAM, getString(R.string.api_key)); // API key, always required
+//        RequestParams params = new RequestParams();
+//        params.put(API_KEY_PARAM, getString(R.string.api_key)); // API key, always required
         // execute a GET request expecting a JSON object response
-        client.get(url, params, new JsonHttpResponseHandler() {
+        client.get(url, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 // load the results into movies list
