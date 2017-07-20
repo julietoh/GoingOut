@@ -1,7 +1,6 @@
 package codepath.com.goingout.adapters;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
@@ -11,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import codepath.com.goingout.R;
 import codepath.com.goingout.models.Event;
@@ -56,10 +56,10 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.VH> {
             holder.tvTitle.setText(event.getTitle());
             holder.tvTime.setText(event.getDate());
             holder.tvLocation.setText(event.getLocation());
+            holder.ivBackground.setBackgroundColor(holder.id);
 //        holder.tvRating.getNumStars();
-            holder.ivBackground.setBackgroundColor(Color.BLACK);
+//            holder.ivBackground.setBackgroundColor(Color.BLACK);
 //            Glide.with(context).load(R.drawable.art.into(holder.ivBackground);
-
         }
 
         @Override
@@ -74,12 +74,18 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.VH> {
             final TextView tvTitle;
             final TextView tvTime;
             final TextView tvLocation;
+            final int id;
             //final RatingBar tvRating;
 
             public VH(View itemView, final Context context) {
                 super(itemView);
                 rootView = itemView;
                 ivBackground = (ImageView)itemView.findViewById(R.id.ivBackground);
+                Random rand = new Random();
+                int rndInt = rand.nextInt(4) + 1;// n = the number of images, that start at idx 1
+                String imgName = "img" + "_" + rndInt;
+                id = context.getResources().getIdentifier(imgName, "drawable", context.getPackageName());
+                ivBackground.setImageResource(id);
                 tvTitle = (TextView)itemView.findViewById(R.id.tvTitle);
                 tvTime = (TextView)itemView.findViewById(R.id.tvTime);
                 tvLocation = (TextView)itemView.findViewById(R.id.tvLocation);
