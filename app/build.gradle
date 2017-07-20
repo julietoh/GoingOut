@@ -1,4 +1,26 @@
 apply plugin: 'com.android.application'
+apply plugin: 'maven'
+
+task writeNewPom {
+    doLast {
+        pom {
+            project {
+                inceptionYear '2008'
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        distribution 'repo'
+                    }
+                }
+            }
+        }.writeTo("$buildDir/newpom.xml")
+    }
+}
+
+group = 'myGroup'
+// artifactId is taken by default, from folder name
+version = '0.1-SNAPSHOT'
 
 android {
     compileSdkVersion 25
@@ -20,6 +42,7 @@ android {
 }
 
 dependencies {
+    compile 'commons-lang:commons-lang:2.3'
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
