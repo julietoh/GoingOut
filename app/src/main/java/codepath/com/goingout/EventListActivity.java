@@ -80,6 +80,7 @@ public class EventListActivity extends AppCompatActivity {
         RequestParams params = new RequestParams();
         params.put(APP_KEY_PARAM, "8KFwLj3XshfZCdLP"); // API key, always required
         params.put("page_size", 25);
+
         params.put(LOCATION_PARAM, "San Francisco");
         // execute a GET request expecting a JSON object response
         client.get(url, params, new JsonHttpResponseHandler() {
