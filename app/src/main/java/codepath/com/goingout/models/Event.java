@@ -1,5 +1,7 @@
 package codepath.com.goingout.models;
 
+import com.evdb.javaapi.data.Venue;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -15,15 +17,16 @@ public class Event {
     private String image;
     private String price;
     private String rating;
+    private Venue venue;
 
     public Event(JSONObject object) throws JSONException {
         title = object.getString("title");
-        category = null;
+//        category = null;
         date = object.getString("start_time");
         location =  object.getString("city_name") + ", " + object.getString("region_abbr");
-        image = null;
-        price = null;
-        rating = null;
+//        image = null;
+//        price = null;
+//        rating = null;
     }
 
     // deserialize json
@@ -85,4 +88,6 @@ public class Event {
     public void setRating(String rating) {
         this.rating = rating;
     }
+
+
 }
