@@ -1,5 +1,7 @@
 package codepath.com.goingout.models;
 
+import com.evdb.javaapi.data.Venue;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -15,15 +17,18 @@ public class Event {
     private String image;
     private String price;
     private String rating;
+    private Venue venue;
 
     public Event(JSONObject object) throws JSONException {
+
         title = object.getString("title");
-        category = null;
+//        category = null;
         date = object.getString("start_time");
+
         location =  object.getString("city_name") + ", " + object.getString("region_abbr");
-        image = null;
-        price = null;
-        rating = null;
+//        image = null;
+//        price = null;
+//        rating = null;
     }
 
     // deserialize json
@@ -47,8 +52,30 @@ public class Event {
     }
 
     public String getDate() {
-        return date;
+        String displayDate = date.substring(5, 7) + "/"
+                + date.substring(8, 10) + "/" + date.substring(2, 4);
+
+        // converting from military time to standard time
+        int hour = Integer.parseInt(date.substring(11, 13));
+        String time;
+        if (hour > 12) {
+            // pm
+            hour = (hour - 12);
+            time = hour + date.substring(13, 16) + "pm";
+        } else if (hour == 0) {
+            // am
+            hour = 12;
+            time = hour + date.substring(13, 16) + "am";
+        } else if (hour == 12) {
+            // pm
+            time = hour + date.substring(13, 16) + "pm";
+        } else {
+            // am
+            time = hour + date.substring(13, 16) + "am";
+        }
+        return displayDate + " " + time;
     }
+
 
     public void setDate(String date) {
         this.date = date;
@@ -85,4 +112,6 @@ public class Event {
     public void setRating(String rating) {
         this.rating = rating;
     }
+
+
 }
