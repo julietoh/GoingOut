@@ -6,21 +6,36 @@
     android:layout_height="match_parent"
     tools:context="codepath.com.goingout.DetailsActivity">
 
+    <Button
+        android:id="@+id/btnReviews"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:clickable="true"
+        android:onClick="toReviews"
+        android:text="See Reviews"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
     <ImageView
-        android:id="@+id/match"
+        android:id="@+id/ivBackground"
         android:layout_width="match_parent"
-        android:layout_height="160dp"
+        android:layout_height="170dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        app:srcCompat="@drawable/art" />
+        app:srcCompat="@drawable/art"
+        android:layout_alignParentTop="true" />
 
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvPosts"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/match" />
+        android:layout_below="@+id/ivBackground" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -30,7 +45,7 @@
         android:textColor="@android:color/white"
         android:textSize="30sp"
         tools:text="MockEvent"
-        android:id="@+id/textView4"
+        android:id="@+id/tvDetailTitle"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
@@ -39,9 +54,9 @@
         style="?android:attr/ratingBarStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView4"
-        android:layout_alignStart="@+id/textView4"
-        android:layout_below="@+id/textView4"
+        android:layout_alignLeft="@+id/tvDetailTitle"
+        android:layout_alignStart="@+id/tvDetailTitle"
+        android:layout_below="@+id/tvDetailTitle"
         android:background="@android:color/transparent"
         android:numStars="5"
         android:progressBackgroundTint="@android:color/white"
@@ -49,27 +64,34 @@
         android:rating="5" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/tvPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/tvDetailTitle"
+        android:layout_alignRight="@+id/tvDetailTitle"
+        android:layout_below="@+id/tvDetailTitle"
         android:text="$$$$"
         android:textColor="@android:color/white"
-        android:textSize="18sp"
-        android:layout_below="@+id/textView4"
-        android:layout_alignRight="@+id/textView4"
-        android:layout_alignEnd="@+id/textView4" />
+        android:textSize="18sp" />
 
-    <Button
-        android:id="@+id/btnReviews"
+    <TextView
+        android:id="@+id/tvLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_margin="5dp"
-        android:text="See Reviews"
-        android:textColor="@android:color/black"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        android:onClick="toReviews"/>
+        android:layout_below="@+id/tvPrice"
+        android:layout_centerHorizontal="true"
+        android:text="TextView"
+        android:textColor="@android:color/white"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/tvTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvLocation"
+        android:layout_centerHorizontal="true"
+        android:text="TextView"
+        android:textColor="@android:color/white"
+        android:textSize="18sp" />
+
 </RelativeLayout>
