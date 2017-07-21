@@ -2,13 +2,13 @@ package codepath.com.goingout.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -48,6 +48,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.VH> {
             //create the view using the item_movie layout
             View eventView = inflater.inflate(R.layout.item_feed, parent, false);
             //return a new ViewHolder
+
             return new VH(eventView,context);
         }
 
@@ -78,6 +79,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.VH> {
             final TextView tvTime;
             final TextView tvLocation;
             final int id;
+            final LinearLayout llFeed;
             //final RatingBar tvRating;
 
             public VH(View itemView, Context c) {
@@ -92,6 +94,8 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.VH> {
                 tvTitle = (TextView)itemView.findViewById(R.id.tvTitle);
                 tvTime = (TextView)itemView.findViewById(R.id.tvTime);
                 tvLocation = (TextView)itemView.findViewById(R.id.tvLocation);
+                llFeed = (LinearLayout) itemView.findViewById(R.id.llFeed);
+                llFeed.bringToFront();
                 //tvRating = (RatingBar) itemView.findViewById(R.id.tvRating);
                 itemView.setOnClickListener(this);
 

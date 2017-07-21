@@ -1,13 +1,17 @@
 package codepath.com.goingout;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -45,6 +49,9 @@ public class EventListActivity extends AppCompatActivity {
     AsyncHttpClient client;
     // the list of events
     ArrayList<Event> events;
+    Toolbar FeedToolbar;
+    ImageButton ibFilter;
+
 
 
     @Override
@@ -67,6 +74,21 @@ public class EventListActivity extends AppCompatActivity {
         rvFeeds.setAdapter(adapter);
         getEvents();
 
+        FeedToolbar = (Toolbar) findViewById(R.id.FeedToolbar);
+        FeedToolbar.setTitle(filter.get(0)+" filter applied!");
+
+        ibFilter = (ImageButton) findViewById(R.id.ibFilter);
+
+        //TODO eventually change to filter activity!
+        ibFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(EventListActivity.this, PreferenceActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
 //        String list = getFilterList(filter);
         Toast.makeText(this, "There are "+filter.size()+" filters you chose", Toast.LENGTH_LONG).show();
 
@@ -84,7 +106,6 @@ public class EventListActivity extends AppCompatActivity {
         params.put("page_size", 25);
         params.put("q", filter.get(0));
         params.put(LOCATION_PARAM, "San Francisco");
-        params.put("page_size", 9);
         // execute a GET request expecting a JSON object response
         client.get(url, params, new JsonHttpResponseHandler() {
             @Override
@@ -114,8 +135,7 @@ public class EventListActivity extends AppCompatActivity {
 
 
 
-
-//    private String getFilterList(ArrayList<String> filter){
+    //    private String getFilterList(ArrayList<String> filter){
 //        String string = "";
 //        for(int i = 0; i< filter.size()-1; i++)
 //        {

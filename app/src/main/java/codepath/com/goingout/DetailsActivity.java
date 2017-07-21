@@ -27,7 +27,6 @@ public class DetailsActivity extends AppCompatActivity {
     RecyclerView rvPosts;
     //the adapter wired to the recycler view
     PostAdapter adapter;
-
     TextView tvDetailTitle;
     TextView tvLocation;
     TextView tvTime;
