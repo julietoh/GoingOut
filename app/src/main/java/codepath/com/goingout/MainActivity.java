@@ -48,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void toPreferences(View view) {
         Intent intent = new Intent(this, PreferenceActivity.class);
-        // Intent intent = new Intent(this, EventsListActivity.class);
         this.startActivity(intent);
     }
 

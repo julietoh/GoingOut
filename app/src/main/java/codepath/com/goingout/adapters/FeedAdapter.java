@@ -1,6 +1,7 @@
 package codepath.com.goingout.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
@@ -11,7 +12,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Random;
 
+import codepath.com.goingout.DetailsActivity;
 import codepath.com.goingout.R;
 import codepath.com.goingout.models.Event;
 
@@ -20,12 +23,17 @@ import codepath.com.goingout.models.Event;
  */
 
 public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.VH> {
-        private ArrayList<Event> events;
-        //contect for rendering
-        Context context;
+        Context context; //private Activity context;
+        ArrayList<Event> events; //private List<Feeds> events;
 
-    public FeedAdapter(ArrayList<Event> events) {
+        public FeedAdapter(ArrayList<Event> events) {
             this.events = events;
+            //this.context = context;
+            //if (events == null) {
+            //    throw new IllegalArgumentException("contacts must not be null");
+            //}
+            //this.events = events;
+
 
         }
 
@@ -51,10 +59,10 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.VH> {
             holder.tvTitle.setText(event.getTitle());
             holder.tvTime.setText(event.getDate());
             holder.tvLocation.setText(event.getLocation());
+            holder.ivBackground.setBackgroundColor(holder.id);
 //        holder.tvRating.getNumStars();
-            holder.ivBackground.setBackgroundColor(Color.BLACK);
+//            holder.ivBackground.setBackgroundColor(Color.BLACK);
 //            Glide.with(context).load(R.drawable.art.into(holder.ivBackground);
-
         }
 
         @Override
@@ -63,24 +71,48 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.VH> {
         }
 
         // Provide a reference to the views for each contact item
-        public class VH extends ViewHolder {
+        public class VH extends ViewHolder implements View.OnClickListener{
             final View rootView;
             final ImageView ivBackground;
             final TextView tvTitle;
             final TextView tvTime;
             final TextView tvLocation;
+            final int id;
             //final RatingBar tvRating;
 
-            public VH(View itemView, final Context context) {
+            public VH(View itemView, Context c) {
                 super(itemView);
                 rootView = itemView;
                 ivBackground = (ImageView)itemView.findViewById(R.id.ivBackground);
+                Random rand = new Random();
+                int rndInt = rand.nextInt(4) + 1;// n = the number of images, that start at idx 1
+                String imgName = "img" + "_" + rndInt;
+                id = context.getResources().getIdentifier(imgName, "drawable", context.getPackageName());
+                ivBackground.setImageResource(id);
                 tvTitle = (TextView)itemView.findViewById(R.id.tvTitle);
                 tvTime = (TextView)itemView.findViewById(R.id.tvTime);
                 tvLocation = (TextView)itemView.findViewById(R.id.tvLocation);
                 //tvRating = (RatingBar) itemView.findViewById(R.id.tvRating);
+                itemView.setOnClickListener(this);
 
-                // on Click Method goes here TODO
+            }
+
+            @Override
+            public void onClick(View v) {
+                // gets the item position
+                int position = getAdapterPosition();
+                // make sure the position is valid (actually exists)
+                if (position != RecyclerView.NO_POSITION)
+                {
+                    Event event = events.get(position);
+                    //create intent for the new activity
+                    Intent intent = new Intent(context, DetailsActivity.class);
+                    intent.putExtra("title", tvTitle.getText());
+                    intent.putExtra("time", tvTime.getText());
+                    intent.putExtra("location",tvLocation.getText());
+//                    intent.putExtra("image_url", ivBackground.getImage());
+                    context.startActivity(intent);
+                }
             }
         }
 }

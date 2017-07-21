@@ -55,7 +55,9 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".DetailsActivity" />
+        <activity android:name=".DetailsActivity"
+            android:theme="@style/PreferenceActivity" />
+
         <activity android:name=".ReviewActivity"></activity>
     </application>
 
