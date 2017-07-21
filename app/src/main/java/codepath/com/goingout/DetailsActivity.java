@@ -73,9 +73,11 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
     public void getPosts() {
-        for (int i = 0; i<10; i++)
+        for (int i = 10; i>1; i-=3)
         {
-            posts.add(new Post("Amadou","10PM", "Wow this club is awesome"));
+            posts.add(new Post("Amadou",i+"PM", "Wow this club is awesome"));
+            posts.add(new Post("Juliet",(i-1)+"PM", "Nah, man this sucks lol"));
+            posts.add(new Post("Rafael",(i-2)+"PM", "We have so many better clubs in panama! What is going on here omg"));
         }
     }
 }
