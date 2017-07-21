@@ -95,6 +95,10 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.VH> {
                     Event event = events.get(position);
                     //create intent for the new activity
                     Intent intent = new Intent(context, DetailsActivity.class);
+                    intent.putExtra("title", tvTitle.getText());
+                    intent.putExtra("time", tvTime.getText());
+                    intent.putExtra("location",tvLocation.getText());
+//                    intent.putExtra("image_url", ivBackground.getImage());
                     context.startActivity(intent);
                 }
             }

@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.TextView;
 
 import com.loopj.android.http.AsyncHttpClient;
 
@@ -27,10 +28,27 @@ public class DetailsActivity extends AppCompatActivity {
     //the adapter wired to the recycler view
     PostAdapter adapter;
 
+    TextView tvDetailTitle;
+    TextView tvLocation;
+    TextView tvTime;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
+
+        tvDetailTitle = (TextView) findViewById(R.id.tvDetailTitle);
+        tvTime = (TextView) findViewById(R.id.tvTime) ;
+        tvLocation = (TextView) findViewById(R.id.tvLocation);
+
+        String title = getIntent().getStringExtra("title");
+        String time = getIntent().getStringExtra("time");
+        String location =  getIntent().getStringExtra("location");
+
+        tvDetailTitle.setText(title);
+        tvTime.setText(time);
+        tvLocation.setText(location);
+
 
         //initialize the client
         client = new AsyncHttpClient();
