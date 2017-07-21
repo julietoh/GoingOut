@@ -7,9 +7,6 @@ import com.github.scribejava.apis.TwitterApi;
 import com.github.scribejava.core.builder.api.BaseApi;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
-
-import com.evdb.javaapi.data.Event;
-
 /**
  * Created by joh on 7/13/17.
  */
