@@ -1,6 +1,8 @@
 package codepath.com.goingout.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
@@ -12,6 +14,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Random;
 
+import codepath.com.goingout.DetailsActivity;
 import codepath.com.goingout.R;
 import codepath.com.goingout.models.Event;
 
@@ -68,7 +71,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.VH> {
         }
 
         // Provide a reference to the views for each contact item
-        public class VH extends ViewHolder {
+        public class VH extends ViewHolder implements View.OnClickListener{
             final View rootView;
             final ImageView ivBackground;
             final TextView tvTitle;
@@ -77,7 +80,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.VH> {
             final int id;
             //final RatingBar tvRating;
 
-            public VH(View itemView, final Context context) {
+            public VH(View itemView, Context c) {
                 super(itemView);
                 rootView = itemView;
                 ivBackground = (ImageView)itemView.findViewById(R.id.ivBackground);
@@ -90,8 +93,26 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.VH> {
                 tvTime = (TextView)itemView.findViewById(R.id.tvTime);
                 tvLocation = (TextView)itemView.findViewById(R.id.tvLocation);
                 //tvRating = (RatingBar) itemView.findViewById(R.id.tvRating);
+                itemView.setOnClickListener(this);
 
-                // on Click Method goes here TODO
+            }
+
+            @Override
+            public void onClick(View v) {
+                // gets the item position
+                int position = getAdapterPosition();
+                // make sure the position is valid (actually exists)
+                if (position != RecyclerView.NO_POSITION)
+                {
+                    Event event = events.get(position);
+                    //create intent for the new activity
+                    Intent intent = new Intent(context, DetailsActivity.class);
+                    intent.putExtra("title", tvTitle.getText());
+                    intent.putExtra("time", tvTime.getText());
+                    intent.putExtra("location",tvLocation.getText());
+//                    intent.putExtra("image_url", ivBackground.getImage());
+                    context.startActivity(intent);
+                }
             }
         }
 }
