@@ -63,9 +63,11 @@ public class Event {
             hour = (hour - 12);
             time = hour + date.substring(13, 16) + "pm";
         } else if (hour == 0) {
+            // default time, time not entered
+            return displayDate;
             // am
-            hour = 12;
-            time = hour + date.substring(13, 16) + "am";
+            // hour = 12;
+            // time = hour + date.substring(13, 16) + "am";
         } else if (hour == 12) {
             // pm
             time = hour + date.substring(13, 16) + "pm";
