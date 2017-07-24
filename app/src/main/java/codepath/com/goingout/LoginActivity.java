@@ -91,7 +91,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, responseCode, intent);
         //Facebook login
         callbackManager.onActivityResult(requestCode, responseCode, intent);
-
     }
 
     private void nextActivity(Profile profile){
