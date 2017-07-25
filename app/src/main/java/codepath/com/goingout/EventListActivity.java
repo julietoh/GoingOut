@@ -30,8 +30,6 @@ public class EventListActivity extends AppCompatActivity {
     private RecyclerView rvFeeds;
     private FeedAdapter adapter;
     ArrayList<String> filter;
-    // Rafael!!
-//    private List<Event> events2;
 
     // the base URL for the API
     public final static String API_BASE_URL = "http://api.eventful.com/json/events/search?";
@@ -164,7 +162,7 @@ public class EventListActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    // hangle errors, log and alert user
+    // handle errors, log and alert user
     private void logError(String message, Throwable error, boolean alertUser) {
         // always log the error
         Log.e(TAG, message, error);
