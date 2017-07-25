@@ -17,16 +17,23 @@ public class Event {
     private Venue venue;
     private Post post;
 
-    public Event(JSONObject object) throws JSONException {
+    public Event(){
 
-        title = object.getString("title");
+    }
+
+    public static Event fromJSON(JSONObject object) throws JSONException {
+        Event event = new Event();
+
+        event.title = object.getString("title");
 //        category = null;
-        date = object.getString("start_time");
+        event.date = object.getString("start_time");
 
-        location =  object.getString("city_name") + ", " + object.getString("region_abbr");
+        event.location =  object.getString("city_name") + ", " + object.getString("region_abbr");
 //        image = null;
 //        price = null;
 //        rating = null;
+
+        return event;
     }
 
     // deserialize json

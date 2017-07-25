@@ -26,9 +26,13 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.VH> {
         Context context; //private Activity context;
         ArrayList<Event> events; //private List<Feeds> events;
 
-        public FeedAdapter(ArrayList<Event> events) {
+    public interface FeedAdapterListener{
+        public void onItemSelected(View view, int position, boolean isPic);
+    }
+
+        public FeedAdapter(ArrayList<Event> events, Context context) {
             this.events = events;
-            //this.context = context;
+            this.context = context;
             //if (events == null) {
             //    throw new IllegalArgumentException("contacts must not be null");
             //}
