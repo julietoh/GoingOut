@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 LoginManager.getInstance().logOut();
-                Intent login = new Intent(MainActivity.this, EventfulLoginActivity.class);
+                Intent login = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(login);
                 finish();
             }

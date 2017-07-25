@@ -89,6 +89,8 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.VH>
             tBtnOverlay = (ToggleButton) itemView.findViewById(R.id.tBtnOverlay);
             tBtnOverlay.bringToFront();
 
+
+
 //            fix the multiple cell selector
 //            if (tBtnOverlay.isChecked())
 //            {
@@ -115,8 +117,10 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.VH>
                         tBtnOverlay.setBackgroundResource(R.drawable.my_selecter);
                         filter.remove(type);
                     }
+
                 }
             });
+
         }
     }
 

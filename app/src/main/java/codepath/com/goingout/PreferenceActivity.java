@@ -20,7 +20,7 @@ public class PreferenceActivity extends AppCompatActivity {
     private RecyclerView rvFilters;
     private FilterAdapter adapter;
     private List<Preference> preferences;
-    private FloatingActionButton floatingActionButton;
+    public FloatingActionButton floatingActionButton;
 
 
     @Override
@@ -51,13 +51,6 @@ public class PreferenceActivity extends AppCompatActivity {
         // Bind adapter to list
         rvFilters.setAdapter(adapter);
 
-//        if (adapter.filter.size()>=1){
-//            floatingActionButton.setClickable(true);
-//        }else{
-//            floatingActionButton.setBackgroundColor(Color.BLACK);
-//            floatingActionButton.setClickable(true);
-//
-//        }
 
     }
 

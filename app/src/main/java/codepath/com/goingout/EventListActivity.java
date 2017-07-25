@@ -14,7 +14,9 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,10 +43,10 @@ public class EventListActivity extends AppCompatActivity {
     // image config
     // Config config;
 
-    EventfulClient client;
+//    EventfulClient client;
 
     // instance fields
-//    AsyncHttpClient client;
+    AsyncHttpClient client;
     // the list of events
     ArrayList<Event> events;
     Toolbar FeedToolbar;
@@ -60,8 +62,8 @@ public class EventListActivity extends AppCompatActivity {
         filter = getIntent().getStringArrayListExtra("preferences");
 
         //initialize the client
-//        client = new AsyncHttpClient();
-        client = EventfulApp.getRestClient();
+        client = new AsyncHttpClient();
+//        client = EventfulApp.getRestClient();
 
         //initialize the list of movies
         events = new ArrayList<>();
@@ -72,10 +74,9 @@ public class EventListActivity extends AppCompatActivity {
         rvFeeds = (RecyclerView) findViewById(R.id.rvFeeds);
         rvFeeds.setLayoutManager(new LinearLayoutManager(this));
         rvFeeds.setAdapter(adapter);
-        getFeed();
 
         FeedToolbar = (Toolbar) findViewById(R.id.FeedToolbar);
-//        FeedToolbar.setTitle(filter.get(0)+" filter applied!");
+        FeedToolbar.setTitle(filter.get(0)+" filter applied!");
 
         ibFilter = (ImageButton) findViewById(R.id.ibFilter);
 
@@ -88,62 +89,85 @@ public class EventListActivity extends AppCompatActivity {
             }
         });
 
+        getEvents();
+
 
 //        String list = getFilterList(filter);
-//        Toast.makeText(this, "There are "+filter.size()+" filters you chose", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "There are "+filter.size()+" filters you chose", Toast.LENGTH_LONG).show();
 
 
     }
 
-//    // get the list of nearby events according to preferences
-//    private void getEvents() {
-//        // create the url
-//        String url = API_BASE_URL;
-//        // set the request parameters
-//        RequestParams params = new RequestParams();
-//        params.put(APP_KEY_PARAM, "8KFwLj3XshfZCdLP"); // API key, always required
-//        params.put("page_size", 25);
-//        params.put("q", filter.get(0));
-//        params.put(LOCATION_PARAM, "San Francisco");
-//        // execute a GET request expecting a JSON object response
-//        client.get(url, params, new JsonHttpResponseHandler() {
-//            @Override
-//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-//                // load the results into movies list
-//                try {
-//                    JSONObject events1 = response.getJSONObject("events");
-//                    JSONArray results = events1.getJSONArray("event");
-//                    // iterate through result set and create Movie objects
-//                    for (int i = 0; i < results.length()-1; i++) {
-//                        Event event = new Event(results.getJSONObject(i));
-//                        events.add(event);
-//                        // notify adapter that a row was added
-//                        adapter.notifyItemInserted(events.size() - 1);
-//                    }
-//                    Log.i(TAG, String.format("Loaded %s events", results.length()));
-//                } catch (JSONException e) {
-//                    logError("Failed to parse events", e, true);
-//                }
-//            }
-//            @Override
-//            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-//                logError("Failed to get data from endpoint", throwable, true);
-//            }
-//        });
-//    }
+//     get the list of nearby events according to preferences
+    private void getEvents() {
+        // create the url
+        String url = API_BASE_URL;
+        // set the request parameters
+        RequestParams params = new RequestParams();
+        params.put(APP_KEY_PARAM, "8KFwLj3XshfZCdLP"); // API key, always required
+        params.put("page_size", 25);
+        params.put("category", getFilterList(filter));
+        params.put("sort_order", "popularity");
+        params.put(LOCATION_PARAM, "San Francisco");
+        // execute a GET request expecting a JSON object response
+        client.get(url, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                // load the results into movies list
+                try {
+                    JSONObject events1 = response.getJSONObject("events");
+                    JSONArray results = events1.getJSONArray("event");
+                    // iterate through result set and create Movie objects
+                    for (int i = 0; i < results.length()-1; i++) {
+                        Event event = new Event(results.getJSONObject(i));
+                        events.add(event);
+                        // notify adapter that a row was added
+                        adapter.notifyItemInserted(events.size() - 1);
+                    }
+                    Log.i(TAG, String.format("Loaded %s events", results.length()));
+                } catch (JSONException e) {
+                    logError("Failed to parse events", e, true);
+                }
+            }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                logError("Failed to get data from endpoint", throwable, true);
+            }
+        });
+    }
 
 
 
-    //    private String getFilterList(ArrayList<String> filter){
-//        String string = "";
-//        for(int i = 0; i< filter.size()-1; i++)
-//        {
-//            String item = filter.get(i);
-//            string = string + item + " ";
-//        }
-//
-//        return string;
-//    }
+        private String getFilterList(ArrayList<String> filter){
+        String string = "";
+        for(int i = 0; i< filter.size()-1; i++)
+        {
+            String item = filter.get(i);
+            item = item.toLowerCase();
+            if (item.equals("activism")) {
+                item = "politics_activism";
+            }else if (item.equals("education")){
+                item = "learning_education";
+            }else if (item.equals("family")){
+                item ="family_fun_kids";
+            }else if (item.equals("nightlife")){
+                item = "singles_social";
+            }else if (item.equals("theater")){
+                item = "performing_arts";
+            }else if (item.equals("recreation")){
+                item = "outdoors_recreation";
+            }else if (item.equals("religion")){
+                item = "religion_spirituality";
+            }else if (item.equals("tech")) {
+                item = "technology";
+            }else if (item.equals("tech")) {
+                item = "technology";
+            }
+                string = string + item + ",";
+        }
+
+        return string;
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -173,45 +197,45 @@ public class EventListActivity extends AppCompatActivity {
         }
     }
 
-    public void getFeed() {
-        client.getEvents(new JsonHttpResponseHandler(){
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                Log.d("TwitterClient", response.toString());
-            }
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                Event event = null;
-                try {
-                    for (int i = 0; i<response.length(); i++)
-                    {
-                        event = Event.fromJSON(response.getJSONObject(i));
-                        events.add(event);
-                        adapter.notifyItemInserted(events.size() - 1);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
-                Log.d("TwitterClient", errorResponse.toString());
-                throwable.printStackTrace();
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                Log.d("TwitterClient", errorResponse.toString());
-                throwable.printStackTrace();
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                Log.d("TwitterClient", responseString);
-                throwable.printStackTrace();
-            }
-        });
-    }
+//    public void getFeed() {
+//        client.getEvents(new JsonHttpResponseHandler(){
+//            @Override
+//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+//                Log.d("TwitterClient", response.toString());
+//            }
+//
+//            @Override
+//            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+//                Event event = null;
+//                try {
+//                    for (int i = 0; i<response.length(); i++)
+//                    {
+//                        event = Event.fromJSON(response.getJSONObject(i));
+//                        events.add(event);
+//                        adapter.notifyItemInserted(events.size() - 1);
+//                    }
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+//                Log.d("TwitterClient", errorResponse.toString());
+//                throwable.printStackTrace();
+//            }
+//
+//            @Override
+//            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+//                Log.d("TwitterClient", errorResponse.toString());
+//                throwable.printStackTrace();
+//            }
+//
+//            @Override
+//            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+//                Log.d("TwitterClient", responseString);
+//                throwable.printStackTrace();
+//            }
+//        });
+//    }
 }
