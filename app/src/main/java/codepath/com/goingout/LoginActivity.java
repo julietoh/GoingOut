@@ -18,6 +18,7 @@ import com.facebook.login.widget.LoginButton;
 
 public class LoginActivity extends AppCompatActivity {
 
+    // manages callbacks into the FacebookSdk
     private CallbackManager callbackManager;
     private AccessTokenTracker accessTokenTracker;
     private ProfileTracker profileTracker;
