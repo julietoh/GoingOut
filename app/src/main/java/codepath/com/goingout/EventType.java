@@ -5,34 +5,32 @@ package codepath.com.goingout;
  */
 
 public enum EventType {
-    ART(R.drawable.art, false),
-    CAUSE(R.drawable.cause, false),
-    CRAFTS(R.drawable.crafts, false),
-    DANCE(R.drawable.dance, false),
-    DRINK(R.drawable.drink, false),
-    FILM(R.drawable.film, false),
-    FITNESS(R.drawable.fitness, false),
-    FOOD(R.drawable.food, false),
-    GAME(R.drawable.game, false),
-    HOME(R.drawable.home, false),
-    LITERATURE(R.drawable.literature, false),
-    MUSIC(R.drawable.music, false),
-    PROFESSIONAL(R.drawable.professional, false),
-    PARTY(R.drawable.party, false),
-    RECREATION(R.drawable.recreation, false),
-    RELIGION(R.drawable.religion, false),
-    SHOPPING(R.drawable.shopping, false),
-    SPORTS(R.drawable.sports, false),
-    THEATER(R.drawable.theater, false),
-    WELLNESS(R.drawable.wellness, false);
+    ACTIVISM(R.drawable.cause),
+    ART(R.drawable.art),
+    ANIMALS(R.drawable.drink),
+    BOOKS(R.drawable.literature),
+    BUSINESS(R.drawable.professional),
+    COMEDY(R.drawable.crafts),
+    EDUCATION(R.drawable.game),
+    FAMILY(R.drawable.home),
+    FILM(R.drawable.film),
+    FOOD(R.drawable.food),
+    MUSIC(R.drawable.music),
+    NIGHTLIFE(R.drawable.party),
+    THEATER(R.drawable.dance),
+    RECREATION(R.drawable.recreation),
+    RELIGION(R.drawable.religion),
+    SALES(R.drawable.shopping),
+    SCIENCE(R.drawable.fitness),
+    SPORTS(R.drawable.sports),
+    TECH(R.drawable.theater),
+    OTHER(R.drawable.wellness);
 
     private int thumbnailImage;
-    private boolean isSelected;
 
-    private EventType(int thumbnailImage, boolean isSelected)
+    private EventType(int thumbnailImage)
     {
         this.thumbnailImage = thumbnailImage;
-        this.isSelected = isSelected;
     }
 
     public int getThumbnailImage()
@@ -40,15 +38,12 @@ public enum EventType {
         return thumbnailImage;
     }
 
-    public void setIsSelected(boolean b)
-    {
-        isSelected = b;
-    }
-
     @Override
     public String toString()
     {
         String constName = super.toString();
+        if (constName.contains("_")) {
+        }
         return constName.substring(0,1) + constName.substring(1).toLowerCase();
     }
 }

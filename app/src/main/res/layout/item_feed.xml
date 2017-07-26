@@ -21,14 +21,21 @@
             android:layout_height="@dimen/grid_feed_height"
             android:scaleType="centerCrop"/>
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:alpha=".2"
+            card_view:srcCompat="@android:color/black" />
+
         <LinearLayout
+            android:id="@+id/llFeed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="13dp"
-            android:layout_marginRight="13dp">
+            android:layout_marginRight="13dp"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tvTitle"
@@ -43,16 +50,16 @@
                 android:textStyle="bold|italic" />
 
             <TextView
-            android:id="@+id/tvTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:textAlignment="center"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/contact_text_size"
-            android:textStyle="bold|italic" />
+                android:id="@+id/tvTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/contact_text_size"
+                android:textStyle="bold|italic" />
 
             <TextView
                 android:id="@+id/tvLocation"

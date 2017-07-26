@@ -13,13 +13,15 @@ public class Event {
     private Preference category;
     private String date;
     private String location;
+
     private String image;
     private String rating;
     private String place;
+
     private Venue venue;
+    private Post post;
 
-    public Event(JSONObject object) throws JSONException {
-
+    public Event (JSONObject object) throws JSONException {
         title = object.getString("title");
 //        category = null;
         date = object.getString("start_time");
@@ -64,9 +66,11 @@ public class Event {
             hour = (hour - 12);
             time = hour + date.substring(13, 16) + "pm";
         } else if (hour == 0) {
+            // default time, time not entered
+            return displayDate;
             // am
-            hour = 12;
-            time = hour + date.substring(13, 16) + "am";
+            // hour = 12;
+            // time = hour + date.substring(13, 16) + "am";
         } else if (hour == 12) {
             // pm
             time = hour + date.substring(13, 16) + "pm";
@@ -90,6 +94,7 @@ public class Event {
         this.location = location;
     }
 
+
     public String getImage() {
         return image;
     }
@@ -97,6 +102,17 @@ public class Event {
     public void setImage(String image) {
         this.image = image;
     }
+
+
+//
+//    public String getImage() {
+//        return image;
+//    }
+//
+//    public void setImage(String image) {
+//        this.image = image;
+//    }
+//
 
 //    public String getPrice() {
 //        return price;
@@ -106,6 +122,7 @@ public class Event {
 //        this.price = price;
 //    }
 
+
     public String getRating() {
         return rating;
     }
@@ -113,6 +130,16 @@ public class Event {
     public void setRating(String rating) {
         this.rating = rating;
     }
+
+//
+//    public String getRating() {
+//        return rating;
+//    }
+//
+//    public void setRating(String rating) {
+//        this.rating = rating;
+//    }
+
 
     public Venue getVenue() {
         return venue;
