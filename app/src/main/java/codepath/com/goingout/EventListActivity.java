@@ -43,6 +43,9 @@ public class EventListActivity extends AppCompatActivity {
 
     // instance fields
     AsyncHttpClient client;
+
+    GoogleClient googleClient;
+
     // the list of events
     ArrayList<Event> events;
 
@@ -56,6 +59,9 @@ public class EventListActivity extends AppCompatActivity {
 
         //initialize the client
         client = new AsyncHttpClient();
+
+        googleClient = new GoogleClient();
+
         //initialize the list of movies
         events = new ArrayList<>();
         //initialize the adapter -- movies array list cannot be reinitialized after this point
@@ -96,9 +102,13 @@ public class EventListActivity extends AppCompatActivity {
                     // iterate through result set and create Movie objects
                     for (int i = 0; i < results.length()-1; i++) {
                         Event event = new Event(results.getJSONObject(i));
+                        event.setVenue(googleClient.getInfo(event));
                         events.add(event);
                         // notify adapter that a row was added
                         adapter.notifyItemInserted(events.size() - 1);
+                        //event.getName, event.get location
+                        //
+
                     }
                     Log.i(TAG, String.format("Loaded %s events", results.length()));
                 } catch (JSONException e) {
