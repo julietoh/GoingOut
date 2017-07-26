@@ -108,6 +108,7 @@ public class EventListActivity extends AppCompatActivity {
         params.put("page_size", 25);
         params.put("category", getFilterList(filter));
         params.put("sort_order", "popularity");
+        params.put("date","This Week");
         params.put(LOCATION_PARAM, "San Francisco");
         // execute a GET request expecting a JSON object response
         client.get(url, params, new JsonHttpResponseHandler() {
