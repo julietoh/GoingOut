@@ -51,15 +51,23 @@ public class DetailsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // show dialog
                 AlertDialog.Builder builder = new AlertDialog.Builder(DetailsActivity.this);
-                builder.setTitle("Upload or Take a photo");
-                builder.setPositiveButton("Upload", new DialogInterface.OnClickListener() {
+                // builder.setTitle("Upload or Take a photo");
+                builder.setPositiveButton("New Post", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // upload image
+                        // upload post
                     }
 
                 });
-                builder.setNegativeButton("Take Photo", new DialogInterface.OnClickListener() {
+                builder.setNeutralButton("Choose from library",
+                        new DialogInterface.OnClickListener()
+                        {
+                            public void onClick(DialogInterface dialog, int id)
+                            {
+                                // upload and image
+                            }
+                        });
+                builder.setNegativeButton("Take Photo or Video", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // take photo
