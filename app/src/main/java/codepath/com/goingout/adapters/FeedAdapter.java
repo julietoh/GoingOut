@@ -37,8 +37,6 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.VH> {
             //    throw new IllegalArgumentException("contacts must not be null");
             //}
             //this.events = events;
-
-
         }
 
         // Inflate the view based on the viewType provided.

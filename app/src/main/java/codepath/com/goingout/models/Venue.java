@@ -8,17 +8,18 @@ import org.json.JSONObject;
  */
 
 public class Venue {
-    private String location;
-    private String imageUrl;
-    private int rating;
-    private int price;
+    public String location;
+    public String imageUrl;
+    public int rating;
+    public int price;
 
     public Venue(JSONObject object) throws JSONException{
-        location = object.getString("");
+        location = object.getString("formatted_address");
         imageUrl = object.getString("");
-        rating = object.getInt("");
-        price = object.getInt("");
+        rating = object.getInt("rating");
+        price = object.getInt("price_level");
     }
+
 
     public String getLocation() {
         return location;
