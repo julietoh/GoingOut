@@ -1,6 +1,5 @@
 package codepath.com.goingout.models;
 
-import com.evdb.javaapi.data.Venue;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,6 +13,11 @@ public class Event {
     private Preference category;
     private String date;
     private String location;
+
+    private String image;
+    private String rating;
+    private String place;
+
     private Venue venue;
     private Post post;
 
@@ -23,9 +27,11 @@ public class Event {
         date = object.getString("start_time");
 
         location =  object.getString("city_name") + ", " + object.getString("region_abbr");
-//        image = null;
-//        price = null;
-//        rating = null;
+
+        place = object.getString("venue_name");
+
+        venue = null;
+
     }
 
     // deserialize json
@@ -87,6 +93,17 @@ public class Event {
     public void setLocation(String location) {
         this.location = location;
     }
+
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+
 //
 //    public String getImage() {
 //        return image;
@@ -96,6 +113,7 @@ public class Event {
 //        this.image = image;
 //    }
 //
+
 //    public String getPrice() {
 //        return price;
 //    }
@@ -103,6 +121,16 @@ public class Event {
 //    public void setPrice(String price) {
 //        this.price = price;
 //    }
+
+
+    public String getRating() {
+        return rating;
+    }
+
+    public void setRating(String rating) {
+        this.rating = rating;
+    }
+
 //
 //    public String getRating() {
 //        return rating;
@@ -113,4 +141,19 @@ public class Event {
 //    }
 
 
+    public Venue getVenue() {
+        return venue;
+    }
+
+    public void setVenue(Venue venue) {
+        this.venue = venue;
+    }
+
+    public String getPlace() {
+        return place;
+    }
+
+    public void setPlace(String place) {
+        this.place = place;
+    }
 }
