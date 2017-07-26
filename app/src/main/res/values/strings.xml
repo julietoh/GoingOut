@@ -11,4 +11,20 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="intent_host">cprest</string>
     <string name="intent_scheme">oauth</string>
+    <string name="title_activity_filter_page">FilterPageActivity</string>
+
+    <string name="openDrawer">Open Drawer </string>
+    <string name="closeDrawer">Close Drawer </string>
+
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+
+    <array name="titles">
+        <item>Categories</item>
+        <item>Price</item>
+        <item>Ratings</item>
+        <item>Location</item>
+    </array>
+
+    <string name="action_settings">Settings</string>
 </resources>

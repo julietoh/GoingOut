@@ -1,8 +1,13 @@
 package codepath.com.goingout;
 
 
-import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,7 +15,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -47,14 +51,14 @@ public class EventListActivity extends AppCompatActivity {
 
     // instance fields
     AsyncHttpClient client;
-
-    GoogleClient googleClient;
-
     // the list of events
     ArrayList<Event> events;
-    Toolbar FeedToolbar;
-    ImageButton ibFilter;
 
+    ImageButton ibFilter;
+    Toolbar toolbar;
+    DrawerLayout mDrawer;
+    NavigationView nvDrawer;
+    private ActionBarDrawerToggle drawerToggle;
 
 
     @Override
@@ -66,12 +70,7 @@ public class EventListActivity extends AppCompatActivity {
 
         //initialize the client
         client = new AsyncHttpClient();
-
-
-        googleClient = new GoogleClient();
-
 //        client = EventfulApp.getRestClient();
-
 
         //initialize the list of movies
         events = new ArrayList<>();
@@ -83,19 +82,27 @@ public class EventListActivity extends AppCompatActivity {
         rvFeeds.setLayoutManager(new LinearLayoutManager(this));
         rvFeeds.setAdapter(adapter);
 
-        FeedToolbar = (Toolbar) findViewById(R.id.FeedToolbar);
-        FeedToolbar.setTitle(filter.get(0)+" filter applied!");
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        toolbar.setTitle(filter.get(0)+" filter applied!");
+        setSupportActionBar(toolbar);
 
-        ibFilter = (ImageButton) findViewById(R.id.ibFilter);
+        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerToggle = setupDrawerToggle();
+        mDrawer.addDrawerListener(drawerToggle);
+        nvDrawer = (NavigationView) findViewById(R.id.nvView);
+        setupDrawerContent(nvDrawer);
+        rvFeeds.bringToFront();
+
+//        ibFilter = (ImageButton) findViewById(R.id.ibFilter);
 
         //TODO eventually change to filter activity!
-        ibFilter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(EventListActivity.this, PreferenceActivity.class);
-                startActivity(intent);
-            }
-        });
+//        ibFilter.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(EventListActivity.this, PreferenceActivity.class);
+//                startActivity(intent);
+//            }
+//        });
 
         getEvents();
 
@@ -106,7 +113,76 @@ public class EventListActivity extends AppCompatActivity {
 
     }
 
-//     get the list of nearby events according to preferences
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        drawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // Pass any configuration change to the drawer toggles
+        drawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    private ActionBarDrawerToggle setupDrawerToggle() {
+        // NOTE: Make sure you pass in a valid toolbar reference.  ActionBarDrawToggle() does not require it
+        // and will not render the hamburger icon without it.
+        return new ActionBarDrawerToggle(this, mDrawer, toolbar, R.string.drawer_open,  R.string.drawer_close);
+    }
+
+    private void setupDrawerContent(NavigationView navigationView) {
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        selectDrawerItem(menuItem);
+                        return true;
+                    }
+                });
+    }
+
+    public void selectDrawerItem(MenuItem menuItem) {
+        // Create a new fragment and specify the fragment to show based on nav item clicked
+        Fragment fragment = null;
+        Class fragmentClass;
+        switch(menuItem.getItemId()) {
+            case R.id.nav_first_fragment:
+                fragmentClass = EventListActivity.class;
+                break;
+            case R.id.nav_second_fragment:
+                fragmentClass = EventListActivity.class;
+                break;
+            case R.id.nav_third_fragment:
+                fragmentClass = EventListActivity.class;
+                break;
+            default:
+                fragmentClass = EventListActivity.class;
+        }
+
+        try {
+            fragment = (Fragment) fragmentClass.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+//        // Insert the fragment by replacing any existing fragment
+//        FragmentManager fragmentManager = getSupportFragmentManager();
+//        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
+
+        // Highlight the selected item has been done by NavigationView
+        menuItem.setChecked(true);
+        // Set action bar title
+        setTitle(menuItem.getTitle());
+        // Close the navigation drawer
+        mDrawer.closeDrawers();
+    }
+
+
+
+    //     get the list of nearby events according to preferences
     private void getEvents() {
         // create the url
         String url = API_BASE_URL;
@@ -129,13 +205,9 @@ public class EventListActivity extends AppCompatActivity {
                     // iterate through result set and create Movie objects
                     for (int i = 0; i < results.length()-1; i++) {
                         Event event = new Event(results.getJSONObject(i));
-                        event.setVenue(googleClient.getInfo(event));
                         events.add(event);
                         // notify adapter that a row was added
                         adapter.notifyItemInserted(events.size() - 1);
-                        //event.getName, event.get location
-                        //
-
                     }
                     Log.i(TAG, String.format("Loaded %s events", results.length()));
                 } catch (JSONException e) {
@@ -194,10 +266,16 @@ public class EventListActivity extends AppCompatActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                mDrawer.openDrawer(GravityCompat.START);
+                return true;
+        }
 
         return super.onOptionsItemSelected(item);
+
     }
+
 
     // handle errors, log and alert user
     private void logError(String message, Throwable error, boolean alertUser) {
