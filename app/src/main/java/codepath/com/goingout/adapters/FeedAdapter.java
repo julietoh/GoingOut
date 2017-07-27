@@ -62,6 +62,8 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.VH> {
             holder.tvTitle.setText(event.getTitle());
             holder.tvTime.setText(event.getDate());
             holder.tvLocation.setText(event.getLocation());
+//            holder.tvRating.setText(event.getVenue().getRating());
+//            holder.tvPrice.setText(event.getVenue().getPrice());
             holder.ivBackground.setBackgroundColor(holder.id);
 //        holder.tvRating.getNumStars();
 //            holder.ivBackground.setBackgroundColor(Color.BLACK);
@@ -80,6 +82,8 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.VH> {
             final TextView tvTitle;
             final TextView tvTime;
             final TextView tvLocation;
+//            final TextView tvRating;
+//            final TextView tvPrice;
             final int id;
             final LinearLayout llFeed;
             //final RatingBar tvRating;
@@ -96,6 +100,8 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.VH> {
                 tvTitle = (TextView)itemView.findViewById(R.id.tvTitle);
                 tvTime = (TextView)itemView.findViewById(R.id.tvTime);
                 tvLocation = (TextView)itemView.findViewById(R.id.tvLocation);
+//                tvRating = (TextView)itemView.findViewById(R.id.tvRating);
+//                tvPrice = (TextView)itemView.findViewById(R.id.tvPrice);
                 llFeed = (LinearLayout) itemView.findViewById(R.id.llFeed);
                 llFeed.bringToFront();
                 //tvRating = (RatingBar) itemView.findViewById(R.id.tvRating);
@@ -116,6 +122,8 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.VH> {
                     intent.putExtra("title", tvTitle.getText());
                     intent.putExtra("time", tvTime.getText());
                     intent.putExtra("location",tvLocation.getText());
+//                    intent.putExtra("time", tvRating.getText());
+//                    intent.putExtra("price",tvPrice.getText());
 //                    intent.putExtra("image_url", ivBackground.getImage());
                     context.startActivity(intent);
                 }

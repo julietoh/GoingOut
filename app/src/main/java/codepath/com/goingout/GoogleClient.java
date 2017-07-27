@@ -36,27 +36,39 @@ public class GoogleClient {
     // Config config;
 
     // instance fields
-    private AsyncHttpClient client = new AsyncHttpClient();
+    public AsyncHttpClient client = new AsyncHttpClient();
+
+
+    //GooglePlaces clientelle = new GooglePlaces("AIzaSyCPa7WzZjkYiq1qRofuqSBJIt6G1xvEtJA");
+    //List<Place> places = clientelle.getPlacesByQuery("Empire State Building", GooglePlaces.MAXIMUM_RESULTS);
     ;
     // the list of events
     private ArrayList<Venue> venues = new ArrayList<>();
 
     public Venue getInfo(Event event) {
         // create the url
+        String url = API_TEXT_SEARCH_BASE_URL;
         // set the request parameters
         RequestParams params = new RequestParams();
-        params.put(TEXT_SEARCH_PARAM, event.getPlace().replaceAll(" ",""));
-        params.put(APP_KEY_PARAM, "AIzaSyAAlnXR9FWu_4dgufQXL6FbLdMQkZHrLTQ");
+        params.put(TEXT_SEARCH_PARAM, "Pizza Hut Menlo Park");
+        params.put(APP_KEY_PARAM, "AIzaSyDPUNFV3MqvxdZzWBofquFAoAI0dy_6P_g");
         // execute a GET request expecting a JSON object response
-        client.get(API_TEXT_SEARCH_BASE_URL, params, new JsonHttpResponseHandler() {
+        client.get(url, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 // load the results into movies list
                 try {
+
                     JSONArray results = response.getJSONArray("results");
+                    Log.e(TAG, results.toString());
+
                     // iterate through result set and create Movie objects
+//                    if (results.length() > 0) {
                     Venue venue = new Venue(results.getJSONObject(0));
+
                     venues.add(venue);
+//                        event.setVenue(venue);
+//                    }
                 } catch (JSONException e) {
                     logError("Failed to parse events", e, true);
                 }
@@ -70,7 +82,8 @@ public class GoogleClient {
             return venues.get(0);
         } else {
             return null;
-        }
+            }
+
     }
 
     private void logError(String message, Throwable error, boolean alertUser) {

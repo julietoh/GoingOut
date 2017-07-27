@@ -17,8 +17,7 @@ public class Event {
     private String image;
     private String rating;
     private String place;
-
-    private Venue venue;
+    public Venue venue;
     private Post post;
 
     public Event (JSONObject object) throws JSONException {

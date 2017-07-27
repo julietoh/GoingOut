@@ -111,6 +111,9 @@ public class EventListActivity extends AppCompatActivity {
         // create the url
         String url = API_BASE_URL;
         // set the request parameters
+
+        //final GooglePlaces clientelle = new GooglePlaces("AIzaSyCPa7WzZjkYiq1qRofuqSBJIt6G1xvEtJA");
+
         RequestParams params = new RequestParams();
         params.put(APP_KEY_PARAM, "8KFwLj3XshfZCdLP"); // API key, always required
         params.put("page_size", 25);
@@ -128,7 +131,10 @@ public class EventListActivity extends AppCompatActivity {
                     // iterate through result set and create Movie objects
                     for (int i = 0; i < results.length()-1; i++) {
                         Event event = new Event(results.getJSONObject(i));
+                        //List<Place> places = clientelle.getPlacesByQuery("Empire State Building", GooglePlaces.MAXIMUM_RESULTS);
+                        //Place place = places.get(0);
                         event.setVenue(googleClient.getInfo(event));
+
                         events.add(event);
                         // notify adapter that a row was added
                         adapter.notifyItemInserted(events.size() - 1);
