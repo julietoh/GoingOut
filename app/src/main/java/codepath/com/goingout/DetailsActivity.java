@@ -11,6 +11,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.loopj.android.http.AsyncHttpClient;
 
 import java.util.ArrayList;
@@ -37,11 +39,36 @@ public class DetailsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-//        // Testing - Write a message to the database
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_details);
+
+        // Create a storage reference from our app
+        FirebaseStorage storage = null;
+        StorageReference storageRef = storage.getReference();
+
+        // Create a child reference
+        // imagesRef now points to "images"
+        StorageReference imagesRef = storageRef.child("images");
+
+        // Child references can also take paths
+        // spaceRef now points to "images/space.jpg
+        // imagesRef still points to "images"
+        StorageReference spaceRef = storageRef.child("images/space.jpg");
+
+        // Create a reference to "mountains.jpg"
+        StorageReference mountainsRef = storageRef.child("mountains.jpg");
+
+        // Create a reference to 'images/mountains.jpg'
+        StorageReference mountainImagesRef = storageRef.child("images/mountains.jpg");
+
+
+
+
+//        // TESTING - Write a message to the database
 //        FirebaseDatabase database = FirebaseDatabase.getInstance();
 //        DatabaseReference myRef = database.getReference("message");
 //
-//        // Testing - Read from the database
+//        // TESTING - Read from the database
 //        myRef.addValueEventListener(new ValueEventListener() {
 //            @Override
 //            public void onDataChange(DataSnapshot dataSnapshot) {
@@ -59,13 +86,14 @@ public class DetailsActivity extends AppCompatActivity {
 //        });
 //
 //        myRef.setValue("yoooo");
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_details);
+
+
+        storage = FirebaseStorage.getInstance();
 
         tvDetailTitle = (TextView) findViewById(R.id.tvDetailTitle);
         tvTime = (TextView) findViewById(R.id.tvTime);
         tvLocation = (TextView) findViewById(R.id.tvLocation);
-         fabUpload = (FloatingActionButton) findViewById(R.id.fabUpload);
+        fabUpload = (FloatingActionButton) findViewById(R.id.fabUpload);
 
         // listen to add button click
         fabUpload.setOnClickListener(new View.OnClickListener() {
@@ -82,10 +110,8 @@ public class DetailsActivity extends AppCompatActivity {
 
                 });
                 builder.setNeutralButton("Choose from library",
-                        new DialogInterface.OnClickListener()
-                        {
-                            public void onClick(DialogInterface dialog, int id)
-                            {
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
                                 // upload and image
                             }
                         });
@@ -102,7 +128,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         String title = getIntent().getStringExtra("title");
         String time = getIntent().getStringExtra("time");
-        String location =  getIntent().getStringExtra("location");
+        String location = getIntent().getStringExtra("location");
 
         tvDetailTitle.setText(title);
         tvTime.setText(time);
