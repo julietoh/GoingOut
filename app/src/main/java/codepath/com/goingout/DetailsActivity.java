@@ -11,8 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.loopj.android.http.AsyncHttpClient;
 
 import java.util.ArrayList;
@@ -43,23 +41,23 @@ public class DetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_details);
 
         // Create a storage reference from our app
-        FirebaseStorage storage = null;
-        StorageReference storageRef = storage.getReference();
+//        FirebaseStorage storage = null;
+//        StorageReference storageRef = storage.getReference();
 
         // Create a child reference
         // imagesRef now points to "images"
-        StorageReference imagesRef = storageRef.child("images");
+//        StorageReference imagesRef = storageRef.child("images");
 
         // Child references can also take paths
         // spaceRef now points to "images/space.jpg
         // imagesRef still points to "images"
-        StorageReference spaceRef = storageRef.child("images/space.jpg");
+//        StorageReference spaceRef = storageRef.child("images/space.jpg");
 
         // Create a reference to "mountains.jpg"
-        StorageReference mountainsRef = storageRef.child("mountains.jpg");
+//        StorageReference mountainsRef = storageRef.child("mountains.jpg");
 
         // Create a reference to 'images/mountains.jpg'
-        StorageReference mountainImagesRef = storageRef.child("images/mountains.jpg");
+//        StorageReference mountainImagesRef = storageRef.child("images/mountains.jpg");
 
 
 
@@ -88,7 +86,7 @@ public class DetailsActivity extends AppCompatActivity {
 //        myRef.setValue("yoooo");
 
 
-        storage = FirebaseStorage.getInstance();
+//        storage = FirebaseStorage.getInstance();
 
         tvDetailTitle = (TextView) findViewById(R.id.tvDetailTitle);
         tvTime = (TextView) findViewById(R.id.tvTime);
