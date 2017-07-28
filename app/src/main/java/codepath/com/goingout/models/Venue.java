@@ -9,15 +9,21 @@ import org.json.JSONObject;
 
 public class Venue {
     public String location;
-    public String imageUrl;
+    public String photoRef;
     public int rating;
     public String price;
 
     public Venue(JSONObject object) throws JSONException{
         location = object.getString("formatted_address");
-    //    imageUrl = object.getString("");
-        rating = object.getInt("rating");
-        price = object.getString("price_level");
+        //photoRef = object.getJSONObject("photos").getString("photo_reference");
+        if (object.has("price_level")) {
+            price = object.getString("price_level");
+        }
+        if (object.has("rating")) {
+            rating = object.getInt("rating");
+        }
+
+
 
     }
 
@@ -30,12 +36,12 @@ public class Venue {
         this.location = location;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public String getPhotoRef() {
+        return photoRef;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setPhotoRef(String imageUrl) {
+        this.photoRef = imageUrl;
     }
 
     public int getRating() {

@@ -19,6 +19,8 @@ public class Event {
     private String place;
     public Venue venue;
     private Post post;
+    private String city;
+    private String address;
 
     public Event (JSONObject object) throws JSONException {
         title = object.getString("title");
@@ -29,7 +31,11 @@ public class Event {
 
         place = object.getString("venue_name");
 
+        address = object.getString("venue_address");
+
         venue = null;
+
+        city = object.getString("city_name");
 
     }
 
@@ -102,8 +108,23 @@ public class Event {
         this.image = image;
     }
 
+    public String getCity() {
+        return city;
+    }
 
-//
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    //
 //    public String getImage() {
 //        return image;
 //    }

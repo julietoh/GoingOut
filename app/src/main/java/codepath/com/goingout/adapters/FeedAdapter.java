@@ -2,6 +2,7 @@ package codepath.com.goingout.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
@@ -11,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -58,26 +61,40 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.VH> {
         @Override
         public void onBindViewHolder(final VH holder, int position) {
             final Event event = events.get(position);
+            //Drawable image = LoadImageFromWebOperations("https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=CnRtAAAATLZNl354RwP_9UKbQ_5Psy40texXePv4oAlgP4qNEkdIrkyse7rPXYGd9D_Uj1rVsQdWT4oRz4QrYAJNpFX7rzqqMlZw2h2E2y5IKMUZ7ouD_SlcHxYq1yL4KbKUv3qtWgTK0A6QbGh87GB3sscrHRIQiG2RrmU_jF4tENr9wGS_YxoUSSDrYjWmrNfeEHSGSc3FyhNLlBU&key=AIzaSyCZkYpPiWoufjD9kTCt7golzT2fkS3duz0");
+
 
             if (event.venue != null) {
                 holder.rootView.setTag(event);
                 holder.tvTitle.setText(event.getTitle());
                 holder.tvTime.setText(event.getDate());
-                holder.tvLocation.setText(event.getLocation());
+                holder.tvLocation.setText(event.getPlace() + ", " + event.venue.getLocation());
                 holder.tvRating.setText(event.venue.getRating() + "");
                 holder.tvPrice.setText(event.venue.getPrice());
+                //holder.ivBackground.setBackground(image);
                 holder.ivBackground.setBackgroundColor(holder.id);
             } else {
                 holder.rootView.setTag(event);
                 holder.tvTitle.setText(event.getTitle());
                 holder.tvTime.setText(event.getDate());
-                holder.tvLocation.setText(event.getLocation());
+                holder.tvLocation.setText(event.getPlace() + ", " + event.getAddress());
                 holder.ivBackground.setBackgroundColor(holder.id);
             }
 //        holder.tvRating.getNumStars();
 //            holder.ivBackground.setBackgroundColor(Color.BLACK);
 //            Glide.with(context).load(R.drawable.art.into(holder.ivBackground);
         }
+
+        public static Drawable LoadImageFromWebOperations(String url) {
+            try {
+                InputStream is = (InputStream) new URL(url).getContent();
+                Drawable d = Drawable.createFromStream(is, "src name");
+                return d;
+            } catch (Exception e) {
+                return null;
+            }
+        }
+
 
         @Override
         public int getItemCount() {
