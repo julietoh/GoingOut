@@ -52,7 +52,7 @@ public class GoogleClient {
         String url = API_TEXT_SEARCH_BASE_URL;
         // set the request parameters
         RequestParams params = new RequestParams();
-        params.put(TEXT_SEARCH_PARAM, "Pizza Hut Menlo Park");
+        params.put(TEXT_SEARCH_PARAM, event.getPlace() + " " + event.getCity());
         params.put(APP_KEY_PARAM, "AIzaSyCZkYpPiWoufjD9kTCt7golzT2fkS3duz0");
         // execute a GET request expecting a JSON object response
         client.get(url, params, new JsonHttpResponseHandler() {
@@ -76,7 +76,6 @@ public class GoogleClient {
 //                        event.setVenue(venue);
 //                    }
                 } catch (JSONException e) {
-                    logError("Failed to parse events", e, true);
                 }
                 adapter.notifyDataSetChanged();
 
