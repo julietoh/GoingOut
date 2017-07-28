@@ -5,7 +5,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
@@ -16,14 +19,17 @@ import codepath.com.goingout.models.Post;
  * Created by acamara on 7/20/17.
  */
 
+
+
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
-    // list of movies
+
+    // list of posts
     ArrayList<Post> posts;
-    //contect for rendering
+    //context for rendering
     Context context;
 
-    // initialized with list
 
+    // initialized with list
     public PostAdapter(ArrayList<Post> posts)
     {
         this.posts = posts;
@@ -36,7 +42,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
         //get the context and create the inflator
         context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-        //create the view using the item_movie layout
+        //create the view using the item_poat layout
         View postView = inflater.inflate(R.layout.item_post, parent, false);
         //return a new ViewHolder
         return new ViewHolder(postView);
@@ -46,20 +52,18 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(ViewHolder holder, int position)
     {
-        // get the movie data at the specified position
         final Post post = posts.get(position);
-        //populate the view with the movie data
         holder.tvUserName.setText(post.getUsername());
         holder.tvTimeStamp.setText(post.getTimeStamp());
         holder.tvBody.setText(post.getBody());
-
-        //load image using glide
-//        Glide.with(context)
-//                .load(imageUrl)
-//                .bitmapTransform(new RoundedCornersTransformation(context, 50,0))
-//                .placeholder(placeholderId)
-//                .error(placeholderId)
-//                .into(imageView);
+        ImageView imageView = holder.ivPicture;
+         // load from post
+         // load image using glide
+        Glide.with(context)
+                .load(post.getImage())
+                //.placeholder(placeholderId)
+                //.error(placeholderId)
+                .into(imageView);
     }
 
     // returns the total number of items in the list
@@ -76,6 +80,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
         TextView tvUserName;
         TextView tvTimeStamp;
         TextView tvBody;
+        ImageView ivPicture;
 
         public ViewHolder(View itemView)
         {
@@ -84,6 +89,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
             tvUserName = (TextView) itemView.findViewById(R.id.tvUserName);
             tvTimeStamp = (TextView) itemView.findViewById(R.id.tvTimeStamp);
             tvBody = (TextView) itemView.findViewById(R.id.tvBody);
+            ivPicture = (ImageView) itemView.findViewById(R.id.ivPicture);
+
         }
     }
 

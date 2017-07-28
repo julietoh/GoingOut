@@ -17,7 +17,8 @@ import com.facebook.login.LoginManager;
 import java.io.InputStream;
 
 public class MainActivity extends AppCompatActivity {
-
+    String name;
+    String surname;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,8 +26,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Bundle inBundle = getIntent().getExtras();
-        String name = inBundle.get("name").toString();
-        String surname = inBundle.get("surname").toString();
+        name = inBundle.get("name").toString();
+        surname = inBundle.get("surname").toString();
         String imageUrl = inBundle.get("imageUrl").toString();
 
         TextView nameView = (TextView)findViewById(R.id.nameAndSurname);
@@ -45,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
         });
         new MainActivity.DownloadImage((ImageView)findViewById(R.id.profileImage)).execute(imageUrl);
     }
+
+
 
     public void toPreferences(View view) {
         Intent intent = new Intent(this, PreferenceActivity.class);
