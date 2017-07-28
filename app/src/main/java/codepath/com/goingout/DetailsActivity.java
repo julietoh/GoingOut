@@ -35,6 +35,7 @@ public class DetailsActivity extends AppCompatActivity {
     TextView tvTime;
     FloatingActionButton fabUpload;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

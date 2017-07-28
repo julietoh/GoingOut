@@ -19,11 +19,13 @@ public class Event {
     private String image;
     private String rating;
     private String place;
+    private boolean isFromJSON;
 
     private Venue venue;
     private Post post;
 
     public Event(){
+        isFromJSON = false;
     }
 
     public Event (JSONObject object) throws JSONException {
@@ -36,6 +38,8 @@ public class Event {
         place = object.getString("venue_name");
 
         venue = null;
+
+        isFromJSON = true;
 
     }
 
@@ -60,30 +64,35 @@ public class Event {
     }
 
     public String getDate() {
-        String displayDate = date.substring(5, 7) + "/"
-                + date.substring(8, 10) + "/" + date.substring(2, 4);
+        if (isFromJSON) {
+            String displayDate = date.substring(5, 7) + "/"
+                    + date.substring(8, 10) + "/" + date.substring(2, 4);
 
-        // converting from military time to standard time
-        int hour = Integer.parseInt(date.substring(11, 13));
-        String time;
-        if (hour > 12) {
-            // pm
-            hour = (hour - 12);
-            time = hour + date.substring(13, 16) + "pm";
-        } else if (hour == 0) {
-            // default time, time not entered
-            return displayDate;
-            // am
-            // hour = 12;
-            // time = hour + date.substring(13, 16) + "am";
-        } else if (hour == 12) {
-            // pm
-            time = hour + date.substring(13, 16) + "pm";
-        } else {
-            // am
-            time = hour + date.substring(13, 16) + "am";
+            // converting from military time to standard time
+            int hour = Integer.parseInt(date.substring(11, 13));
+            String time;
+            if (hour > 12) {
+                // pm
+                hour = (hour - 12);
+                time = hour + date.substring(13, 16) + "pm";
+            } else if (hour == 0) {
+                // default time, time not entered
+                return displayDate;
+                // am
+                // hour = 12;
+                // time = hour + date.substring(13, 16) + "am";
+            } else if (hour == 12) {
+                // pm
+                time = hour + date.substring(13, 16) + "pm";
+            } else {
+                // am
+                time = hour + date.substring(13, 16) + "am";
+            }
+            return displayDate + " " + time;
         }
-        return displayDate + " " + time;
+        else {
+            return date;
+        }
     }
 
 
