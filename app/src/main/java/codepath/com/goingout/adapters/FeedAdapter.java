@@ -63,15 +63,16 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.VH> {
                 holder.rootView.setTag(event);
                 holder.tvTitle.setText(event.getTitle());
                 holder.tvTime.setText(event.getDate());
-                holder.tvLocation.setText(event.getLocation());
+                holder.tvLocation.setText(event.getPlace() + ", " + event.venue.getLocation());
                 holder.tvRating.setText(event.venue.getRating() + "");
                 holder.tvPrice.setText(event.venue.getPrice());
+                //holder.ivBackground.setBackground(image);
                 holder.ivBackground.setBackgroundColor(holder.id);
             } else {
                 holder.rootView.setTag(event);
                 holder.tvTitle.setText(event.getTitle());
                 holder.tvTime.setText(event.getDate());
-                holder.tvLocation.setText(event.getLocation());
+                holder.tvLocation.setText(event.getPlace() + ", " + event.getAddress());
                 holder.ivBackground.setBackgroundColor(holder.id);
             }
 //        holder.tvRating.getNumStars();
