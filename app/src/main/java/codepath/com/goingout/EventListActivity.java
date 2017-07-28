@@ -1,10 +1,10 @@
 package codepath.com.goingout;
 
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -15,7 +15,10 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -25,6 +28,7 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
@@ -33,9 +37,14 @@ import codepath.com.goingout.models.Event;
 import cz.msebera.android.httpclient.Header;
 
 public class EventListActivity extends AppCompatActivity {
+    public static final int REQUEST_CODE = 20;
+
     private RecyclerView rvFeeds;
     private FeedAdapter adapter;
     ArrayList<String> filter;
+
+    Spinner spinner;
+    ArrayAdapter<CharSequence> spinnerAdapter;
 
     // the base URL for the API
     public final static String API_BASE_URL = "http://api.eventful.com/json/events/search?";
@@ -59,6 +68,7 @@ public class EventListActivity extends AppCompatActivity {
     DrawerLayout mDrawer;
     NavigationView nvDrawer;
     private ActionBarDrawerToggle drawerToggle;
+    ImageButton ibAddEvent;
 
 
     @Override
@@ -83,6 +93,7 @@ public class EventListActivity extends AppCompatActivity {
         rvFeeds.setAdapter(adapter);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        ibAddEvent = (ImageButton) findViewById(R.id.ibAddEvent);
 //        toolbar.setTitle(filter.get(0)+" filter applied!");
         setSupportActionBar(toolbar);
 
@@ -93,6 +104,15 @@ public class EventListActivity extends AppCompatActivity {
         setupDrawerContent(nvDrawer);
         rvFeeds.bringToFront();
 
+
+        ibAddEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(EventListActivity.this, AddEventActivity.class);
+                startActivityForResult(intent, REQUEST_CODE);
+                overridePendingTransition(R.anim.slide_in_up, R.anim.stay);
+            }
+        });
 //        ibFilter = (ImageButton) findViewById(R.id.ibFilter);
 
         //TODO eventually change to filter activity!
@@ -145,39 +165,8 @@ public class EventListActivity extends AppCompatActivity {
     }
 
     public void selectDrawerItem(MenuItem menuItem) {
-        // Create a new fragment and specify the fragment to show based on nav item clicked
-        Fragment fragment = null;
-        Class fragmentClass;
-        switch(menuItem.getItemId()) {
-            case R.id.nav_first_fragment:
-                fragmentClass = EventListActivity.class;
-                break;
-            case R.id.nav_second_fragment:
-                fragmentClass = EventListActivity.class;
-                break;
-            case R.id.nav_third_fragment:
-                fragmentClass = EventListActivity.class;
-                break;
-            default:
-                fragmentClass = EventListActivity.class;
-        }
 
-        try {
-            fragment = (Fragment) fragmentClass.newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-//        // Insert the fragment by replacing any existing fragment
-//        FragmentManager fragmentManager = getSupportFragmentManager();
-//        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
-
-        // Highlight the selected item has been done by NavigationView
-        menuItem.setChecked(true);
-        // Set action bar title
-        setTitle(menuItem.getTitle());
-        // Close the navigation drawer
-        mDrawer.closeDrawers();
+//        mDrawer.closeDrawers();
     }
 
 
@@ -288,6 +277,23 @@ public class EventListActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // REQUEST_CODE is defined above
+        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
+
+            // Extract name value from result extras
+            Event event = Parcels.unwrap(data.getParcelableExtra("event"));
+
+            events.add(0, event);
+            adapter.notifyItemInserted(0);
+            rvFeeds.getLayoutManager().scrollToPosition(0);
+
+            // Toast the name to display temporarily on screen
+            Toast.makeText(this, "Event Posted!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 //    public void getFeed() {
 //        client.getEvents(new JsonHttpResponseHandler(){
 //            @Override
@@ -329,4 +335,5 @@ public class EventListActivity extends AppCompatActivity {
 //            }
 //        });
 //    }
+
 }

@@ -1,15 +1,22 @@
 package codepath.com.goingout.models;
 
+import org.parceler.Parcel;
+
 /**
  * Created by acamara on 7/20/17.
  */
 
+@Parcel
 public class Post {
     private String username;
     private String timeStamp;
     private String body;
     private int image;
     private String video;
+
+    public Post(){
+
+    }
 
     public Post(String username, String timeStamp, String body) {
         this.username = username;

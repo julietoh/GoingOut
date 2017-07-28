@@ -1,5 +1,7 @@
 package codepath.com.goingout.models;
 
+import org.parceler.Parcel;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,10 +11,15 @@ import codepath.com.goingout.EventType;
  * Created by acamara on 7/13/17.
  */
 
+@Parcel
 public class Preference {
     private String name;
     private int thumbnailImage;
     public boolean isSelected = false;
+
+    public Preference(){
+
+    }
 
     public Preference(String name, int thumbnailImage) {
         this.name = name;

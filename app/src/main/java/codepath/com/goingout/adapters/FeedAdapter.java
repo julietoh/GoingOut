@@ -93,6 +93,14 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.VH> {
                 String imgName = "img" + "_" + rndInt;
                 id = context.getResources().getIdentifier(imgName, "drawable", context.getPackageName());
                 ivBackground.setImageResource(id);
+
+//                if (post.hasVideo){
+//                    itemview.setVV(Link of video)
+//                }else
+//                {
+//                    view.serIV(Link of picture)
+//                }
+
                 tvTitle = (TextView)itemView.findViewById(R.id.tvTitle);
                 tvTime = (TextView)itemView.findViewById(R.id.tvTime);
                 tvLocation = (TextView)itemView.findViewById(R.id.tvLocation);

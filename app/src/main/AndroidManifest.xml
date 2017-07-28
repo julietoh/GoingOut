@@ -64,14 +64,8 @@
             android:name=".DetailsActivity"
             android:theme="@style/PreferenceActivity" />
         <activity android:name=".ReviewActivity" />
-        <activity
-            android:name=".FilterPageActivity"
-            android:label="@string/title_activity_filter_page"
-            android:parentActivityName=".EventListActivity"
-            android:theme="@style/AppTheme">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="codepath.com.goingout.EventListActivity" />
+        <activity android:name=".AddEventActivity"
+            android:windowSoftInputMode="adjustResize">
         </activity>
     </application>
 

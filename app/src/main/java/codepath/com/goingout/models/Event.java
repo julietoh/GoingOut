@@ -3,11 +3,13 @@ package codepath.com.goingout.models;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcel;
 
 /**
  * Created by joh on 7/12/17.
  */
 
+@Parcel
 public class Event {
     private String title;
     private Preference category;
@@ -20,6 +22,9 @@ public class Event {
 
     private Venue venue;
     private Post post;
+
+    public Event(){
+    }
 
     public Event (JSONObject object) throws JSONException {
         title = object.getString("title");
