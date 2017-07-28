@@ -8,6 +8,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
@@ -34,6 +35,7 @@ public class DetailsActivity extends AppCompatActivity {
     TextView tvLocation;
     TextView tvTime;
     FloatingActionButton fabUpload;
+    Toolbar detailsToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +95,8 @@ public class DetailsActivity extends AppCompatActivity {
         tvLocation = (TextView) findViewById(R.id.tvLocation);
         fabUpload = (FloatingActionButton) findViewById(R.id.fabUpload);
 
+        detailsToolbar = (Toolbar) findViewById(R.id.detailsToolbar);
+
         // listen to add button click
         fabUpload.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,6 +135,9 @@ public class DetailsActivity extends AppCompatActivity {
         tvDetailTitle.setText(title);
         tvTime.setText(time);
         tvLocation.setText(location);
+
+        detailsToolbar.setTitle(title);
+
 
 
         //initialize the client
