@@ -19,7 +19,7 @@ public class Venue {
         if (object.has("rating")) {
             rating = object.getInt("rating");
         }
-        if (object.has("rating")) {
+        if (object.has("price_level")) {
             price = object.getString("price_level");
         }
 
