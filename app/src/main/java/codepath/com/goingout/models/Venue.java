@@ -16,8 +16,12 @@ public class Venue {
     public Venue(JSONObject object) throws JSONException{
         location = object.getString("formatted_address");
     //    imageUrl = object.getString("");
-        rating = object.getInt("rating");
-        price = object.getString("price_level");
+        if (object.has("rating")) {
+            rating = object.getInt("rating");
+        }
+        if (object.has("rating")) {
+            price = object.getString("price_level");
+        }
 
     }
 
