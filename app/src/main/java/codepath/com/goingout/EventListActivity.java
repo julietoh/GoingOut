@@ -40,6 +40,7 @@ public class EventListActivity extends AppCompatActivity {
     public final static String LOCATION_PARAM = "location";
     // tag for logging from this activity
     public final static String TAG = "EventListActivity";
+
     // image config
     // Config config;
 
@@ -116,7 +117,7 @@ public class EventListActivity extends AppCompatActivity {
 
         RequestParams params = new RequestParams();
         params.put(APP_KEY_PARAM, "8KFwLj3XshfZCdLP"); // API key, always required
-        params.put("page_size", 25);
+        params.put("page_size", 5);
         params.put("category", getFilterList(filter));
         params.put("sort_order", "popularity");
         params.put(LOCATION_PARAM, "San Francisco");
@@ -133,9 +134,10 @@ public class EventListActivity extends AppCompatActivity {
                         Event event = new Event(results.getJSONObject(i));
                         //List<Place> places = clientelle.getPlacesByQuery("Empire State Building", GooglePlaces.MAXIMUM_RESULTS);
                         //Place place = places.get(0);
-                        event.setVenue(googleClient.getInfo(event));
 
+                        googleClient.getInfo(event, adapter);
                         events.add(event);
+
                         // notify adapter that a row was added
                         adapter.notifyItemInserted(events.size() - 1);
                         //event.getName, event.get location

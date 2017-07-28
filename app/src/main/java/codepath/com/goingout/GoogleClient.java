@@ -13,6 +13,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import codepath.com.goingout.adapters.FeedAdapter;
 import codepath.com.goingout.models.Event;
 import codepath.com.goingout.models.Venue;
 import cz.msebera.android.httpclient.Header;
@@ -45,13 +46,14 @@ public class GoogleClient {
     // the list of events
     private ArrayList<Venue> venues = new ArrayList<>();
 
-    public Venue getInfo(Event event) {
+    //public Venue
+    public void getInfo(final Event event, final FeedAdapter adapter) {
         // create the url
         String url = API_TEXT_SEARCH_BASE_URL;
         // set the request parameters
         RequestParams params = new RequestParams();
         params.put(TEXT_SEARCH_PARAM, "Pizza Hut Menlo Park");
-        params.put(APP_KEY_PARAM, "AIzaSyDPUNFV3MqvxdZzWBofquFAoAI0dy_6P_g");
+        params.put(APP_KEY_PARAM, "AIzaSyCZkYpPiWoufjD9kTCt7golzT2fkS3duz0");
         // execute a GET request expecting a JSON object response
         client.get(url, params, new JsonHttpResponseHandler() {
             @Override
@@ -66,23 +68,29 @@ public class GoogleClient {
 //                    if (results.length() > 0) {
                     Venue venue = new Venue(results.getJSONObject(0));
 
-                    venues.add(venue);
+                    Log.e(TAG, venue.toString());
+
+
+
+                    event.setVenue(venue);
 //                        event.setVenue(venue);
 //                    }
                 } catch (JSONException e) {
                     logError("Failed to parse events", e, true);
                 }
+                adapter.notifyDataSetChanged();
+
             }
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 logError("Failed to get data from endpoint", throwable, true);
             }
         });
-        if (venues.size() > 0) {
-            return venues.get(0);
-        } else {
-            return null;
-            }
+//        if (venues.size() > 0) {
+//            return venues.get(0);
+//        } else {
+//            return null;
+//        }
 
     }
 

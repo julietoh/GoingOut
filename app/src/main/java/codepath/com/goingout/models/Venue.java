@@ -18,6 +18,7 @@ public class Venue {
     //    imageUrl = object.getString("");
         rating = object.getInt("rating");
         price = object.getString("price_level");
+
     }
 
 
