@@ -3,24 +3,29 @@ package codepath.com.goingout.models;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcel;
 
 /**
  * Created by joh on 7/12/17.
  */
 
+@Parcel
 public class Event {
-    private String title;
-    private Preference category;
-    private String date;
-    private String location;
+    public String title;
+    public Preference category;
+    public String date;
+    public String location;
 
-    private String image;
-    private String rating;
-    private String place;
+    public String image;
+    public String rating;
+    public String place;
     public Venue venue;
-    private Post post;
-    private String city;
-    private String address;
+    public Post post;
+    public String city;
+    public String address;
+
+    public Event(){
+    }
 
     public Event (JSONObject object) throws JSONException {
         title = object.getString("title");

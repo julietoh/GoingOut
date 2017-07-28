@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_category"
+        android:checkable="false"
+        android:checked="false"
+        android:title="Categories">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:checkable="true"
+                    android:title="Activism"
+                    app:actionViewClass="android.widget.CheckBox" />
+                <item
+                    android:checkable="true"
+                    android:title="Art"
+                    app:actionViewClass="android.widget.CheckBox" />
+                <item
+                    android:checkable="true"
+                    android:title="Animals"
+                    app:actionViewClass="android.widget.CheckBox" />
+                <item
+                    android:checkable="true"
+                    android:title="Books"
+                    app:actionViewClass="android.widget.CheckBox" />
+                <item
+                    android:checkable="true"
+                    android:title="Business"
+                    app:actionViewClass="android.widget.CheckBox" />
+                <item
+                    android:checkable="true"
+                    android:title="Comedy"
+                    app:actionViewClass="android.widget.CheckBox" />
+                <item
+                    android:checkable="true"
+                    android:title="Education"
+                    app:actionViewClass="android.widget.CheckBox" />
+                <item
+                    android:checkable="true"
+                    android:title="Family"
+                    app:actionViewClass="android.widget.CheckBox" />
+                <item
+                    android:checkable="true"
+                    android:title="Film"
+                    app:actionViewClass="android.widget.CheckBox" />
+                <item
+                    android:checkable="true"
+                    android:title="Food"
+                    app:actionViewClass="android.widget.CheckBox" />
+                <item
+                    android:checkable="true"
+                    android:title="Music"
+                    app:actionViewClass="android.widget.CheckBox" />
+                <item
+                    android:checkable="true"
+                    android:title="Nightlife"
+                    app:actionViewClass="android.widget.CheckBox" />
+                <item
+                    android:checkable="true"
+                    android:title="Theater"
+                    app:actionViewClass="android.widget.CheckBox" />
+                <item
+                    android:checkable="true"
+                    android:title="Recreation"
+                    app:actionViewClass="android.widget.CheckBox" />
+                <item
+                    android:checkable="true"
+                    android:title="Religion"
+                    app:actionViewClass="android.widget.CheckBox" />
+                <item
+                    android:checkable="true"
+                    android:title="Sales"
+                    app:actionViewClass="android.widget.CheckBox" />
+                <item
+                    android:checkable="true"
+                    android:title="Science"
+                    app:actionViewClass="android.widget.CheckBox" />
+                <item
+                    android:checkable="true"
+                    android:title="Sports"
+                    app:actionViewClass="android.widget.CheckBox" />
+                <item
+                    android:checkable="true"
+                    android:title="Technology"
+                    app:actionViewClass="android.widget.CheckBox" />
+                <item
+                    android:checkable="true"
+                    android:title="Other"
+                    app:actionViewClass="android.widget.CheckBox" />
+
+            </group>
+        </menu>
+    </item>
+    <item
+        android:id="@+id/nav_calendar"
+        android:checkable="false"
+        android:checked="false"
+        android:title="Date">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:checkable="true"
+                    android:title="Today"
+                    app:actionViewClass="android.widget.CheckBox" />
+                <item
+                    android:checkable="true"
+                    android:title="This Week"
+                    app:actionViewClass="android.widget.CheckBox" />
+                <item
+                    android:checkable="true"
+                    android:title="Next Week"
+                    app:actionViewClass="android.widget.CheckBox" />
+                <item
+                    android:checkable="true"
+                    android:title="Choose Date"
+                    app:actionViewClass="android.widget.CheckBox" />
+            </group>
+        </menu>
+    </item>
+    <item
+        android:id="@+id/nav_price"
+        android:checkable="false"
+        android:checked="false"
+        android:title="Price">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:checkable="true"
+                    android:title="$"
+                    app:actionViewClass="android.widget.CheckBox" />
+                <item
+                    android:checkable="true"
+                    android:title="$$"
+                    app:actionViewClass="android.widget.CheckBox" />
+                <item
+                    android:checkable="true"
+                    android:title="$$$"
+                    app:actionViewClass="android.widget.CheckBox" />
+                <item
+                    android:checkable="true"
+                    android:title="$$$$"
+                    app:actionViewClass="android.widget.CheckBox" />
+            </group>
+        </menu>
+    </item>
+    <item
+        android:id="@+id/nav_ratings"
+        android:checkable="false"
+        android:checked="false"
+        android:title="Rating">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:checkable="true"
+                    android:title="1 Star"
+                    app:actionViewClass="android.widget.CheckBox" />
+                <item
+                    android:checkable="true"
+                    android:title="2 Star"
+                    app:actionViewClass="android.widget.CheckBox" />
+                <item
+                    android:checkable="true"
+                    android:title="3 Star"
+                    app:actionViewClass="android.widget.CheckBox" />
+                <item
+                    android:checkable="true"
+                    android:title="4 Star"
+                    app:actionViewClass="android.widget.CheckBox" />
+                <item
+                    android:checkable="true"
+                    android:title="5 Star"
+                    app:actionViewClass="android.widget.CheckBox" />
+            </group>
+        </menu>
+    </item>
+    <item
+        android:id="@+id/nav_location"
+        android:checkable="false"
+        android:checked="false"
+        android:title="Location">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:checkable="true"
+                    android:title="Here"
+                    app:actionViewClass="android.widget.CheckBox" />
+                <item
+                    android:checkable="true"
+                    android:title="Elsewhere"
+                    app:actionViewClass="android.widget.CheckBox" />
+            </group>
+        </menu>
+    </item>
+</menu>

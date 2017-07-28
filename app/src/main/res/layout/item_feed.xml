@@ -47,7 +47,7 @@
                 android:textAlignment="center"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/contact_text_size"
-                android:textStyle="bold|italic" />
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvTime"
@@ -59,7 +59,7 @@
                 android:textAlignment="center"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/contact_text_size"
-                android:textStyle="bold|italic" />
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvLocation"
@@ -71,7 +71,7 @@
                 android:textAlignment="center"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/contact_text_size"
-                android:textStyle="bold|italic" />
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvRating"

@@ -2,7 +2,12 @@ package codepath.com.goingout;
 
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,7 +16,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -21,6 +28,7 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
@@ -29,9 +37,14 @@ import codepath.com.goingout.models.Event;
 import cz.msebera.android.httpclient.Header;
 
 public class EventListActivity extends AppCompatActivity {
+    public static final int REQUEST_CODE = 20;
+
     private RecyclerView rvFeeds;
     private FeedAdapter adapter;
     ArrayList<String> filter;
+
+    Spinner spinner;
+    ArrayAdapter<CharSequence> spinnerAdapter;
 
     // the base URL for the API
     public final static String API_BASE_URL = "http://api.eventful.com/json/events/search?";
@@ -48,14 +61,17 @@ public class EventListActivity extends AppCompatActivity {
 
     // instance fields
     AsyncHttpClient client;
+    // the list of events
+    ArrayList<Event> events;
 
     GoogleClient googleClient;
 
-    // the list of events
-    ArrayList<Event> events;
-    Toolbar FeedToolbar;
     ImageButton ibFilter;
-
+    Toolbar toolbar;
+    DrawerLayout mDrawer;
+    NavigationView nvDrawer;
+    private ActionBarDrawerToggle drawerToggle;
+    ImageButton ibAddEvent;
 
 
     @Override
@@ -67,12 +83,7 @@ public class EventListActivity extends AppCompatActivity {
 
         //initialize the client
         client = new AsyncHttpClient();
-
-
-        googleClient = new GoogleClient();
-
 //        client = EventfulApp.getRestClient();
-
 
         //initialize the list of movies
         events = new ArrayList<>();
@@ -84,19 +95,37 @@ public class EventListActivity extends AppCompatActivity {
         rvFeeds.setLayoutManager(new LinearLayoutManager(this));
         rvFeeds.setAdapter(adapter);
 
-        FeedToolbar = (Toolbar) findViewById(R.id.FeedToolbar);
-        FeedToolbar.setTitle(filter.get(0)+" filter applied!");
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        ibAddEvent = (ImageButton) findViewById(R.id.ibAddEvent);
+//        toolbar.setTitle(filter.get(0)+" filter applied!");
+        setSupportActionBar(toolbar);
 
-        ibFilter = (ImageButton) findViewById(R.id.ibFilter);
+        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerToggle = setupDrawerToggle();
+        mDrawer.addDrawerListener(drawerToggle);
+        nvDrawer = (NavigationView) findViewById(R.id.nvView);
+        setupDrawerContent(nvDrawer);
+        rvFeeds.bringToFront();
 
-        //TODO eventually change to filter activity!
-        ibFilter.setOnClickListener(new View.OnClickListener() {
+
+        ibAddEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(EventListActivity.this, PreferenceActivity.class);
-                startActivity(intent);
+                Intent intent = new Intent(EventListActivity.this, AddEventActivity.class);
+                startActivityForResult(intent, REQUEST_CODE);
+                overridePendingTransition(R.anim.slide_in_up, R.anim.stay);
             }
         });
+//        ibFilter = (ImageButton) findViewById(R.id.ibFilter);
+
+        //TODO eventually change to filter activity!
+//        ibFilter.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(EventListActivity.this, PreferenceActivity.class);
+//                startActivity(intent);
+//            }
+//        });
 
         getEvents();
 
@@ -107,7 +136,45 @@ public class EventListActivity extends AppCompatActivity {
 
     }
 
-//     get the list of nearby events according to preferences
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        drawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // Pass any configuration change to the drawer toggles
+        drawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    private ActionBarDrawerToggle setupDrawerToggle() {
+        // NOTE: Make sure you pass in a valid toolbar reference.  ActionBarDrawToggle() does not require it
+        // and will not render the hamburger icon without it.
+        return new ActionBarDrawerToggle(this, mDrawer, toolbar, R.string.drawer_open,  R.string.drawer_close);
+    }
+
+    private void setupDrawerContent(NavigationView navigationView) {
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        selectDrawerItem(menuItem);
+                        return true;
+                    }
+                });
+    }
+
+    public void selectDrawerItem(MenuItem menuItem) {
+
+//        mDrawer.closeDrawers();
+    }
+
+
+
+    //     get the list of nearby events according to preferences
     private void getEvents() {
         // create the url
         String url = API_BASE_URL;
@@ -120,6 +187,7 @@ public class EventListActivity extends AppCompatActivity {
         params.put("page_size", 5);
         params.put("category", getFilterList(filter));
         params.put("sort_order", "popularity");
+        params.put("date","This Week");
         params.put(LOCATION_PARAM, "San Francisco");
         // execute a GET request expecting a JSON object response
         client.get(url, params, new JsonHttpResponseHandler() {
@@ -136,13 +204,11 @@ public class EventListActivity extends AppCompatActivity {
                         //Place place = places.get(0);
 
                         googleClient.getInfo(event, adapter);
+
                         events.add(event);
 
                         // notify adapter that a row was added
                         adapter.notifyItemInserted(events.size() - 1);
-                        //event.getName, event.get location
-                        //
-
                     }
                     Log.i(TAG, String.format("Loaded %s events", results.length()));
                 } catch (JSONException e) {
@@ -201,10 +267,16 @@ public class EventListActivity extends AppCompatActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                mDrawer.openDrawer(GravityCompat.START);
+                return true;
+        }
 
         return super.onOptionsItemSelected(item);
+
     }
+
 
     // handle errors, log and alert user
     private void logError(String message, Throwable error, boolean alertUser) {
@@ -214,6 +286,23 @@ public class EventListActivity extends AppCompatActivity {
         if (alertUser) {
             // show a long toast with the error message
             Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // REQUEST_CODE is defined above
+        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
+
+            // Extract name value from result extras
+            Event event = Parcels.unwrap(data.getParcelableExtra("event"));
+
+            events.add(0, event);
+            adapter.notifyItemInserted(0);
+            rvFeeds.getLayoutManager().scrollToPosition(0);
+
+            // Toast the name to display temporarily on screen
+            Toast.makeText(this, "Event Posted!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -258,4 +347,5 @@ public class EventListActivity extends AppCompatActivity {
 //            }
 //        });
 //    }
+
 }
