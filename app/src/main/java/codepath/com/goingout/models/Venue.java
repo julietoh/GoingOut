@@ -2,27 +2,31 @@ package codepath.com.goingout.models;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcel;
 
 /**
  * Created by acamara on 7/20/17.
  */
 
+@Parcel
 public class Venue {
     public String location;
     public String imageUrl;
     public int rating;
     public String price;
 
-    public Venue(JSONObject object) throws JSONException{
+    public Venue(){
+    }
+
+    public Venue(JSONObject object) throws JSONException {
         location = object.getString("formatted_address");
-    //    imageUrl = object.getString("");
+        //    imageUrl = object.getString("");
         if (object.has("rating")) {
             rating = object.getInt("rating");
         }
         if (object.has("price_level")) {
             price = object.getString("price_level");
         }
-
     }
 
 

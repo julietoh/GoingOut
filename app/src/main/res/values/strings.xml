@@ -1,7 +1,7 @@
 <resources>
     <string name="facebook_app_id">274274976385926</string>
     <string name="fb_login_protocol_scheme">fb274274976385926</string>
-    <string name="app_name">GoingOut</string>
+    <string name="app_name">Going Out</string>
     <string name="ok">OK</string>
     <string name="hello_user">Hello %1$s!</string>
     <string name="success">Success</string>
@@ -11,4 +11,70 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="intent_host">cprest</string>
     <string name="intent_scheme">oauth</string>
+    <string name="title_activity_filter_page">FilterPageActivity</string>
+
+    <string name="openDrawer">Open Drawer </string>
+    <string name="closeDrawer">Close Drawer </string>
+
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+
+    <array name="titles">
+        <item>Categories</item>
+        <item>Price</item>
+        <item>Ratings</item>
+        <item>Location</item>
+    </array>
+
+    <string name="Categories">Categories</string>
+    <string-array name="Category_Names">
+        <item>Activism</item>
+        <item>Art</item>
+        <item>Animals</item>
+        <item>Books</item>
+        <item>Business</item>
+        <item>Comedy</item>
+        <item>Education</item>
+        <item>Family</item>
+        <item>Film</item>
+        <item>Food</item>
+        <item>Music</item>
+        <item>Nightlife</item>
+        <item>Theater</item>
+        <item>Recreation</item>
+        <item>Religion</item>
+        <item>Sales</item>
+        <item>Science</item>
+        <item>Sports</item>
+        <item>Technology</item>
+        <item>Other</item>
+    </string-array>
+
+    <string name="Price">Price</string>
+    <string-array name="Price_Levels">
+        <item>$</item>
+        <item>$$</item>
+        <item>$$$</item>
+        <item>$$$$</item>
+    </string-array>
+
+    <string name="Rating">Rating</string>
+    <string-array name="Num_Stars">
+        <item>1 Star</item>
+        <item>2 Star</item>
+        <item>3 Star</item>
+        <item>4 Star</item>
+        <item>5 Star</item>
+    </string-array>
+
+    <string name="Date">Date</string>
+    <string-array name="Choose_Date">
+        <item>Today</item>
+        <item>This Week</item>
+        <item>Next Week</item>
+        <item>Choose Date</item>
+    </string-array>
+
+
+    <string name="action_settings">Settings</string>
 </resources>

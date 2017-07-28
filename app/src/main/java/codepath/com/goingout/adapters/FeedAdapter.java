@@ -33,10 +33,10 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.VH> {
         public FeedAdapter(ArrayList<Event> events, Context context) {
             this.events = events;
             this.context = context;
-            //if (events == null) {
-            //    throw new IllegalArgumentException("contacts must not be null");
-            //}
-            //this.events = events;
+            if (events == null) {
+                throw new IllegalArgumentException("feed must not be null");
+            }
+            this.events = events;
         }
 
         // Inflate the view based on the viewType provided.
@@ -107,6 +107,14 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.VH> {
                 String imgName = "img" + "_" + rndInt;
                 id = context.getResources().getIdentifier(imgName, "drawable", context.getPackageName());
                 ivBackground.setImageResource(id);
+
+//                if (post.hasVideo){
+//                    itemview.setVV(Link of video)
+//                }else
+//                {
+//                    view.serIV(Link of picture)
+//                }
+
                 tvTitle = (TextView)itemView.findViewById(R.id.tvTitle);
                 tvTime = (TextView)itemView.findViewById(R.id.tvTime);
                 tvLocation = (TextView)itemView.findViewById(R.id.tvLocation);

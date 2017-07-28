@@ -3,11 +3,13 @@ package codepath.com.goingout.models;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcel;
 
 /**
  * Created by joh on 7/12/17.
  */
 
+@Parcel
 public class Event {
     private String title;
     private Preference category;
@@ -19,8 +21,13 @@ public class Event {
     private String place;
     public Venue venue;
     private String city;
+    private boolean isFromJSON;
     private Post post;
     private String address;
+
+    public Event(){
+        isFromJSON = false;
+    }
 
     public Event (JSONObject object) throws JSONException {
         title = object.getString("title");
@@ -36,6 +43,7 @@ public class Event {
         city = object.getString("city_name");
 
         address = object.getString("venue_address");
+        isFromJSON = true;
 
     }
 
@@ -60,30 +68,35 @@ public class Event {
     }
 
     public String getDate() {
-        String displayDate = date.substring(5, 7) + "/"
-                + date.substring(8, 10) + "/" + date.substring(2, 4);
+        if (isFromJSON) {
+            String displayDate = date.substring(5, 7) + "/"
+                    + date.substring(8, 10) + "/" + date.substring(2, 4);
 
-        // converting from military time to standard time
-        int hour = Integer.parseInt(date.substring(11, 13));
-        String time;
-        if (hour > 12) {
-            // pm
-            hour = (hour - 12);
-            time = hour + date.substring(13, 16) + "pm";
-        } else if (hour == 0) {
-            // default time, time not entered
-            return displayDate;
-            // am
-            // hour = 12;
-            // time = hour + date.substring(13, 16) + "am";
-        } else if (hour == 12) {
-            // pm
-            time = hour + date.substring(13, 16) + "pm";
-        } else {
-            // am
-            time = hour + date.substring(13, 16) + "am";
+            // converting from military time to standard time
+            int hour = Integer.parseInt(date.substring(11, 13));
+            String time;
+            if (hour > 12) {
+                // pm
+                hour = (hour - 12);
+                time = hour + date.substring(13, 16) + "pm";
+            } else if (hour == 0) {
+                // default time, time not entered
+                return displayDate;
+                // am
+                // hour = 12;
+                // time = hour + date.substring(13, 16) + "am";
+            } else if (hour == 12) {
+                // pm
+                time = hour + date.substring(13, 16) + "pm";
+            } else {
+                // am
+                time = hour + date.substring(13, 16) + "am";
+            }
+            return displayDate + " " + time;
         }
-        return displayDate + " " + time;
+        else {
+            return date;
+        }
     }
 
 
