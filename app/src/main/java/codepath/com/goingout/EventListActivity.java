@@ -70,13 +70,10 @@ public class EventListActivity extends AppCompatActivity {
 
         //initialize the client
         client = new AsyncHttpClient();
-<<<<<<< HEAD
-=======
 
 
         // googleClient = new GoogleClient();
 
->>>>>>> details
 //        client = EventfulApp.getRestClient();
 
         //initialize the list of movies
@@ -191,10 +188,8 @@ public class EventListActivity extends AppCompatActivity {
                     // iterate through result set and create Movie objects
                     for (int i = 0; i < results.length()-1; i++) {
                         Event event = new Event(results.getJSONObject(i));
-<<<<<<< HEAD
-=======
+
 //                        event.setVenue(googleClient.getInfo(event));
->>>>>>> details
                         events.add(event);
                         // notify adapter that a row was added
                         adapter.notifyItemInserted(events.size() - 1);
