@@ -72,6 +72,8 @@ public class EventListActivity extends AppCompatActivity {
 
         //initialize the client
         client = new AsyncHttpClient();
+
+        googleClient = new GoogleClient();
 //        client = EventfulApp.getRestClient();
 
         //initialize the list of movies
