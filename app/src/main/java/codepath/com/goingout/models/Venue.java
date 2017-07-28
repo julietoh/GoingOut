@@ -13,7 +13,7 @@ public class Venue {
     public String location;
     public String imageUrl;
     public int rating;
-    public int price;
+    public String price;
 
     public Venue(){
 
@@ -21,9 +21,17 @@ public class Venue {
 
     public Venue(JSONObject object) throws JSONException{
         location = object.getString("formatted_address");
-        imageUrl = object.getString("");
-        rating = object.getInt("rating");
-        price = object.getInt("price_level");
+//        imageUrl = object.getString("");
+
+        if (object.has("rating")){
+            rating = object.getInt("rating");
+
+        }
+
+        if (object.has("price_level")){
+            price = object.getString("price_level");
+
+        }
     }
 
 
@@ -51,11 +59,11 @@ public class Venue {
         this.rating = rating;
     }
 
-    public int getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(String price) {
         this.price = price;
     }
 }
