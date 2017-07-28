@@ -16,9 +16,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -43,9 +41,6 @@ public class EventListActivity extends AppCompatActivity {
     private FeedAdapter adapter;
     ArrayList<String> filter;
 
-    Spinner spinner;
-    ArrayAdapter<CharSequence> spinnerAdapter;
-
     // the base URL for the API
     public final static String API_BASE_URL = "http://api.eventful.com/json/events/search?";
     // the parameter name for the API key
@@ -54,24 +49,21 @@ public class EventListActivity extends AppCompatActivity {
     // tag for logging from this activity
     public final static String TAG = "EventListActivity";
 
-    // image config
-    // Config config;
-
-//    EventfulClient client;
-
     // instance fields
     AsyncHttpClient client;
     // the list of events
     ArrayList<Event> events;
 
-    GoogleClient googleClient;
 
     ImageButton ibFilter;
+
     Toolbar toolbar;
     DrawerLayout mDrawer;
     NavigationView nvDrawer;
     private ActionBarDrawerToggle drawerToggle;
     ImageButton ibAddEvent;
+
+    GoogleClient googleClient;
 
 
     @Override
@@ -83,6 +75,8 @@ public class EventListActivity extends AppCompatActivity {
 
         //initialize the client
         client = new AsyncHttpClient();
+
+        googleClient = new GoogleClient();
 //        client = EventfulApp.getRestClient();
 
         //initialize the list of movies

@@ -36,10 +36,10 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.VH> {
         public FeedAdapter(ArrayList<Event> events, Context context) {
             this.events = events;
             this.context = context;
-            //if (events == null) {
-            //    throw new IllegalArgumentException("contacts must not be null");
-            //}
-            //this.events = events;
+            if (events == null) {
+                throw new IllegalArgumentException("feed must not be null");
+            }
+            this.events = events;
         }
 
         // Inflate the view based on the viewType provided.

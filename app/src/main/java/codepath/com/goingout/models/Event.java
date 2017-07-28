@@ -11,20 +11,25 @@ import org.parceler.Parcel;
 
 @Parcel
 public class Event {
-    public String title;
-    public Preference category;
-    public String date;
-    public String location;
+    private String title;
+    private Preference category;
+    private String date;
+    private String location;
 
-    public String image;
-    public String rating;
-    public String place;
+    private String image;
+    private String rating;
+    private String place;
     public Venue venue;
-    public Post post;
-    public String city;
-    public String address;
+
+    private Post post;
+    private String city;
+    private String address;
+
+    private boolean isFromJSON;
+
 
     public Event(){
+        isFromJSON = false;
     }
 
     public Event (JSONObject object) throws JSONException {
@@ -41,6 +46,11 @@ public class Event {
         venue = null;
 
         city = object.getString("city_name");
+
+
+
+        isFromJSON = true;
+
 
     }
 
@@ -65,30 +75,35 @@ public class Event {
     }
 
     public String getDate() {
-        String displayDate = date.substring(5, 7) + "/"
-                + date.substring(8, 10) + "/" + date.substring(2, 4);
+        if (isFromJSON) {
+            String displayDate = date.substring(5, 7) + "/"
+                    + date.substring(8, 10) + "/" + date.substring(2, 4);
 
-        // converting from military time to standard time
-        int hour = Integer.parseInt(date.substring(11, 13));
-        String time;
-        if (hour > 12) {
-            // pm
-            hour = (hour - 12);
-            time = hour + date.substring(13, 16) + "pm";
-        } else if (hour == 0) {
-            // default time, time not entered
-            return displayDate;
-            // am
-            // hour = 12;
-            // time = hour + date.substring(13, 16) + "am";
-        } else if (hour == 12) {
-            // pm
-            time = hour + date.substring(13, 16) + "pm";
-        } else {
-            // am
-            time = hour + date.substring(13, 16) + "am";
+            // converting from military time to standard time
+            int hour = Integer.parseInt(date.substring(11, 13));
+            String time;
+            if (hour > 12) {
+                // pm
+                hour = (hour - 12);
+                time = hour + date.substring(13, 16) + "pm";
+            } else if (hour == 0) {
+                // default time, time not entered
+                return displayDate;
+                // am
+                // hour = 12;
+                // time = hour + date.substring(13, 16) + "am";
+            } else if (hour == 12) {
+                // pm
+                time = hour + date.substring(13, 16) + "pm";
+            } else {
+                // am
+                time = hour + date.substring(13, 16) + "am";
+            }
+            return displayDate + " " + time;
         }
-        return displayDate + " " + time;
+        else {
+            return date;
+        }
     }
 
 
@@ -113,21 +128,7 @@ public class Event {
         this.image = image;
     }
 
-    public String getCity() {
-        return city;
-    }
 
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
 
     //
 //    public String getImage() {
@@ -180,5 +181,21 @@ public class Event {
 
     public void setPlace(String place) {
         this.place = place;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }
