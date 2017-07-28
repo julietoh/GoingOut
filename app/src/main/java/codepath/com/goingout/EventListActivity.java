@@ -76,7 +76,12 @@ public class EventListActivity extends AppCompatActivity {
         //initialize the client
         client = new AsyncHttpClient();
 
+
         googleClient = new GoogleClient();
+
+        // googleClient = new GoogleClient();
+
+
 //        client = EventfulApp.getRestClient();
 
         //initialize the list of movies
@@ -194,10 +199,15 @@ public class EventListActivity extends AppCompatActivity {
                     // iterate through result set and create Movie objects
                     for (int i = 0; i < results.length()-1; i++) {
                         Event event = new Event(results.getJSONObject(i));
+
                         //List<Place> places = clientelle.getPlacesByQuery("Empire State Building", GooglePlaces.MAXIMUM_RESULTS);
                         //Place place = places.get(0);
 
                         googleClient.getInfo(event, adapter);
+
+
+
+//                        event.setVenue(googleClient.getInfo(event));
 
                         events.add(event);
 

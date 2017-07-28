@@ -55,8 +55,8 @@
 
         <ImageView
             android:id="@+id/ivPicture"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="400dp"
+            android:layout_height="350dp"
             android:layout_below="@+id/tvBody"
             android:layout_centerHorizontal="true"
             android:maxHeight="180dp"

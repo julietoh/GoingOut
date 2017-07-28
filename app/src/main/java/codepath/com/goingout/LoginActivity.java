@@ -22,6 +22,7 @@ public class LoginActivity extends AppCompatActivity {
     private CallbackManager callbackManager;
     private AccessTokenTracker accessTokenTracker;
     private ProfileTracker profileTracker;
+    Profile profile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
         FacebookCallback<LoginResult> callback = new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                Profile profile = Profile.getCurrentProfile();
+                profile = Profile.getCurrentProfile();
                 nextActivity(profile);
                 Toast.makeText(getApplicationContext(), "Logging in...", Toast.LENGTH_SHORT).show();
             }
@@ -102,5 +103,9 @@ public class LoginActivity extends AppCompatActivity {
             main.putExtra("imageUrl", profile.getProfilePictureUri(200,200).toString());
             startActivity(main);
         }
+    }
+
+    public Profile getProfile() {
+        return profile;
     }
 }
