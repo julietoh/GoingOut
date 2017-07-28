@@ -40,10 +40,58 @@ public class DetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
 
+        // Create a storage reference from our app
+//        FirebaseStorage storage = null;
+//        StorageReference storageRef = storage.getReference();
+
+        // Create a child reference
+        // imagesRef now points to "images"
+//        StorageReference imagesRef = storageRef.child("images");
+
+        // Child references can also take paths
+        // spaceRef now points to "images/space.jpg
+        // imagesRef still points to "images"
+//        StorageReference spaceRef = storageRef.child("images/space.jpg");
+
+        // Create a reference to "mountains.jpg"
+//        StorageReference mountainsRef = storageRef.child("mountains.jpg");
+
+        // Create a reference to 'images/mountains.jpg'
+//        StorageReference mountainImagesRef = storageRef.child("images/mountains.jpg");
+
+
+
+
+//        // TESTING - Write a message to the database
+//        FirebaseDatabase database = FirebaseDatabase.getInstance();
+//        DatabaseReference myRef = database.getReference("message");
+//
+//        // TESTING - Read from the database
+//        myRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                // This method is called once with the initial value and again
+//                // whenever data at this location is updated.
+//                String value = dataSnapshot.getValue(String.class);
+//                Log.d("fb", "Value is: " + value);
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError error) {
+//                // Failed to read value
+//                Log.w("fb", "Failed to read value.", error.toException());
+//            }
+//        });
+//
+//        myRef.setValue("yoooo");
+
+
+//        storage = FirebaseStorage.getInstance();
+
         tvDetailTitle = (TextView) findViewById(R.id.tvDetailTitle);
         tvTime = (TextView) findViewById(R.id.tvTime);
         tvLocation = (TextView) findViewById(R.id.tvLocation);
-         fabUpload = (FloatingActionButton) findViewById(R.id.fabUpload);
+        fabUpload = (FloatingActionButton) findViewById(R.id.fabUpload);
 
         // listen to add button click
         fabUpload.setOnClickListener(new View.OnClickListener() {
@@ -51,15 +99,21 @@ public class DetailsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // show dialog
                 AlertDialog.Builder builder = new AlertDialog.Builder(DetailsActivity.this);
-                builder.setTitle("Upload or Take a photo");
-                builder.setPositiveButton("Upload", new DialogInterface.OnClickListener() {
+                // builder.setTitle("Upload or Take a photo");
+                builder.setPositiveButton("New Post", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // upload image
+                        // upload post
                     }
 
                 });
-                builder.setNegativeButton("Take Photo", new DialogInterface.OnClickListener() {
+                builder.setNeutralButton("Choose from library",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // upload and image
+                            }
+                        });
+                builder.setNegativeButton("Take Photo or Video", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // take photo
@@ -72,7 +126,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         String title = getIntent().getStringExtra("title");
         String time = getIntent().getStringExtra("time");
-        String location =  getIntent().getStringExtra("location");
+        String location = getIntent().getStringExtra("location");
 
         tvDetailTitle.setText(title);
         tvTime.setText(time);
