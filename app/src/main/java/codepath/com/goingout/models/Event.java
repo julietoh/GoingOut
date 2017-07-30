@@ -19,10 +19,14 @@ public class Event {
     private String image;
     private String rating;
     private String place;
+    public Venue venue;
+
+    private Post post;
+    private String city;
+    private String address;
+
     private boolean isFromJSON;
 
-    private Venue venue;
-    private Post post;
 
     public Event(){
         isFromJSON = false;
@@ -37,9 +41,16 @@ public class Event {
 
         place = object.getString("venue_name");
 
+        address = object.getString("venue_address");
+
         venue = null;
 
+        city = object.getString("city_name");
+
+
+
         isFromJSON = true;
+
 
     }
 
@@ -118,7 +129,8 @@ public class Event {
     }
 
 
-//
+
+    //
 //    public String getImage() {
 //        return image;
 //    }
@@ -169,5 +181,21 @@ public class Event {
 
     public void setPlace(String place) {
         this.place = place;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

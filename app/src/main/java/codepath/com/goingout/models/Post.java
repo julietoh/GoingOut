@@ -21,6 +21,7 @@ public class Post {
     private int num;
     private long order;
 
+
     public Post() {
     }
 

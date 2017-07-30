@@ -13,8 +13,8 @@ import codepath.com.goingout.EventType;
 
 @Parcel
 public class Preference {
-    private String name;
-    private int thumbnailImage;
+    public String name;
+    int thumbnailImage;
     public boolean isSelected = false;
 
     public Preference(){
