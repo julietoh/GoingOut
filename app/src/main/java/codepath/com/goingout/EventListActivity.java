@@ -2,7 +2,6 @@ package codepath.com.goingout;
 
 
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,6 +15,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -29,17 +30,21 @@ import org.json.JSONObject;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import codepath.com.goingout.adapters.FeedAdapter;
 import codepath.com.goingout.models.Event;
 import cz.msebera.android.httpclient.Header;
 
-public class EventListActivity extends AppCompatActivity {
+public class EventListActivity extends AppCompatActivity{
     public static final int REQUEST_CODE = 20;
 
     private RecyclerView rvFeeds;
     private FeedAdapter adapter;
     ArrayList<String> filter;
+    ArrayList<String> newFilter;
+
 
     // the base URL for the API
     public final static String API_BASE_URL = "http://api.eventful.com/json/events/search?";
@@ -58,12 +63,19 @@ public class EventListActivity extends AppCompatActivity {
     ImageButton ibFilter;
 
     Toolbar toolbar;
-    DrawerLayout mDrawer;
-    NavigationView nvDrawer;
-    private ActionBarDrawerToggle drawerToggle;
+    DrawerLayout drawerLayout;
+    NavigationView navigationView;
+    ActionBarDrawerToggle drawerToggle;
+    ExpandableListAdapter mMenuAdapter;
+    ExpandableListView expandableList;
+    List<String> listDataHeader;
+    HashMap<String, List<String>> listDataChild;
     ImageButton ibAddEvent;
 
+
+
     GoogleClient googleClient;
+    public static int[] images;
 
 
     @Override
@@ -98,12 +110,45 @@ public class EventListActivity extends AppCompatActivity {
 //        toolbar.setTitle(filter.get(0)+" filter applied!");
         setSupportActionBar(toolbar);
 
-        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawerToggle = setupDrawerToggle();
-        mDrawer.addDrawerListener(drawerToggle);
-        nvDrawer = (NavigationView) findViewById(R.id.nvView);
-        setupDrawerContent(nvDrawer);
+        navigationView = (NavigationView) findViewById(R.id.nvView);
+        setupDrawerContent(navigationView);
+
+
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name){
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+                adapter.clear();
+                getEvents(newFilter);
+
+
+            }
+
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                super.onDrawerSlide(drawerView, slideOffset);
+
+            }
+        };
+        drawerLayout.addDrawerListener(drawerToggle);
+        drawerToggle.setDrawerIndicatorEnabled(true);
+        drawerToggle.syncState();
+
+
         rvFeeds.bringToFront();
+        toolbar.setNavigationIcon(R.drawable.filter);
+
+
+        expandableList= (ExpandableListView) findViewById(R.id.navigationmenu);
+        prepareListData();
+        mMenuAdapter = new codepath.com.goingout.adapters.ExpandableListAdapter(this, listDataHeader,   listDataChild, expandableList);
+        expandableList.setAdapter(mMenuAdapter);
 
 
         ibAddEvent.setOnClickListener(new View.OnClickListener() {
@@ -114,44 +159,87 @@ public class EventListActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.slide_in_up, R.anim.stay);
             }
         });
-//        ibFilter = (ImageButton) findViewById(R.id.ibFilter);
 
-        //TODO eventually change to filter activity!
-//        ibFilter.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(EventListActivity.this, PreferenceActivity.class);
-//                startActivity(intent);
-//            }
-//        });
+        getEvents(filter);
 
-        getEvents();
-
-
-//        String list = getFilterList(filter);
         Toast.makeText(this, "There are "+filter.size()+" filters you chose", Toast.LENGTH_LONG).show();
 
 
+        newFilter = new ArrayList<>();
+    }
+
+    private void prepareListData() {
+        listDataHeader = new ArrayList<>();
+        listDataChild = new HashMap<String, List<String>>();
+
+        // Adding data header
+        listDataHeader.add("Categories");
+        listDataHeader.add("Date");
+        listDataHeader.add("Price");
+        listDataHeader.add("Rating");
+        listDataHeader.add("Location");
+        listDataHeader.add("Price");
+
+
+        // Adding child data
+        List<String> categories= new ArrayList<String>();
+        for (EventType eventType : EventType.values())
+        {
+            String name = eventType.toString();
+            categories.add(name);
+
+        }
+
+        List<String> date= new ArrayList<String>();
+        date.add("Today");
+        date.add("This Week");
+        date.add("Next Week");
+        date.add("Choose Date");
+
+        List<String> price= new ArrayList<String>();
+        price.add("$");
+        price.add("$$");
+        price.add("$$$");
+        price.add("$$$$");
+
+        List<String> ratings= new ArrayList<String>();
+        ratings.add("1 Star");
+        ratings.add("2 Star");
+        ratings.add("3 Star");
+        ratings.add("4 Star");
+        ratings.add("5 Star");
+
+        List<String> location= new ArrayList<String>();
+        location.add("Here");
+        location.add("Elsewhere");
+
+        listDataChild.put(listDataHeader.get(0), categories);// Header, Child data
+        listDataChild.put(listDataHeader.get(1), date);
+        listDataChild.put(listDataHeader.get(2), price);
+        listDataChild.put(listDataHeader.get(3), ratings);
+        listDataChild.put(listDataHeader.get(4), location);
+        listDataChild.put(listDataHeader.get(5), price);
+
+        images= new int[]{R.drawable.filter,
+                R.drawable.ic_calendar,
+                R.drawable.ic_price,
+                R.drawable.ic_ratings,
+                R.drawable.ic_location,
+                R.drawable.ic_price};
+
+
+
+
+
+
     }
 
     @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
-        drawerToggle.syncState();
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        // Pass any configuration change to the drawer toggles
-        drawerToggle.onConfigurationChanged(newConfig);
-    }
-
-    private ActionBarDrawerToggle setupDrawerToggle() {
-        // NOTE: Make sure you pass in a valid toolbar reference.  ActionBarDrawToggle() does not require it
-        // and will not render the hamburger icon without it.
-        return new ActionBarDrawerToggle(this, mDrawer, toolbar, R.string.drawer_open,  R.string.drawer_close);
+    public void onBackPressed()
+    {
+        filter.clear();
+        Intent intent = new Intent(this,PreferenceActivity.class);
+        startActivity(intent);
     }
 
     private void setupDrawerContent(NavigationView navigationView) {
@@ -159,6 +247,7 @@ public class EventListActivity extends AppCompatActivity {
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        menuItem.setChecked(true);
                         selectDrawerItem(menuItem);
                         return true;
                     }
@@ -167,13 +256,47 @@ public class EventListActivity extends AppCompatActivity {
 
     public void selectDrawerItem(MenuItem menuItem) {
 
-//        mDrawer.closeDrawers();
+        String item = menuItem.getTitle()+"";
+        item = item.toLowerCase();
+        switch (item) {
+            case "activism":
+                item = "politics_activism";
+                break;
+            case "education":
+                item = "learning_education";
+                break;
+            case "film":
+                item = "movies_film";
+                break;
+            case "family":
+                item = "family_fun_kids";
+                break;
+            case "nightlife":
+                item = "singles_social";
+                break;
+            case "theater":
+                item = "performing_arts";
+                break;
+            case "recreation":
+                item = "outdoors_recreation";
+                break;
+            case "religion":
+                item = "religion_spirituality";
+                break;
+            case "tech":
+                item = "technology";
+                break;
+        }
+        Toast.makeText(this, item, Toast.LENGTH_SHORT).show();
+        newFilter.add(item);
+//        drawerLayout.closeDrawers();
     }
 
 
 
+
     //     get the list of nearby events according to preferences
-    private void getEvents() {
+    private void getEvents(ArrayList list) {
         // create the url
         String url = API_BASE_URL;
         // set the request parameters
@@ -182,8 +305,9 @@ public class EventListActivity extends AppCompatActivity {
 
         RequestParams params = new RequestParams();
         params.put(APP_KEY_PARAM, "8KFwLj3XshfZCdLP"); // API key, always required
-        params.put("page_size", 5);
-        params.put("category", getFilterList(filter));
+        params.put("page_size", 11);
+
+        params.put("category", getFilterList(list));
         params.put("sort_order", "popularity");
         params.put("date","This Week");
         params.put(LOCATION_PARAM, "San Francisco");
@@ -227,34 +351,14 @@ public class EventListActivity extends AppCompatActivity {
 
 
 
-        private String getFilterList(ArrayList<String> filter){
+    private String getFilterList(ArrayList<String> filter){
         String string = "";
-        for(int i = 0; i< filter.size()-1; i++)
+        for(int i = 0; i< filter.size(); i++)
         {
             String item = filter.get(i);
-            item = item.toLowerCase();
-            if (item.equals("activism")) {
-                item = "politics_activism";
-            }else if (item.equals("education")){
-                item = "learning_education";
-            }else if (item.equals("family")){
-                item ="family_fun_kids";
-            }else if (item.equals("nightlife")){
-                item = "singles_social";
-            }else if (item.equals("theater")){
-                item = "performing_arts";
-            }else if (item.equals("recreation")){
-                item = "outdoors_recreation";
-            }else if (item.equals("religion")){
-                item = "religion_spirituality";
-            }else if (item.equals("tech")) {
-                item = "technology";
-            }else if (item.equals("tech")) {
-                item = "technology";
-            }
-                string = string + item + ",";
-        }
 
+            string = string + item + ",";
+        }
         return string;
     }
 
@@ -262,6 +366,7 @@ public class EventListActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
 //        getMenuInflater().inflate(R.menu.menu_contacts, menu);
+        getMenuInflater().inflate(R.menu.drawer_view, menu);
         return true;
     }
 
@@ -272,7 +377,7 @@ public class EventListActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
             case android.R.id.home:
-                mDrawer.openDrawer(GravityCompat.START);
+                drawerLayout.openDrawer(GravityCompat.START);
                 return true;
         }
 
