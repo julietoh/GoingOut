@@ -10,7 +10,9 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -20,10 +22,19 @@ import codepath.com.goingout.R;
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
     private Context mContext;
     private List<String> mListDataHeader; // header titles
-
+    private ToggleButton submenu;
     // child data in format of header title, child title
     private HashMap<String, List<String>> mListDataChild;
     ExpandableListView expandList;
+
+    public ArrayList<String> categoryFilter;
+    public String locationFilter;
+    public int priceFilter;
+    public int ratingFilter;
+    private String dateFilter;
+
+
+
     public ExpandableListAdapter(Context context, List<String> listDataHeader,HashMap<String, List<String>> listChildData,ExpandableListView mView)
     {
         this.mContext = context;
@@ -58,8 +69,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        Log.d("CHILD",mListDataChild.get(this.mListDataHeader.get(groupPosition))
-                .get(childPosition).toString());
+        Log.d("CHILD", mListDataChild.get(this.mListDataHeader.get(groupPosition))
+                .get(childPosition));
         return this.mListDataChild.get(this.mListDataHeader.get(groupPosition))
                 .get(childPosition);
     }
@@ -98,18 +109,19 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(int groupPosition, int childPosition,  boolean isLastChild, View convertView, ViewGroup parent) {
-        final String childText = (String) getChild(groupPosition, childPosition);
-
+        String childText = (String) getChild(groupPosition, childPosition);
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.mContext
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.list_submenu, null);
-        }
 
-        TextView txtListChild = (TextView) convertView
-                .findViewById(R.id.submenu);
+        }
+        ToggleButton txtListChild = (ToggleButton) convertView
+                .findViewById(R.id.filter_submenu);
 
         txtListChild.setText(childText);
+        txtListChild.setTextOn(childText);
+        txtListChild.setTextOff(childText);
 
         return convertView;
     }

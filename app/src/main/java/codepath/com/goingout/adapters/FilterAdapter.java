@@ -59,9 +59,9 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.VH>
         holder.tBtnOverlay.setTextOn(type.getName());
         if(holder.tBtnOverlay.isChecked())
         {
-            holder.tBtnOverlay.setBackgroundResource(R.drawable.my_selecter);
+            holder.tBtnOverlay.setBackgroundResource(R.drawable.my_selector);
         } else {
-            holder.tBtnOverlay.setBackgroundResource(R.drawable.my_selecter);;
+            holder.tBtnOverlay.setBackgroundResource(R.drawable.my_selector);;
         }
         Glide.with(context).load(type.getThumbnailImage()).centerCrop().into(holder.ivBackground);
         holder.itemView.setSelected(selectedPos == position);
@@ -129,7 +129,7 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.VH>
                                 break;
                         }
                         Toast.makeText(context, tBtnOverlay.getText()+" has been selected.",Toast.LENGTH_SHORT).show();
-                        tBtnOverlay.setBackgroundResource(R.drawable.my_selecter);
+                        tBtnOverlay.setBackgroundResource(R.drawable.my_selector);
                         filter.add(type);
                     }
                     else
@@ -166,7 +166,7 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.VH>
                                 break;
                         }
                         Toast.makeText(context, tBtnOverlay.getText()+" has been unselected.",Toast.LENGTH_SHORT).show();
-                        tBtnOverlay.setBackgroundResource(R.drawable.my_selecter);
+                        tBtnOverlay.setBackgroundResource(R.drawable.my_selector);
                         filter.remove(type);
                     }
 

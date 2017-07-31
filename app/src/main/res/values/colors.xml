@@ -6,4 +6,6 @@
     <color name="black">#000000</color>
     <drawable name="notSelected">#64000000</drawable>
     <drawable name="selected">#6466ff33</drawable>
+    <drawable name="filterNotSelected">#ffffff</drawable>
+    <drawable name="filterSelected">#6466ff33</drawable>
 </resources>

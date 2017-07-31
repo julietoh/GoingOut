@@ -80,12 +80,11 @@
             <!--app:menu="@menu/drawer_view">-->
 
             <ExpandableListView
-                android:layout_width="wrap_content"
+                android:id="@+id/navigationmenu"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@android:color/white"
                 android:layout_marginTop="150dp"
-                android:id="@+id/navigationmenu">
-            </ExpandableListView>
+                android:background="@android:color/white"></ExpandableListView>
         </android.support.design.widget.NavigationView>
     </android.support.v4.widget.DrawerLayout>
 

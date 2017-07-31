@@ -145,6 +145,7 @@ public class EventListActivity extends AppCompatActivity{
         toolbar.setNavigationIcon(R.drawable.filter);
 
 
+
         expandableList= (ExpandableListView) findViewById(R.id.navigationmenu);
         prepareListData();
         mMenuAdapter = new codepath.com.goingout.adapters.ExpandableListAdapter(this, listDataHeader,   listDataChild, expandableList);
@@ -366,7 +367,6 @@ public class EventListActivity extends AppCompatActivity{
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
 //        getMenuInflater().inflate(R.menu.menu_contacts, menu);
-        getMenuInflater().inflate(R.menu.drawer_view, menu);
         return true;
     }
 

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:clickable="true"
-    android:background="@drawable/my_selecter"
+    android:background="@drawable/my_selector"
     android:foreground="?android:attr/selectableItemBackground"
     card_view:cardCornerRadius="@dimen/card_corner_radius"
     card_view:cardElevation="@dimen/card_elevation">
@@ -24,7 +24,7 @@
             android:id="@+id/tBtnOverlay"
             android:layout_width="match_parent"
             android:layout_height="@dimen/grid_profile_height"
-            android:background="@drawable/my_selecter"
+            android:background="@drawable/my_selector"
             android:checked="false"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
