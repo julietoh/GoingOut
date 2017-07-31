@@ -33,6 +33,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.loopj.android.http.AsyncHttpClient;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -64,6 +65,7 @@ public class DetailsActivity extends AppCompatActivity {
     FloatingActionButton fabUpload;
     Toolbar detailsToolbar;
     Uri takenPhotoUri;
+    ImageView ivBackground;
     private final int REQUEST_CODE = 20;
 
 
@@ -92,7 +94,8 @@ public class DetailsActivity extends AppCompatActivity {
         String title = getIntent().getStringExtra("title");
         String time = getIntent().getStringExtra("time");
         String location = getIntent().getStringExtra("location");
-
+        String price = getIntent().getStringExtra("price");
+        String image_url = getIntent().getStringExtra("image_url");
 
         //initialize the client
         client = new AsyncHttpClient();
@@ -102,6 +105,7 @@ public class DetailsActivity extends AppCompatActivity {
         postAdapter = new PostAdapter(posts);
 
         //getPosts();
+
 
         //resolve the recycler view and connect a layout manager and the adapter
         rvPosts = (RecyclerView) findViewById(R.id.rvPosts);
@@ -114,6 +118,12 @@ public class DetailsActivity extends AppCompatActivity {
         tvTime.setText(time);
         tvLocation.setText(location);
         detailsToolbar.setTitle("Event: "+title);
+
+        String GoogleUriString = image_url;
+        Uri GoogleUri = Uri.parse(GoogleUriString);
+
+        ivBackground = (ImageView) findViewById(R.id.ivBackground);
+        Picasso.with(this).load(GoogleUri).into(ivBackground);
 
         // listen to add button click
         fabUpload.setOnClickListener(new View.OnClickListener() {

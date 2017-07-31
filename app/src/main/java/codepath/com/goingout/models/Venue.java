@@ -14,6 +14,8 @@ public class Venue {
     public String photoRef;
     public int rating;
     public String price;
+    public String finalURL;
+    public int pay;
 
     public Venue(){
     }
@@ -21,13 +23,26 @@ public class Venue {
     public Venue(JSONObject object) throws JSONException {
         location = object.getString("formatted_address");
 
+        StringBuilder sb = new StringBuilder("https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=");
+
         //photoRef = object.getJSONObject("photos").getString("photo_reference");
         if (object.has("price_level")) {
             price = object.getString("price_level");
+            pay = Integer.parseInt(price);
         }
+
+
+        if (object.has("photos")) {
+            photoRef = object.getJSONArray("photos").getJSONObject(0).getString("photo_reference");
+            sb.append(photoRef);
+            sb.append("&key=AIzaSyCcMAEFNJ-698q24koBl2fU_eVzxmSVpQY");
+            finalURL = sb.toString();
+        }
+
         if (object.has("rating")) {
             rating = object.getInt("rating");
         }
+
 
     }
 
@@ -62,5 +77,26 @@ public class Venue {
 
     public void setPrice(String price) {
         this.price = price;
+    }
+
+    public String getFinalURL() {
+        return finalURL;
+    }
+
+    public void setFinalURL(String finalURL) {
+        this.finalURL = finalURL;
+    }
+
+    public String getPay(int num) {
+        if (num == 0) {
+            return "";
+        }
+        else {
+            return "$" + getPay(num - 1);
+        }
+    }
+
+    public void setPay(int pay) {
+        this.pay = pay;
     }
 }
