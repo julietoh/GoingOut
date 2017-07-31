@@ -31,7 +31,6 @@
                 android:resource="@xml/fileprovider" />
         </provider>
 
-
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
