@@ -50,11 +50,15 @@ public class GoogleClient {
     public void getInfo(final Event event, final FeedAdapter adapter) {
         // create the url
         String url = API_TEXT_SEARCH_BASE_URL;
+        String photoUrl = API_PHOTO_SEARCH_BASE_URL;
+        //RequestParams photoparams = new RequestParams();
+        //photoparams.put("photoreference", event.venue.getPhotoRef());
+        //photoparams.put(APP_KEY_PARAM, "AIzaSyCvETKKM_AixmtWCUtdb3jM6v-KGOTahGA");
         // set the request parameters
         RequestParams params = new RequestParams();
         params.put(TEXT_SEARCH_PARAM, event.getPlace() + " " + event.getCity());
 
-        params.put(APP_KEY_PARAM, "AIzaSyCvETKKM_AixmtWCUtdb3jM6v-KGOTahGA");
+        params.put(APP_KEY_PARAM, "AIzaSyCZkYpPiWoufjD9kTCt7golzT2fkS3duz0");
 
         // execute a GET request expecting a JSON object response
         client.get(url, params, new JsonHttpResponseHandler() {
@@ -69,6 +73,7 @@ public class GoogleClient {
                     // iterate through result set and create Movie objects
 //                    if (results.length() > 0) {
                     Venue venue = new Venue(results.getJSONObject(0));
+
 
                     Log.e(TAG, venue.toString());
 
@@ -92,6 +97,8 @@ public class GoogleClient {
 //        } else {
 //            return null;
 //        }
+
+
 
     }
 

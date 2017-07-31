@@ -306,8 +306,7 @@ public class EventListActivity extends AppCompatActivity{
 
         RequestParams params = new RequestParams();
         params.put(APP_KEY_PARAM, "8KFwLj3XshfZCdLP"); // API key, always required
-        params.put("page_size", 11);
-
+        params.put("page_size", 5);
         params.put("category", getFilterList(list));
         params.put("sort_order", "popularity");
         params.put("date","This Week");

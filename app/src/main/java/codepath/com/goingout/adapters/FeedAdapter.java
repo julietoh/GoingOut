@@ -3,6 +3,7 @@ package codepath.com.goingout.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
@@ -10,7 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -65,7 +69,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.VH> {
         @Override
         public void onBindViewHolder(final VH holder, int position) {
             final Event event = events.get(position);
-            //Drawable image = LoadImageFromWebOperations("https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=CnRtAAAATLZNl354RwP_9UKbQ_5Psy40texXePv4oAlgP4qNEkdIrkyse7rPXYGd9D_Uj1rVsQdWT4oRz4QrYAJNpFX7rzqqMlZw2h2E2y5IKMUZ7ouD_SlcHxYq1yL4KbKUv3qtWgTK0A6QbGh87GB3sscrHRIQiG2RrmU_jF4tENr9wGS_YxoUSSDrYjWmrNfeEHSGSc3FyhNLlBU&key=AIzaSyCZkYpPiWoufjD9kTCt7golzT2fkS3duz0");
+//            Drawable image = LoadImageFromWebOperations("https://lh4.googleusercontent.com/-1wzlVdxiW14/USSFZnhNqxI/AAAAAAAABGw/YpdANqaoGh4/s1600-w400/Google%2BSydney");
 
 
             if (event.venue != null) {
@@ -73,16 +77,31 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.VH> {
                 holder.tvTitle.setText(event.getTitle());
                 holder.tvTime.setText(event.getDate());
                 holder.tvLocation.setText(event.getPlace() + ", " + event.venue.getLocation());
-                holder.tvRating.setText(event.venue.getRating() + "");
-                holder.tvPrice.setText(event.venue.getPrice());
+                //holder.tvRating.setText(event.venue.getRating() + "");
+                //holder.tvPrice.setText(event.venue.getPrice());
+                holder.tvPrice.setText(event.venue.getPay(event.venue.pay));
+                String GoogleUriString = event.venue.getFinalURL();
+                if (GoogleUriString != null) {
+                    Uri GoogleUri = Uri.parse(GoogleUriString);
+                    int hey = event.venue.getRating();
+                    holder.ratingBar.setRating(hey);
+                    Picasso.with(context).load(GoogleUri).into(holder.ivBackground);
+                }else{
+                    holder.ivBackground.setBackgroundColor(holder.id);
+
+                }
                 //holder.ivBackground.setBackground(image);
-                holder.ivBackground.setBackgroundColor(holder.id);
+                //holder.ivBackground.setBackgroundColor(holder.id);
             } else {
                 holder.rootView.setTag(event);
                 holder.tvTitle.setText(event.getTitle());
                 holder.tvTime.setText(event.getDate());
                 holder.tvLocation.setText(event.getPlace() + ", " + event.getAddress());
-                holder.ivBackground.setBackgroundColor(holder.id);
+                String GoogleUriString = "https://maps.googleapis.com/maps/api/plac/photo?maxwidth=400&photoreference=CnRtAAAATLZNl354RwP_9UKbQ_5Psy40texXePv4oAlgP4qNEkdIrkyse7rPXYGd9D_Uj1rVsQdWT4oRz4QrYAJNpFX7rzqqMlZw2h2E2y5IKMUZ7ouD_SlcHxYq1yL4KbKUv3qtWgTK0A6QbGh87GB3sscrHRIQiG2RrmU_jF4tENr9wGS_YxoUSSDrYjWmrNfeEHSGSc3FyhNLlBU&key=AIzaSyB4MzgjTcqzPIL_6v468qvhyLCbPzeTKlo";
+                Uri GoogleUri = Uri.parse(GoogleUriString);
+                Picasso.with(context).load(GoogleUri).into(holder.ivBackground);
+                //holder.ivBackground.setBackground(image);
+                //holder.ivBackground.setBackgroundColor(holder.id);
             }
 //        holder.tvRating.getNumStars();
 //            holder.ivBackground.setBackgroundColor(Color.BLACK);
@@ -112,10 +131,11 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.VH> {
             final TextView tvTitle;
             final TextView tvTime;
             final TextView tvLocation;
-            final TextView tvRating;
+            //final TextView tvRating;
             final TextView tvPrice;
             final int id;
             final LinearLayout llFeed;
+            final RatingBar ratingBar;
             //final RatingBar tvRating;
 
             public VH(View itemView, Context c) {
@@ -137,8 +157,9 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.VH> {
 
                 tvTitle = (TextView)itemView.findViewById(R.id.tvTitle);
                 tvTime = (TextView)itemView.findViewById(R.id.tvTime);
+                ratingBar = (RatingBar)itemView.findViewById(R.id.rating);
                 tvLocation = (TextView)itemView.findViewById(R.id.tvLocation);
-                tvRating = (TextView)itemView.findViewById(R.id.tvRating);
+                //tvRating = (TextView)itemView.findViewById(R.id.tvRating);
                 tvPrice = (TextView)itemView.findViewById(R.id.tvPrice);
                 llFeed = (LinearLayout) itemView.findViewById(R.id.llFeed);
                 llFeed.bringToFront();
@@ -160,9 +181,8 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.VH> {
                     intent.putExtra("title", tvTitle.getText());
                     intent.putExtra("time", tvTime.getText());
                     intent.putExtra("location",tvLocation.getText());
-                    intent.putExtra("time", tvRating.getText());
                     intent.putExtra("price",tvPrice.getText());
-//                    intent.putExtra("image_url", ivBackground.getImage());
+                    intent.putExtra("image_url", event.venue.getFinalURL());
                     context.startActivity(intent);
                 }
             }
