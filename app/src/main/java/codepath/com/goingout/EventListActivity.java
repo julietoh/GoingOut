@@ -76,7 +76,6 @@ public class EventListActivity extends AppCompatActivity {
         //initialize the client
         client = new AsyncHttpClient();
 
-
         googleClient = new GoogleClient();
 
         // googleClient = new GoogleClient();

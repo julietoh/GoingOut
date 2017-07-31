@@ -17,8 +17,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -130,7 +134,7 @@ public class DetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // show dialog
-                AlertDialog.Builder builder = new AlertDialog.Builder(DetailsActivity.this);
+                final AlertDialog.Builder builder = new AlertDialog.Builder(DetailsActivity.this);
                 // builder.setTitle("Upload or Take a photo");
                 builder.setPositiveButton("New Post", new DialogInterface.OnClickListener() {
                     @Override
@@ -147,19 +151,41 @@ public class DetailsActivity extends AppCompatActivity {
                 builder.setNeutralButton("Choose from library",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                // upload and image
+                                // upload an image
                             }
                         });
                 builder.setNegativeButton("Take Photo or Video", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, getPhotoFileUri(photoFileName));
-                        // ensure there's a camera activity to handle the intent
-                        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                            // Start the image capture intent to take photo
-                            startActivityForResult(takePictureIntent, CAMERA_REQUEST_CODE);
-                        }
+                        // create second alert dialog to allow user to choose video or image
+                        dialog.dismiss();
+                        AlertDialog.Builder builder2 = new AlertDialog.Builder(DetailsActivity.this);
+                        builder2.setPositiveButton("Photo", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, getPhotoFileUri(photoFileName));
+                                        // ensure there's a camera activity to handle the intent
+                                        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                                            // Start the image capture intent to take photo
+                                            startActivityForResult(takePictureIntent, CAMERA_REQUEST_CODE);
+                                        }
+                                    }
+                                });
+                        builder2.setNegativeButton("Video", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+                        AlertDialog dialog2 = builder2.create();
+                        dialog2.show();
+                        // increase width of buttons and center
+                        final Button positiveButton = dialog2.getButton(AlertDialog.BUTTON_POSITIVE);
+                        LinearLayout.LayoutParams positiveButtonLL = (LinearLayout.LayoutParams) positiveButton.getLayoutParams();
+                        positiveButtonLL.width = ViewGroup.LayoutParams.MATCH_PARENT;;
+                        positiveButtonLL.gravity = Gravity.CENTER;
+                        positiveButton.setLayoutParams(positiveButtonLL);
                     }
                 });
                 AlertDialog dialog = builder.create();
@@ -197,7 +223,7 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
     // MOVE THIS ?
-        protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK) {
             takenPhotoUri = getPhotoFileUri(photoFileName);
@@ -215,31 +241,31 @@ public class DetailsActivity extends AppCompatActivity {
         }
 
 
-            // file path to store image TODO: Change this!
-            // generate a unique Id
-            UUID randomId = new UUID(3045, 7102);
-            randomId = randomId.randomUUID();
+        // file path to store image TODO: Change this!
+        // generate a unique Id
+        UUID randomId = new UUID(3045, 7102);
+        randomId = randomId.randomUUID();
 
-            // place in custom location inside storage to avoid overwrite
-            //StorageReference photosRef = storage.child("Photos/" + takenPhotoUri.getLastPathSegment());
-            StorageReference fileRef =
-                    storage.child("Photos/")
-                    .child(randomId.toString());
+        // place in custom location inside storage to avoid overwrite
+        //StorageReference photosRef = storage.child("Photos/" + takenPhotoUri.getLastPathSegment());
+        StorageReference fileRef =
+                storage.child("Photos/")
+                        .child(randomId.toString());
 
-            // upload process
-            fileRef.putFile(takenPhotoUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    mProgress.dismiss();
-                    Toast.makeText(DetailsActivity.this, "Uploaded", Toast.LENGTH_LONG).show();
+        // upload process
+        fileRef.putFile(takenPhotoUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                mProgress.dismiss();
+                Toast.makeText(DetailsActivity.this, "Uploaded", Toast.LENGTH_LONG).show();
 
-                    @SuppressWarnings("VisibleForTests") Uri downloadUri = taskSnapshot.getDownloadUrl();
-                    addImagePost(downloadUri);
-                    //Picasso.with(DetailsActivity.this).load(downloadUri).fit().centerCrop().into(ivPicture);
-                }
-            });
+                @SuppressWarnings("VisibleForTests") Uri downloadUri = taskSnapshot.getDownloadUrl();
+                addImagePost(downloadUri);
+                //Picasso.with(DetailsActivity.this).load(downloadUri).fit().centerCrop().into(ivPicture);
+            }
+        });
 
-        }
+    }
 
     public void addImagePost(Uri uri) {
         // creates a unique string inside Posts and gets the key
@@ -272,8 +298,8 @@ public class DetailsActivity extends AppCompatActivity {
             time = hour + date.substring(13, 16) + "pm";
         } else if (hour == 0) {
             // am
-             hour = 12;
-             time = hour + date.substring(13, 16) + "am";
+            hour = 12;
+            time = hour + date.substring(13, 16) + "am";
         } else if (hour == 12) {
             // pm
             time = hour + date.substring(13, 16) + "pm";
