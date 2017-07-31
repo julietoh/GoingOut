@@ -37,30 +37,34 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.VH> {
         public void onItemSelected(View view, int position, boolean isPic);
     }
 
-        public FeedAdapter(ArrayList<Event> events, Context context) {
-            this.events = events;
-            this.context = context;
-            if (events == null) {
-                throw new IllegalArgumentException("feed must not be null");
-            }
-            this.events = events;
+    public FeedAdapter(ArrayList<Event> events, Context context) {
+        this.events = events;
+        this.context = context;
+        if (events == null) {
+            throw new IllegalArgumentException("feed must not be null");
         }
+        this.events = events;
+    }
 
-        // Inflate the view based on the viewType provided.
-        @Override
-        public VH onCreateViewHolder(ViewGroup parent, int viewFeeds) {
+    // Inflate the view based on the viewType provided.
+    @Override
+    public VH onCreateViewHolder(ViewGroup parent, int viewFeeds) {
 //            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_feed, parent, false);
 //            return new VH(itemView, context);
-            //get the context and create the inflator
-            context = parent.getContext();
-            LayoutInflater inflater = LayoutInflater.from(context);
-            //create the view using the item_movie layout
-            View eventView = inflater.inflate(R.layout.item_feed, parent, false);
-            //return a new ViewHolder
+        //get the context and create the inflator
+        context = parent.getContext();
+        LayoutInflater inflater = LayoutInflater.from(context);
+        //create the view using the item_movie layout
+        View eventView = inflater.inflate(R.layout.item_feed, parent, false);
+        //return a new ViewHolder
 
-            return new VH(eventView,context);
-        }
+        return new VH(eventView,context);
+    }
 
+    public void clear() {
+        events.clear();
+        notifyDataSetChanged();
+    }
         // Display data at the specified position
         @Override
         public void onBindViewHolder(final VH holder, int position) {
@@ -77,10 +81,15 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.VH> {
                 //holder.tvPrice.setText(event.venue.getPrice());
                 holder.tvPrice.setText(event.venue.getPay(event.venue.pay));
                 String GoogleUriString = event.venue.getFinalURL();
-                Uri GoogleUri = Uri.parse(GoogleUriString);
-                int hey = event.venue.getRating();
-                holder.ratingBar.setRating(hey);
-                Picasso.with(context).load(GoogleUri).into(holder.ivBackground);
+                if (GoogleUriString != null) {
+                    Uri GoogleUri = Uri.parse(GoogleUriString);
+                    int hey = event.venue.getRating();
+                    holder.ratingBar.setRating(hey);
+                    Picasso.with(context).load(GoogleUri).into(holder.ivBackground);
+                }else{
+                    holder.ivBackground.setBackgroundColor(holder.id);
+
+                }
                 //holder.ivBackground.setBackground(image);
                 //holder.ivBackground.setBackgroundColor(holder.id);
             } else {

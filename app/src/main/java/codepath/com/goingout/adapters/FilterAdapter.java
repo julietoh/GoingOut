@@ -59,9 +59,9 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.VH>
         holder.tBtnOverlay.setTextOn(type.getName());
         if(holder.tBtnOverlay.isChecked())
         {
-            holder.tBtnOverlay.setBackgroundResource(R.drawable.my_selecter);
+            holder.tBtnOverlay.setBackgroundResource(R.drawable.my_selector);
         } else {
-            holder.tBtnOverlay.setBackgroundResource(R.drawable.my_selecter);;
+            holder.tBtnOverlay.setBackgroundResource(R.drawable.my_selector);;
         }
         Glide.with(context).load(type.getThumbnailImage()).centerCrop().into(holder.ivBackground);
         holder.itemView.setSelected(selectedPos == position);
@@ -89,14 +89,6 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.VH>
             tBtnOverlay = (ToggleButton) itemView.findViewById(R.id.tBtnOverlay);
             tBtnOverlay.bringToFront();
 
-
-
-//            fix the multiple cell selector
-//            if (tBtnOverlay.isChecked())
-//            {
-//                tBtnOverlay.setBackground();
-//            }
-
             // on Click Method goes here TODO
             tBtnOverlay.setOnClickListener(new View.OnClickListener()
             {
@@ -106,15 +98,75 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.VH>
                     if (tBtnOverlay.isChecked())
                     {
                         type = tBtnOverlay.getText()+"";
+                        type = type.toLowerCase();
+                        switch (type) {
+                            case "activism":
+                                type = "politics_activism";
+                                break;
+                            case "education":
+                                type = "learning_education";
+                                break;
+                            case "film":
+                                type = "movies_film";
+                                break;
+                            case "family":
+                                type = "family_fun_kids";
+                                break;
+                            case "nightlife":
+                                type = "singles_social";
+                                break;
+                            case "theater":
+                                type = "performing_arts";
+                                break;
+                            case "recreation":
+                                type = "outdoors_recreation";
+                                break;
+                            case "religion":
+                                type = "religion_spirituality";
+                                break;
+                            case "tech":
+                                type = "technology";
+                                break;
+                        }
                         Toast.makeText(context, tBtnOverlay.getText()+" has been selected.",Toast.LENGTH_SHORT).show();
-                        tBtnOverlay.setBackgroundResource(R.drawable.my_selecter);
+                        tBtnOverlay.setBackgroundResource(R.drawable.my_selector);
                         filter.add(type);
                     }
                     else
                     {
                         type = tBtnOverlay.getText()+"";
+                        type = type.toLowerCase();
+                        switch (type) {
+                            case "activism":
+                                type = "politics_activism";
+                                break;
+                            case "education":
+                                type = "learning_education";
+                                break;
+                            case "film":
+                                type = "movies_film";
+                                break;
+                            case "family":
+                                type = "family_fun_kids";
+                                break;
+                            case "nightlife":
+                                type = "singles_social";
+                                break;
+                            case "theater":
+                                type = "performing_arts";
+                                break;
+                            case "recreation":
+                                type = "outdoors_recreation";
+                                break;
+                            case "religion":
+                                type = "religion_spirituality";
+                                break;
+                            case "tech":
+                                type = "technology";
+                                break;
+                        }
                         Toast.makeText(context, tBtnOverlay.getText()+" has been unselected.",Toast.LENGTH_SHORT).show();
-                        tBtnOverlay.setBackgroundResource(R.drawable.my_selecter);
+                        tBtnOverlay.setBackgroundResource(R.drawable.my_selector);
                         filter.remove(type);
                     }
 
