@@ -70,7 +70,7 @@ public class DetailsActivity extends AppCompatActivity {
     FloatingActionButton fabUpload;
     Toolbar detailsToolbar;
     ImageView ivBackground;
-    
+
     private static final int VIDEO_REQUEST_CODE = 20;
     private static final int CAMERA_REQUEST_CODE = 1;
 
