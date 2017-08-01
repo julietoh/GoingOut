@@ -106,6 +106,7 @@ public class EventListActivity extends AppCompatActivity{
         rvFeeds.setAdapter(adapter);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitleTextColor(getResources().getColor(R.color.babyWhite));
         ibAddEvent = (ImageButton) findViewById(R.id.ibAddEvent);
 //        toolbar.setTitle(filter.get(0)+" filter applied!");
         setSupportActionBar(toolbar);
