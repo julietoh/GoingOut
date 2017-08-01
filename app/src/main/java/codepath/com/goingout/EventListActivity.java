@@ -177,6 +177,9 @@ public class EventListActivity extends AppCompatActivity{
 
                 }else if (groupPosition == 1){
                     dateFilter = (String) adapterEx.getChild(groupPosition, childPosition);
+                    Toast.makeText(getApplicationContext(),
+                            "Events shown are from "+((String) adapterEx.getChild(groupPosition, childPosition)).toLowerCase(),
+                            Toast.LENGTH_SHORT).show();
                 }else if (groupPosition == 2){
 //                    priceFilter = (int) adapterEx.getChild(groupPosition, childPosition);
                     //TODO PRICE AND RATING FILTER!! Pos 2&3
@@ -191,6 +194,9 @@ public class EventListActivity extends AppCompatActivity{
                             Toast.LENGTH_SHORT).show();
                 }else if (groupPosition == 4){
                     locationFilter = (String) adapterEx.getChild(groupPosition, childPosition);
+                    Toast.makeText(getApplicationContext(),
+                            "Events in " + adapterEx.getChild(groupPosition, childPosition)+ " will be displayed",
+                            Toast.LENGTH_SHORT).show();
                 }
                 //Nothing here ever fires
                 return true;
