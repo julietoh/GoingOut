@@ -57,7 +57,7 @@ public class GoogleClient {
         // set the request parameters
         RequestParams params = new RequestParams();
         params.put(TEXT_SEARCH_PARAM, event.getPlace() + " " + event.getCity());
-
+        
 
         params.put(APP_KEY_PARAM, "AIzaSyBd_l_Bg9XSkwRQ8PCi9tPsN6JyqSl2oS8");
 
