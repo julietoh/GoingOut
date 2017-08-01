@@ -353,7 +353,7 @@ public class DetailsActivity extends AppCompatActivity {
         rvPosts.getLayoutManager().scrollToPosition(0);
 
         databasePosts.child(id).setValue(post);
-        Toast.makeText(this, "added to database", Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "added to database", Toast.LENGTH_LONG).show();
 
     }
     public String getTimeStamp() {
