@@ -8,6 +8,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
@@ -105,7 +107,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         mProgress = new ProgressDialog(this);
 
-        String title = getIntent().getStringExtra("title");
+        final String title = getIntent().getStringExtra("title");
         String time = getIntent().getStringExtra("time");
         String location = getIntent().getStringExtra("location");
         String price = getIntent().getStringExtra("price");
@@ -133,7 +135,6 @@ public class DetailsActivity extends AppCompatActivity {
         tvDetailTitle.setText(title);
         tvTime.setText(time);
         tvLocation.setText(location);
-        detailsToolbar.setTitle("Event: "+title);
 
         String GoogleUriString = image_url;
         Uri GoogleUri = Uri.parse(GoogleUriString);
@@ -141,6 +142,27 @@ public class DetailsActivity extends AppCompatActivity {
         ivBackground = (ImageView) findViewById(R.id.ivBackground);
         Picasso.with(this).load(GoogleUri).into(ivBackground);
         rvPosts.getLayoutManager().scrollToPosition(0);
+
+        final CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsingToolbarLayout);
+        AppBarLayout app_bar_layout = (AppBarLayout) findViewById(R.id.app_bar_layout);
+        app_bar_layout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            boolean isShow = false;
+            int scrollRange = -1;
+
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if (scrollRange == -1) {
+                    scrollRange = appBarLayout.getTotalScrollRange();
+                }
+                if (scrollRange + verticalOffset == 0) {
+                    detailsToolbar.setTitle(title);
+                    isShow = true;
+                } else if(isShow) {
+                    detailsToolbar.setTitle(" ");
+                    isShow = false;
+                }
+            }
+        });
 
         // listen to add button click
         fabUpload.setOnClickListener(new View.OnClickListener() {
