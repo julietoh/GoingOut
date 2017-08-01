@@ -17,6 +17,7 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import codepath.com.goingout.R;
@@ -78,6 +79,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
             // load from post
             // load image using glide
+            progressBar.setVisibility(View.VISIBLE);
             Glide.with(context)
                     .load(post.getImage())
                     //.placeholder(placeholderId)
@@ -85,7 +87,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                     .listener(new RequestListener<String, GlideDrawable>() {
                         @Override
                         public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                            progressBar.setVisibility(View.GONE);
+                            if(e instanceof UnknownHostException)
+                                progressBar.setVisibility(View.VISIBLE);
                             return false;
                         }
 
@@ -100,6 +103,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         } else if (post.getVideo() != null) {
             holder.ivPicture.setVisibility(View.GONE);
             holder.vvVideo.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.GONE);
+
+
 
             // load video into video view
             //videoView.start();
@@ -110,6 +116,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             // both image and video are null, so just plain text post
             holder.ivPicture.setVisibility(View.GONE);
             holder.vvVideo.setVisibility(View.GONE);
+            progressBar.setVisibility(View.GONE);
+
             Toast.makeText(context, "hi", Toast.LENGTH_LONG);
         }
     }
