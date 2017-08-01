@@ -1,15 +1,12 @@
 package codepath.com.goingout.adapters;
 
 import android.content.Context;
-import android.graphics.Point;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -27,24 +24,21 @@ import codepath.com.goingout.models.Post;
 
 
 
-public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
+public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     // list of posts
     ArrayList<Post> posts;
     //context for rendering
     Context context;
 
-
     // initialized with list
-    public PostAdapter(ArrayList<Post> posts)
-    {
+    public PostAdapter(ArrayList<Post> posts) {
         this.posts = posts;
     }
 
     //creates and inflates a new view
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
-    {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         //get the context and create the inflator
         context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
@@ -54,17 +48,22 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
         return new ViewHolder(postView);
     }
 
+
+
     //binds an inflated view to a new item
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position)
-    {
+    public void onBindViewHolder(ViewHolder holder, int position) {
         final Post post = posts.get(position);
         holder.tvUserName.setText(post.getUsername());
         holder.tvTimeStamp.setText(post.getTimeStamp());
         holder.tvBody.setText(post.getBody());
         ImageView imageView = holder.ivPicture;
         VideoView videoView = holder.vvVideo;
-        //holder.vvVideo.getLayoutParams().height = getScreenWidth(this.context) * 9 /16;
+        // add media controller to each video view
+        MediaController mediaController = new MediaController(context);
+        mediaController.setAnchorView(holder.vvVideo);
+        videoView.setMediaController(mediaController);
+        
         // display post with image, hide video view
         if (post.getImage() != null) {
             holder.ivPicture.setVisibility(View.VISIBLE);
@@ -83,10 +82,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
             holder.vvVideo.setVisibility(View.VISIBLE);
 
             // load video into video view
+            //videoView.start();
 
             videoView.setVideoPath(post.getVideo());
-            videoView.start();
-            Log.e("hi", "hi");
 
         } else {
             // both image and video are null, so just plain text post
@@ -94,43 +92,28 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
             holder.vvVideo.setVisibility(View.GONE);
             Toast.makeText(context, "hi", Toast.LENGTH_LONG);
         }
-
-
     }
 
-
-    public static int getScreenWidth(Context c) {
-        int screenWidth = 0; // this is part of the class not the method
-        if (screenWidth == 0) {
-            WindowManager wm = (WindowManager) c.getSystemService(Context.WINDOW_SERVICE);
-            Display display = wm.getDefaultDisplay();
-            Point size = new Point();
-            display.getSize(size);
-            screenWidth = size.x;
-        }
-
-        return screenWidth;
-    }
 
     // returns the total number of items in the list
     @Override
-    public int getItemCount()
-    {
+    public int getItemCount() {
         return posts.size();
     }
 
     // create the viewholder as a static inner class
     public class ViewHolder extends RecyclerView.ViewHolder
-    {
+            //implements View.OnClickListener
+            {
         // track view objects
         TextView tvUserName;
         TextView tvTimeStamp;
         TextView tvBody;
         ImageView ivPicture;
         VideoView vvVideo;
+        //ImageButton ibPlay;
 
-        public ViewHolder(View itemView)
-        {
+        public ViewHolder(View itemView) {
             super(itemView);
             // lookup view objects by id
             tvUserName = (TextView) itemView.findViewById(R.id.tvUserName);
@@ -138,8 +121,24 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
             tvBody = (TextView) itemView.findViewById(R.id.tvBody);
             ivPicture = (ImageView) itemView.findViewById(R.id.ivPicture);
             vvVideo = (VideoView) itemView.findViewById(R.id.vvVideo);
+            //ibPlay = (ImageButton) itemView.findViewById(R.id.ibPlay);
+            //itemView.setOnClickListener(this);
 
         }
-    }
 
+//        @Override
+//        public void onClick(View v) {
+//            // gets item position
+//            int position = getAdapterPosition();
+//            // make sure the position is valid, i.e. actually exists in the view
+//            if (position != RecyclerView.NO_POSITION) {
+//                // get the movie at the position, this won't work if the class is static
+//                Post post = posts.get(position);
+//                vvVideo.setVideoPath(post.getVideo());
+//                vvVideo.start();
+//
+//            }
+//        }
+
+    }
 }

@@ -64,15 +64,15 @@
             card_view:srcCompat="@color/black"
             android:visibility="gone"/>
 
-
         <VideoView
             android:id="@+id/vvVideo"
-            android:layout_width="300sp"
+            android:layout_width="match_parent"
             android:layout_height="400sp"
             android:layout_alignBottom="@+id/ivPicture"
+            android:layout_marginBottom="20sp"
             android:layout_below="@+id/ivPicture"
+            android:layout_centerInParent="true"
             android:visibility="gone" />
-
 
 
     </RelativeLayout>
