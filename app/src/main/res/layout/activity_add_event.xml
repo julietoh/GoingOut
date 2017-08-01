@@ -44,7 +44,9 @@
         android:layout_below="@+id/llHeader"
         android:layout_marginBottom="5dp"
         android:layout_marginTop="5dp"
+        android:textColorHint="@android:color/white"
         android:hint="What is the title of your party?"
+        android:textColor="@android:color/white"
         android:textSize="14sp" />
 
     <EditText
@@ -54,7 +56,9 @@
         android:layout_below="@+id/etTitle"
         android:layout_marginBottom="5dp"
         android:layout_marginTop="5dp"
+        android:textColorHint="@android:color/white"
         android:hint="When is your event (MM/DD/YY)?"
+        android:textColor="@android:color/white"
         android:textSize="14sp" />
 
     <EditText
@@ -64,7 +68,9 @@
         android:layout_below="@+id/etDate"
         android:layout_marginBottom="5dp"
         android:layout_marginTop="5dp"
+        android:textColorHint="@android:color/white"
         android:hint="When time (X:XX xm)?"
+        android:textColor="@android:color/white"
         android:textSize="14sp" />
 
     <EditText
@@ -74,7 +80,9 @@
         android:layout_below="@+id/etTime"
         android:layout_marginBottom="5dp"
         android:layout_marginTop="5dp"
+        android:textColorHint="@android:color/white"
         android:hint="Where (City,State)?"
+        android:textColor="@android:color/white"
         android:textSize="14sp" />
 
     <Button

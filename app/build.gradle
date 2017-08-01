@@ -39,12 +39,17 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    dexOptions {
+        jumboMode = true
+    }
 }
 repositories {
     jcenter()
     maven { url "https://www.jitpack.io" }
     mavenCentral()
 }
+
 
 def dbflow_version = "4.0.5"
 
@@ -90,4 +95,3 @@ dependencies {
 }
 
 apply plugin: 'com.google.gms.google-services'
-

@@ -55,20 +55,25 @@
 
         <ImageView
             android:id="@+id/ivPicture"
-            android:layout_width="400dp"
-            android:layout_height="350dp"
+            android:layout_width="wrap_content"
+            android:layout_height="400sp"
             android:layout_below="@+id/tvBody"
             android:layout_centerHorizontal="true"
             android:maxHeight="180dp"
             android:maxWidth="320dp"
-            card_view:srcCompat="@color/black" />
+            card_view:srcCompat="@color/black"
+            android:visibility="gone"/>
 
         <VideoView
             android:id="@+id/vvVideo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="400sp"
             android:layout_alignBottom="@+id/ivPicture"
-            android:layout_below="@+id/ivPicture" />
+            android:layout_marginBottom="20sp"
+            android:layout_below="@+id/ivPicture"
+            android:layout_centerInParent="true"
+            android:visibility="gone" />
+
 
     </RelativeLayout>
 

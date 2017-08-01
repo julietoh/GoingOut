@@ -16,6 +16,10 @@ import com.facebook.ProfileTracker;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
+import org.parceler.Parcels;
+
+import codepath.com.goingout.models.User;
+
 public class LoginActivity extends AppCompatActivity {
 
     // manages callbacks into the FacebookSdk
@@ -23,6 +27,8 @@ public class LoginActivity extends AppCompatActivity {
     private AccessTokenTracker accessTokenTracker;
     private ProfileTracker profileTracker;
     Profile profile;
+
+    String firstName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,10 +103,14 @@ public class LoginActivity extends AppCompatActivity {
 
     private void nextActivity(Profile profile){
         if(profile != null){
+            User currentUser = new User();
+            currentUser.setFirstName(profile.getFirstName());
+            currentUser.setLastName(profile.getLastName());
             Intent main = new Intent(LoginActivity.this, MainActivity.class);
             main.putExtra("name", profile.getFirstName());
             main.putExtra("surname", profile.getLastName());
             main.putExtra("imageUrl", profile.getProfilePictureUri(200,200).toString());
+            main.putExtra("current_user", Parcels.wrap(currentUser));
             startActivity(main);
         }
     }

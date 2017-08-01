@@ -16,14 +16,18 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import org.parceler.Parcels;
+
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Random;
 
 import codepath.com.goingout.DetailsActivity;
+import codepath.com.goingout.EventListActivity;
 import codepath.com.goingout.R;
 import codepath.com.goingout.models.Event;
+import codepath.com.goingout.models.User;
 
 /**
  * Created by rafelix on 7/17/17.
@@ -32,6 +36,7 @@ import codepath.com.goingout.models.Event;
 public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.VH> {
         Context context; //private Activity context;
         ArrayList<Event> events; //private List<Feeds> events;
+    User currentUser= EventListActivity.currentUser;
 
     public interface FeedAdapterListener{
         public void onItemSelected(View view, int position, boolean isPic);
@@ -183,10 +188,14 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.VH> {
                     intent.putExtra("location",tvLocation.getText());
                     if (tvPrice.getText() != null) {
                     intent.putExtra("price",tvPrice.getText());
+
                     }
                     if (event.venue.getFinalURL() != null) {
                         intent.putExtra("image_url", event.venue.getFinalURL());
                     }
+
+                    intent.putExtra("current_user", Parcels.wrap(currentUser));
+
                     context.startActivity(intent);
                 }
             }

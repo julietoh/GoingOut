@@ -35,6 +35,7 @@ import java.util.List;
 
 import codepath.com.goingout.adapters.FeedAdapter;
 import codepath.com.goingout.models.Event;
+import codepath.com.goingout.models.User;
 import cz.msebera.android.httpclient.Header;
 
 public class EventListActivity extends AppCompatActivity{
@@ -44,6 +45,12 @@ public class EventListActivity extends AppCompatActivity{
     private FeedAdapter adapter;
     ArrayList<String> filter;
     ArrayList<String> newFilter;
+
+    public ArrayList<String> categoryFilter;
+    public String locationFilter = "San Francisco";
+    public int priceFilter;
+    public int ratingFilter;
+    private String dateFilter = "This Week";
 
 
     // the base URL for the API
@@ -66,11 +73,13 @@ public class EventListActivity extends AppCompatActivity{
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     ActionBarDrawerToggle drawerToggle;
-    ExpandableListAdapter mMenuAdapter;
+    ExpandableListAdapter adapterEx;
     ExpandableListView expandableList;
     List<String> listDataHeader;
     HashMap<String, List<String>> listDataChild;
     ImageButton ibAddEvent;
+    public static User currentUser;
+
 
 
 
@@ -84,6 +93,8 @@ public class EventListActivity extends AppCompatActivity{
         setContentView(R.layout.activity_feed);
 
         filter = getIntent().getStringArrayListExtra("preferences");
+        currentUser = Parcels.unwrap(getIntent().getParcelableExtra("current_user"));
+
 
         //initialize the client
         client = new AsyncHttpClient();
@@ -112,7 +123,6 @@ public class EventListActivity extends AppCompatActivity{
         setSupportActionBar(toolbar);
 
         navigationView = (NavigationView) findViewById(R.id.nvView);
-        setupDrawerContent(navigationView);
 
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -126,8 +136,8 @@ public class EventListActivity extends AppCompatActivity{
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
                 adapter.clear();
-                getEvents(newFilter);
-
+                getEvents(categoryFilter, dateFilter, locationFilter);
+                categoryFilter.clear();
 
             }
 
@@ -145,12 +155,59 @@ public class EventListActivity extends AppCompatActivity{
         rvFeeds.bringToFront();
         toolbar.setNavigationIcon(R.drawable.filter);
 
-
-
         expandableList= (ExpandableListView) findViewById(R.id.navigationmenu);
         prepareListData();
-        mMenuAdapter = new codepath.com.goingout.adapters.ExpandableListAdapter(this, listDataHeader,   listDataChild, expandableList);
-        expandableList.setAdapter(mMenuAdapter);
+        adapterEx = new codepath.com.goingout.adapters.ExpandableListAdapter(this, listDataHeader,   listDataChild, expandableList);
+        expandableList.setAdapter(adapterEx);
+
+        categoryFilter = new ArrayList<>();
+
+        expandableList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                String item = (String) adapterEx.getChild(groupPosition, childPosition);
+                if (groupPosition == 0){
+//                    if (v.isSelected()){
+//                        v.setBackgroundResource(R.drawable.filter_selector);
+//                    } else{
+//                        v.setBackgroundResource(R.drawable.filter_selector);
+//                    }
+                    if (!categoryFilter.contains(item)){
+                        categoryFilter.add(translate(item));
+                        Toast.makeText(getApplicationContext(), item+" added.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        categoryFilter.remove(translate(item));
+                        Toast.makeText(getApplicationContext(), item+" removed.", Toast.LENGTH_SHORT).show();
+                    }
+
+                }else if (groupPosition == 1){
+                    dateFilter = (String) adapterEx.getChild(groupPosition, childPosition);
+                    Toast.makeText(getApplicationContext(),
+                            "Events shown are from "+((String) adapterEx.getChild(groupPosition, childPosition)).toLowerCase(),
+                            Toast.LENGTH_SHORT).show();
+                }else if (groupPosition == 2){
+//                    priceFilter = (int) adapterEx.getChild(groupPosition, childPosition);
+                    //TODO PRICE AND RATING FILTER!! Pos 2&3
+                    Toast.makeText(getApplicationContext(),
+                            (String) adapterEx.getChild(groupPosition, childPosition),
+                            Toast.LENGTH_SHORT).show();
+                }else if (groupPosition == 3){
+//                    if (childPosition==0)
+//                    ratingFilter = (int) adapterEx.getChild(groupPosition, childPosition);
+                    Toast.makeText(getApplicationContext(),
+                            (String) adapterEx.getChild(groupPosition, childPosition),
+                            Toast.LENGTH_SHORT).show();
+                }else if (groupPosition == 4){
+                    locationFilter = (String) adapterEx.getChild(groupPosition, childPosition);
+                    Toast.makeText(getApplicationContext(),
+                            "Events in " + adapterEx.getChild(groupPosition, childPosition)+ " will be displayed",
+                            Toast.LENGTH_SHORT).show();
+                }
+                //Nothing here ever fires
+                return true;
+            }
+        });
 
 
         ibAddEvent.setOnClickListener(new View.OnClickListener() {
@@ -162,7 +219,7 @@ public class EventListActivity extends AppCompatActivity{
             }
         });
 
-        getEvents(filter);
+        getEvents(filter, dateFilter, locationFilter);
 
         Toast.makeText(this, "There are "+filter.size()+" filters you chose", Toast.LENGTH_LONG).show();
 
@@ -180,8 +237,6 @@ public class EventListActivity extends AppCompatActivity{
         listDataHeader.add("Price");
         listDataHeader.add("Rating");
         listDataHeader.add("Location");
-        listDataHeader.add("Price");
-
 
         // Adding child data
         List<String> categories= new ArrayList<String>();
@@ -194,9 +249,9 @@ public class EventListActivity extends AppCompatActivity{
 
         List<String> date= new ArrayList<String>();
         date.add("Today");
+        date.add("Last Week");
         date.add("This Week");
         date.add("Next Week");
-        date.add("Choose Date");
 
         List<String> price= new ArrayList<String>();
         price.add("$");
@@ -212,27 +267,24 @@ public class EventListActivity extends AppCompatActivity{
         ratings.add("5 Star");
 
         List<String> location= new ArrayList<String>();
-        location.add("Here");
-        location.add("Elsewhere");
+        location.add("San Francisco");
+        location.add("New York");
+        location.add("Boston");
+        location.add("Seattle");
+
+
 
         listDataChild.put(listDataHeader.get(0), categories);// Header, Child data
         listDataChild.put(listDataHeader.get(1), date);
         listDataChild.put(listDataHeader.get(2), price);
         listDataChild.put(listDataHeader.get(3), ratings);
         listDataChild.put(listDataHeader.get(4), location);
-        listDataChild.put(listDataHeader.get(5), price);
 
         images= new int[]{R.drawable.filter,
                 R.drawable.ic_calendar,
                 R.drawable.ic_price,
                 R.drawable.ic_ratings,
-                R.drawable.ic_location,
-                R.drawable.ic_price};
-
-
-
-
-
+                R.drawable.ic_location};
 
     }
 
@@ -244,21 +296,20 @@ public class EventListActivity extends AppCompatActivity{
         startActivity(intent);
     }
 
-    private void setupDrawerContent(NavigationView navigationView) {
-        navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        menuItem.setChecked(true);
-                        selectDrawerItem(menuItem);
-                        return true;
-                    }
-                });
-    }
 
-    public void selectDrawerItem(MenuItem menuItem) {
+//    private void setupDrawerContent(NavigationView navigationView) {
+//        navigationView.setNavigationItemSelectedListener(
+//                new NavigationView.OnNavigationItemSelectedListener() {
+//                    @Override
+//                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+//                        menuItem.setChecked(true);
+//                        selectDrawerItem(menuItem);
+//                        return true;
+//                    }
+//                });
+//    }
 
-        String item = menuItem.getTitle()+"";
+    public String translate(String item) {
         item = item.toLowerCase();
         switch (item) {
             case "activism":
@@ -289,16 +340,14 @@ public class EventListActivity extends AppCompatActivity{
                 item = "technology";
                 break;
         }
-        Toast.makeText(this, item, Toast.LENGTH_SHORT).show();
-        newFilter.add(item);
-//        drawerLayout.closeDrawers();
+        return item;
     }
 
 
 
 
     //     get the list of nearby events according to preferences
-    private void getEvents(ArrayList list) {
+    private void getEvents(ArrayList categoryList, String date, String location) {
         // create the url
         String url = API_BASE_URL;
         // set the request parameters
@@ -308,10 +357,10 @@ public class EventListActivity extends AppCompatActivity{
         RequestParams params = new RequestParams();
         params.put(APP_KEY_PARAM, "8KFwLj3XshfZCdLP"); // API key, always required
         params.put("page_size", 5);
-        params.put("category", getFilterList(list));
+        params.put("category", getFilterList(categoryList));
         params.put("sort_order", "popularity");
-        params.put("date","This Week");
-        params.put(LOCATION_PARAM, "San Francisco");
+        params.put("date",date);
+        params.put(LOCATION_PARAM, location);
         // execute a GET request expecting a JSON object response
         client.get(url, params, new JsonHttpResponseHandler() {
             @Override
