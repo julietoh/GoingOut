@@ -10,23 +10,31 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import org.parceler.Parcels;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import codepath.com.goingout.adapters.FilterAdapter;
 import codepath.com.goingout.models.Preference;
+import codepath.com.goingout.models.User;
 
 public class PreferenceActivity extends AppCompatActivity {
     private RecyclerView rvFilters;
     private FilterAdapter adapter;
     private List<Preference> preferences;
     public FloatingActionButton floatingActionButton;
+    User currentUser;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preference);
+
+        currentUser = Parcels.unwrap(getIntent().getParcelableExtra("current_user"));
+
 
         floatingActionButton = (FloatingActionButton) findViewById(R.id.floatingActionButton);
 
@@ -75,6 +83,7 @@ public class PreferenceActivity extends AppCompatActivity {
         ArrayList<String> filter = adapter.getAdapter();
         Intent intent = new Intent(PreferenceActivity.this, EventListActivity.class);
         intent.putStringArrayListExtra("preferences", filter);
+        intent.putExtra("current_user", Parcels.wrap(currentUser));
         startActivity(intent);
     }
 }

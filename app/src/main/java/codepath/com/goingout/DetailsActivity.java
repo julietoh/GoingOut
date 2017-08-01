@@ -39,6 +39,8 @@ import com.google.firebase.storage.UploadTask;
 import com.loopj.android.http.AsyncHttpClient;
 import com.squareup.picasso.Picasso;
 
+import org.parceler.Parcels;
+
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -49,6 +51,7 @@ import java.util.UUID;
 
 import codepath.com.goingout.adapters.PostAdapter;
 import codepath.com.goingout.models.Post;
+import codepath.com.goingout.models.User;
 
 public class DetailsActivity extends AppCompatActivity {
 
@@ -82,6 +85,7 @@ public class DetailsActivity extends AppCompatActivity {
     private StorageReference storage;
     private ProgressDialog mProgress;
     DatabaseReference databasePosts;
+    User currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +110,8 @@ public class DetailsActivity extends AppCompatActivity {
         String location = getIntent().getStringExtra("location");
         String price = getIntent().getStringExtra("price");
         String image_url = getIntent().getStringExtra("image_url");
+        currentUser = Parcels.unwrap(getIntent().getParcelableExtra("current_user"));
+
 
         //initialize the client
         client = new AsyncHttpClient();
@@ -310,14 +316,14 @@ public class DetailsActivity extends AppCompatActivity {
         Post post;
         if (requestCode == TEXT_REQUEST_CODE) {
             // creates a new post with only text
-            post = new Post(id, "Juliet Oh", getTimeStamp(), body, -1 * new Date().getTime());
+            post = new Post(id, currentUser.getFirstName()+" "+currentUser.getLastName(), getTimeStamp(), body, -1 * new Date().getTime());
         }
         else if (requestCode == CAMERA_REQUEST_CODE) {
             // creates a new post with image
-            post = new Post(id, "Juliet Oh", getTimeStamp(), null, uri.toString(), 1, -1 * new Date().getTime());
+            post = new Post(id, currentUser.getFirstName()+" "+currentUser.getLastName(), getTimeStamp(), null, uri.toString(), 1, -1 * new Date().getTime());
         } else {
             // Create a new post with video
-            post = new Post(id, "Juliet Oh", getTimeStamp(), null, uri.toString(), "arbitrary", -1 * new Date().getTime());
+            post = new Post(id, currentUser.getFirstName()+" "+currentUser.getLastName(), getTimeStamp(), null, uri.toString(), "arbitrary", -1 * new Date().getTime());
         }
         // add new post to view
         posts.add(0, post);
@@ -325,7 +331,7 @@ public class DetailsActivity extends AppCompatActivity {
         rvPosts.getLayoutManager().scrollToPosition(0);
 
         databasePosts.child(id).setValue(post);
-        Toast.makeText(this, "added to database", Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "added to database", Toast.LENGTH_LONG).show();
 
     }
     public String getTimeStamp() {
