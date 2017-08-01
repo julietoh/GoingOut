@@ -22,7 +22,6 @@ import codepath.com.goingout.R;
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
     private Context mContext;
     private List<String> mListDataHeader; // header titles
-    private ToggleButton submenu;
     // child data in format of header title, child title
     private HashMap<String, List<String>> mListDataChild;
     ExpandableListView expandList;
@@ -53,7 +52,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public int getChildrenCount(int groupPosition) {
         int childCount=0;
-        if(groupPosition!=2)
+        if(groupPosition<6)
         {
             childCount=this.mListDataChild.get(this.mListDataHeader.get(groupPosition))
                     .size();
@@ -122,6 +121,12 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         txtListChild.setText(childText);
         txtListChild.setTextOn(childText);
         txtListChild.setTextOff(childText);
+
+        if (!txtListChild.isChecked()){
+            txtListChild.setBackgroundResource(R.drawable.filter_selector);
+        } else{
+            txtListChild.setBackgroundResource(R.drawable.filter_selector);
+        }
 
         return convertView;
     }
