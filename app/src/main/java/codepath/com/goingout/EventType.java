@@ -37,7 +37,6 @@ public enum EventType {
     {
         return thumbnailImage;
     }
-
     @Override
     public String toString()
     {
