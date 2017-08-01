@@ -81,7 +81,8 @@
         <activity android:name=".ReviewActivity" />
 
         <activity android:name=".AddEventActivity"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="adjustResize"
+            android:theme="@style/PreferenceActivity">
         </activity>
 
         <activity android:name=".ComposeActivity"></activity>
