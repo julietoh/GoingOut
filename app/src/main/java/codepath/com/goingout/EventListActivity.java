@@ -35,6 +35,7 @@ import java.util.List;
 
 import codepath.com.goingout.adapters.FeedAdapter;
 import codepath.com.goingout.models.Event;
+import codepath.com.goingout.models.User;
 import cz.msebera.android.httpclient.Header;
 
 public class EventListActivity extends AppCompatActivity{
@@ -77,6 +78,8 @@ public class EventListActivity extends AppCompatActivity{
     List<String> listDataHeader;
     HashMap<String, List<String>> listDataChild;
     ImageButton ibAddEvent;
+    public static User currentUser;
+
 
 
 
@@ -90,6 +93,8 @@ public class EventListActivity extends AppCompatActivity{
         setContentView(R.layout.activity_feed);
 
         filter = getIntent().getStringArrayListExtra("preferences");
+        currentUser = Parcels.unwrap(getIntent().getParcelableExtra("current_user"));
+
 
         //initialize the client
         client = new AsyncHttpClient();

@@ -1,12 +1,15 @@
 package codepath.com.goingout;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
@@ -38,6 +41,8 @@ import com.google.firebase.storage.UploadTask;
 import com.loopj.android.http.AsyncHttpClient;
 import com.squareup.picasso.Picasso;
 
+import org.parceler.Parcels;
+
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -48,13 +53,17 @@ import java.util.UUID;
 
 import codepath.com.goingout.adapters.PostAdapter;
 import codepath.com.goingout.models.Post;
+import codepath.com.goingout.models.User;
 
 public class DetailsActivity extends AppCompatActivity {
 
     public final String APP_TAG = "GoingOutApp";
     public String photoFileName = "photo.jpg";
     public String videoFileName = "video.mp4";
+
+
     //instance fields
+    Context context;
     AsyncHttpClient client;
     // the list of posts
     ArrayList<Post> posts;
@@ -73,13 +82,16 @@ public class DetailsActivity extends AppCompatActivity {
 
     private static final int VIDEO_REQUEST_CODE = 20;
     private static final int CAMERA_REQUEST_CODE = 1;
+    private static final int TEXT_REQUEST_CODE = 3;
 
     private StorageReference storage;
     private ProgressDialog mProgress;
     DatabaseReference databasePosts;
+    User currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
 
@@ -95,11 +107,13 @@ public class DetailsActivity extends AppCompatActivity {
 
         mProgress = new ProgressDialog(this);
 
-        String title = getIntent().getStringExtra("title");
+        final String title = getIntent().getStringExtra("title");
         String time = getIntent().getStringExtra("time");
         String location = getIntent().getStringExtra("location");
         String price = getIntent().getStringExtra("price");
         String image_url = getIntent().getStringExtra("image_url");
+        currentUser = Parcels.unwrap(getIntent().getParcelableExtra("current_user"));
+
 
         //initialize the client
         client = new AsyncHttpClient();
@@ -121,13 +135,34 @@ public class DetailsActivity extends AppCompatActivity {
         tvDetailTitle.setText(title);
         tvTime.setText(time);
         tvLocation.setText(location);
-        detailsToolbar.setTitle("Event: "+title);
 
         String GoogleUriString = image_url;
         Uri GoogleUri = Uri.parse(GoogleUriString);
 
         ivBackground = (ImageView) findViewById(R.id.ivBackground);
         Picasso.with(this).load(GoogleUri).into(ivBackground);
+        rvPosts.getLayoutManager().scrollToPosition(0);
+
+        final CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsingToolbarLayout);
+        AppBarLayout app_bar_layout = (AppBarLayout) findViewById(R.id.app_bar_layout);
+        app_bar_layout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            boolean isShow = false;
+            int scrollRange = -1;
+
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if (scrollRange == -1) {
+                    scrollRange = appBarLayout.getTotalScrollRange();
+                }
+                if (scrollRange + verticalOffset == 0) {
+                    detailsToolbar.setTitle(title);
+                    isShow = true;
+                } else if(isShow) {
+                    detailsToolbar.setTitle(" ");
+                    isShow = false;
+                }
+            }
+        });
 
         // listen to add button click
         fabUpload.setOnClickListener(new View.OnClickListener() {
@@ -135,16 +170,16 @@ public class DetailsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // show dialog
                 final AlertDialog.Builder builder = new AlertDialog.Builder(DetailsActivity.this);
-                // builder.setTitle("Upload or Take a photo");
                 builder.setPositiveButton("New Post", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // upload post
                         Intent i = new Intent(DetailsActivity.this, ComposeActivity.class);
                         // plain text option
-                        i.putExtra("option", 1);
-                        //startActivityforResult(i, REQUEST_CODE);
-                        finish();
+                        i.putExtra("mode", 2); // pass arbitrary data to launched activity
+                        startActivityForResult(i, TEXT_REQUEST_CODE);
+
+
                     }
 
                 });
@@ -200,6 +235,8 @@ public class DetailsActivity extends AppCompatActivity {
         });
     }
 
+
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -209,6 +246,7 @@ public class DetailsActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 posts.clear();
+
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     Post post = postSnapshot.getValue(Post.class);
 
@@ -217,6 +255,7 @@ public class DetailsActivity extends AppCompatActivity {
 
                 PostAdapter adapter = new PostAdapter(posts);
                 rvPosts.setAdapter(adapter);
+
             }
 
             @Override
@@ -227,79 +266,94 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
     // MOVE THIS ?
+    @Override
     protected void onActivityResult(final int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Uri takenMediaUri = null;
-
-        if (requestCode == VIDEO_REQUEST_CODE && resultCode == RESULT_OK) {
-            //Uri takenVideoUri = data.getData();
-            //mVideoView.setVideoURI(videoUri);
-            // takenMediaUri = getPhotoFileUri(videoFileName, VIDEO_REQUEST_CODE);
-            takenMediaUri = data.getData();
-        }
-        else if (requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK) {
-            takenMediaUri = getPhotoFileUri(photoFileName, CAMERA_REQUEST_CODE);
-
-            // by this point the camera photo is on disk
-            //Bitmap takenImage = BitmapFactory.decodeFile(takenPhotoUri.getPath());
-
-            // ivPicture.setImageBitmap(takenImage);
-
-        } else { // Result was a failure
-            Toast.makeText(this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
-        }
-        mProgress.setMessage("Uploading Image ...");
-        mProgress.show();
 
 
-        // file path to store image TODO: Change this!
-        // generate a unique Id
-        UUID randomId = new UUID(3045, 7102);
-        randomId = randomId.randomUUID();
-        StorageReference fileRef;
-        if (requestCode == CAMERA_REQUEST_CODE) {
-            // place in custom location inside storage to avoid overwrite
-            //StorageReference photosRef = storage.child("Photos/" + takenPhotoUri.getLastPathSegment());
-            fileRef = storage.child("Photos/")
-                            .child(randomId.toString());
+        // plain text post
+        if (requestCode == TEXT_REQUEST_CODE && resultCode == RESULT_OK) {
+
+                // Extract the data returned from the child Activity.
+                String returnValue = data.getStringExtra("body");
+                addImagePost(null, requestCode, returnValue);
+
+            // post containing video or image
         } else {
-            fileRef = storage.child("Videos/")
-                        .child(randomId.toString());
-        }
+            Uri takenMediaUri = null;
 
-        // upload process
-        fileRef.putFile(takenMediaUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                mProgress.dismiss();
-                Toast.makeText(DetailsActivity.this, "Uploaded", Toast.LENGTH_LONG).show();
+            if (requestCode == VIDEO_REQUEST_CODE && resultCode == RESULT_OK) {
+                //Uri takenVideoUri = data.getData();
+                //mVideoView.setVideoURI(videoUri);
+                // takenMediaUri = getPhotoFileUri(videoFileName, VIDEO_REQUEST_CODE);
+                takenMediaUri = data.getData();
+            } else if (requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK) {
+                takenMediaUri = getPhotoFileUri(photoFileName, CAMERA_REQUEST_CODE);
 
-                @SuppressWarnings("VisibleForTests") Uri downloadUri = taskSnapshot.getDownloadUrl();
-                addImagePost(downloadUri, requestCode);
-                //Picasso.with(DetailsActivity.this).load(downloadUri).fit().centerCrop().into(ivPicture);
+                // by this point the camera photo is on disk
+                //Bitmap takenImage = BitmapFactory.decodeFile(takenPhotoUri.getPath());
+
+                // ivPicture.setImageBitmap(takenImage);
+
+            } else { // Result was a failure
+                Toast.makeText(this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
             }
-        });
+            mProgress.setMessage("Uploading ...");
+            mProgress.show();
 
+
+            // file path to store image
+            // generate a unique Id
+            UUID randomId = new UUID(3045, 7102);
+            randomId = randomId.randomUUID();
+            StorageReference fileRef;
+            if (requestCode == CAMERA_REQUEST_CODE) {
+                // place in custom location inside storage to avoid overwrite
+                //StorageReference photosRef = storage.child("Photos/" + takenPhotoUri.getLastPathSegment());
+                fileRef = storage.child("Photos/")
+                        .child(randomId.toString());
+            } else {
+                fileRef = storage.child("Videos/")
+                        .child(randomId.toString());
+            }
+
+            // upload process
+            fileRef.putFile(takenMediaUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    mProgress.dismiss();
+                    Toast.makeText(DetailsActivity.this, "Uploaded", Toast.LENGTH_LONG).show();
+
+                    @SuppressWarnings("VisibleForTests") Uri downloadUri = taskSnapshot.getDownloadUrl();
+                    addImagePost(downloadUri, requestCode, null);
+                }
+            });
+            rvPosts.getLayoutManager().scrollToPosition(0);
+        }
     }
 
-    public void addImagePost(Uri uri, final int requestCode) {
+    public void addImagePost(Uri uri, final int requestCode, String body) {
         // creates a unique string inside Posts and gets the key
         String id = databasePosts.push().getKey();
         Post post;
-        if (requestCode == CAMERA_REQUEST_CODE) {
+        if (requestCode == TEXT_REQUEST_CODE) {
+            // creates a new post with only text
+            post = new Post(id, currentUser.getFirstName()+" "+currentUser.getLastName(), getTimeStamp(), body, -1 * new Date().getTime());
+        }
+        else if (requestCode == CAMERA_REQUEST_CODE) {
             // creates a new post with image
-            post = new Post(id, "Juliet Oh", getTimeStamp(), null, uri.toString(), 1, -1 * new Date().getTime());
+            post = new Post(id, currentUser.getFirstName()+" "+currentUser.getLastName(), getTimeStamp(), null, uri.toString(), 1, -1 * new Date().getTime());
         } else {
             // Create a new post with video
-            post = new Post(id, "Juliet Oh", getTimeStamp(), null, uri.toString(), "arbitrary", -1 * new Date().getTime());
+            post = new Post(id, currentUser.getFirstName()+" "+currentUser.getLastName(), getTimeStamp(), null, uri.toString(), "arbitrary", -1 * new Date().getTime());
         }
         // add new post to view
         posts.add(0, post);
         postAdapter.notifyItemInserted(0);
-        rvPosts.scrollToPosition(0);
+        rvPosts.getLayoutManager().scrollToPosition(0);
 
         databasePosts.child(id).setValue(post);
-        Toast.makeText(this, "added to database", Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "added to database", Toast.LENGTH_LONG).show();
 
     }
     public String getTimeStamp() {
