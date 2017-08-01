@@ -35,8 +35,9 @@ public class Venue {
         if (object.has("photos")) {
             photoRef = object.getJSONArray("photos").getJSONObject(0).getString("photo_reference");
             sb.append(photoRef);
+
             sb.append("&key=AIzaSyAjSPLoe0qQjenAeBd0EWM5herMmDRcQB8");
-            finalURL = sb.toString();
+                    finalURL = sb.toString();
         }
 
         if (object.has("rating")) {

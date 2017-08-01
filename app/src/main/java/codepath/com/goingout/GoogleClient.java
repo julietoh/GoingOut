@@ -60,6 +60,7 @@ public class GoogleClient {
 
         params.put(APP_KEY_PARAM, "AIzaSyAjSPLoe0qQjenAeBd0EWM5herMmDRcQB8");
 
+
         // execute a GET request expecting a JSON object response
         client.get(url, params, new JsonHttpResponseHandler() {
             @Override
