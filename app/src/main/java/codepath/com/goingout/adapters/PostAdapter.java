@@ -7,12 +7,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.MediaController;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import codepath.com.goingout.R;
@@ -44,6 +49,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         LayoutInflater inflater = LayoutInflater.from(context);
         //create the view using the item_poat layout
         View postView = inflater.inflate(R.layout.item_post, parent, false);
+
         //return a new ViewHolder
         return new ViewHolder(postView);
     }
@@ -52,11 +58,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     //binds an inflated view to a new item
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         final Post post = posts.get(position);
+
         holder.tvUserName.setText(post.getUsername());
         holder.tvTimeStamp.setText(post.getTimeStamp());
         holder.tvBody.setText(post.getBody());
+        final ProgressBar progressBar = holder.progressBar;
         ImageView imageView = holder.ivPicture;
         VideoView videoView = holder.vvVideo;
         // add media controller to each video view
@@ -71,15 +79,33 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
             // load from post
             // load image using glide
+            progressBar.setVisibility(View.VISIBLE);
             Glide.with(context)
                     .load(post.getImage())
                     //.placeholder(placeholderId)
                     //.error(placeholderId)
+                    .listener(new RequestListener<String, GlideDrawable>() {
+                        @Override
+                        public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                            if(e instanceof UnknownHostException)
+                                progressBar.setVisibility(View.VISIBLE);
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                            progressBar.setVisibility(View.GONE);
+                            return false;
+                        }
+                    })
                     .centerCrop()
                     .into(imageView);
         } else if (post.getVideo() != null) {
             holder.ivPicture.setVisibility(View.GONE);
             holder.vvVideo.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.GONE);
+
+
 
             // load video into video view
             //videoView.start();
@@ -90,6 +116,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             // both image and video are null, so just plain text post
             holder.ivPicture.setVisibility(View.GONE);
             holder.vvVideo.setVisibility(View.GONE);
+            progressBar.setVisibility(View.GONE);
+
             Toast.makeText(context, "hi", Toast.LENGTH_LONG);
         }
     }
@@ -111,6 +139,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         TextView tvBody;
         ImageView ivPicture;
         VideoView vvVideo;
+        ProgressBar progressBar;
         //ImageButton ibPlay;
 
         public ViewHolder(View itemView) {
@@ -121,6 +150,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             tvBody = (TextView) itemView.findViewById(R.id.tvBody);
             ivPicture = (ImageView) itemView.findViewById(R.id.ivPicture);
             vvVideo = (VideoView) itemView.findViewById(R.id.vvVideo);
+            progressBar = (ProgressBar) itemView.findViewById(R.id.progress);
             //ibPlay = (ImageButton) itemView.findViewById(R.id.ibPlay);
             //itemView.setOnClickListener(this);
 

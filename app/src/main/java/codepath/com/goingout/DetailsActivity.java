@@ -340,6 +340,7 @@ public class DetailsActivity extends AppCompatActivity {
                     addImagePost(downloadUri, requestCode, null);
                 }
             });
+            postAdapter.notifyItemInserted(0);
             rvPosts.getLayoutManager().scrollToPosition(0);
         }
     }
