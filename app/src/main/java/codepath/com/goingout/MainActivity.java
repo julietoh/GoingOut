@@ -14,11 +14,16 @@ import android.widget.TextView;
 
 import com.facebook.login.LoginManager;
 
+import org.parceler.Parcels;
+
 import java.io.InputStream;
+
+import codepath.com.goingout.models.User;
 
 public class MainActivity extends AppCompatActivity {
     String name;
     String surname;
+    User currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,9 +34,10 @@ public class MainActivity extends AppCompatActivity {
         name = inBundle.get("name").toString();
         surname = inBundle.get("surname").toString();
         String imageUrl = inBundle.get("imageUrl").toString();
+        currentUser = Parcels.unwrap(getIntent().getParcelableExtra("current_user"));
 
         TextView nameView = (TextView)findViewById(R.id.nameAndSurname);
-        nameView.setText("" + name + " " + surname);
+        nameView.setText("" + currentUser.getFirstName() + " " + currentUser.getLastName());
 
         // logout function
         Button logout = (Button)findViewById(R.id.logout);
@@ -51,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void toPreferences(View view) {
         Intent intent = new Intent(this, PreferenceActivity.class);
+        intent.putExtra("current_user", Parcels.wrap(currentUser));
         this.startActivity(intent);
     }
 
