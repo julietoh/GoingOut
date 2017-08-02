@@ -19,7 +19,6 @@ import codepath.com.goingout.models.Venue;
 import cz.msebera.android.httpclient.Header;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
-import static com.github.scribejava.core.model.Verb.HEAD;
 
 /**
  * Created by rafelix on 7/24/17.
