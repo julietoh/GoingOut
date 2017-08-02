@@ -245,6 +245,9 @@ public class DetailsActivity extends AppCompatActivity {
                 dialog.show();
             }
         });
+
+        postAdapter.notifyItemRangeChanged(0, postAdapter.getItemCount());
+        rvPosts.getLayoutManager().scrollToPosition(0);
     }
 
 
@@ -340,8 +343,7 @@ public class DetailsActivity extends AppCompatActivity {
                     addImagePost(downloadUri, requestCode, null);
                 }
             });
-            postAdapter.notifyItemInserted(0);
-            rvPosts.getLayoutManager().scrollToPosition(0);
+
         }
     }
 
@@ -362,7 +364,8 @@ public class DetailsActivity extends AppCompatActivity {
         }
         // add new post to view
         posts.add(0, post);
-        postAdapter.notifyItemInserted(0);
+//        postAdapter.notifyItemInserted(0);
+        postAdapter.notifyItemRangeChanged(0, postAdapter.getItemCount());
         rvPosts.getLayoutManager().scrollToPosition(0);
 
         databasePosts.child(id).setValue(post);
