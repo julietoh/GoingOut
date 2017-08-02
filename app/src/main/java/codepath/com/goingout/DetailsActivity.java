@@ -8,6 +8,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
@@ -106,7 +108,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         mProgress = new ProgressDialog(this);
 
-        String title = getIntent().getStringExtra("title");
+        final String title = getIntent().getStringExtra("title");
         String time = getIntent().getStringExtra("time");
         String location = getIntent().getStringExtra("location");
         String price = getIntent().getStringExtra("price");
@@ -134,13 +136,48 @@ public class DetailsActivity extends AppCompatActivity {
         tvDetailTitle.setText(title);
         tvTime.setText(time);
         tvLocation.setText(location);
+
         detailsToolbar.setTitle("Event: "+title);
-
-        String GoogleUriString = image_url;
-        Uri GoogleUri = Uri.parse(GoogleUriString);
-
         ivBackground = (ImageView) findViewById(R.id.ivBackground);
-        Picasso.with(this).load(GoogleUri).into(ivBackground);
+
+
+
+
+        if (image_url != null) {
+            String GoogleUriString = image_url;
+            Uri GoogleUri = Uri.parse(GoogleUriString);
+
+
+            Picasso.with(this).load(GoogleUri).into(ivBackground);
+        } else {
+            String GoogleUriString = "https://maps.googleapis.com/maps/api/plac/photo?maxwidth=400&photoreference=CnRtAAAATLZNl354RwP_9UKbQ_5Psy40texXePv4oAlgP4qNEkdIrkyse7rPXYGd9D_Uj1rVsQdWT4oRz4QrYAJNpFX7rzqqMlZw2h2E2y5IKMUZ7ouD_SlcHxYq1yL4KbKUv3qtWgTK0A6QbGh87GB3sscrHRIQiG2RrmU_jF4tENr9wGS_YxoUSSDrYjWmrNfeEHSGSc3FyhNLlBU&key=AIzaSyB4MzgjTcqzPIL_6v468qvhyLCbPzeTKlo";
+            Uri GoogleUri = Uri.parse(GoogleUriString);
+            Picasso.with(this).load(GoogleUri).into(ivBackground);
+        }
+
+        rvPosts.getLayoutManager().scrollToPosition(0);
+
+
+        final CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsingToolbarLayout);
+        AppBarLayout app_bar_layout = (AppBarLayout) findViewById(R.id.app_bar_layout);
+        app_bar_layout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            boolean isShow = false;
+            int scrollRange = -1;
+
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if (scrollRange == -1) {
+                    scrollRange = appBarLayout.getTotalScrollRange();
+                }
+                if (scrollRange + verticalOffset == 0) {
+                    detailsToolbar.setTitle(title);
+                    isShow = true;
+                } else if(isShow) {
+                    detailsToolbar.setTitle(" ");
+                    isShow = false;
+                }
+            }
+        });
 
 
         // listen to add button click
@@ -301,6 +338,10 @@ public class DetailsActivity extends AppCompatActivity {
                 }
 
             });
+
+
+            rvPosts.getLayoutManager().scrollToPosition(0);
+
         }
 
 

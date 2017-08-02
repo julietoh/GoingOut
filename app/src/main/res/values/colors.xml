@@ -8,4 +8,9 @@
     <drawable name="selected">#6466ff33</drawable>
     <drawable name="filterNotSelected">#ffffff</drawable>
     <drawable name="filterSelected">#6466ff33</drawable>
+    <color name="royalBlue">#235789</color>
+    <color name="bloodOrange">#C1292E</color>
+    <color name="babyWhite">#FDFFFC</color>
+    <color name="safetyYellow">#F1D302</color>
+
 </resources>
