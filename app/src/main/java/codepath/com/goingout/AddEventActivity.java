@@ -44,7 +44,6 @@ public class AddEventActivity extends AppCompatActivity {
         etTime = (EditText) findViewById(R.id.etTime);
         etLocation = (EditText) findViewById(R.id.etLocation);
 
-
     }
 
     public void makeEvent(View view) {
