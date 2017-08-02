@@ -19,7 +19,6 @@ import codepath.com.goingout.models.Venue;
 import cz.msebera.android.httpclient.Header;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
-import static com.github.scribejava.core.model.Verb.HEAD;
 
 /**
  * Created by rafelix on 7/24/17.
@@ -60,7 +59,7 @@ public class GoogleClient {
         params.put(TEXT_SEARCH_PARAM, event.getPlace() + " " + event.getCity());
 
 
-        params.put(APP_KEY_PARAM, "AIzaSyDM923jEfZfmVRMsRe5nCdLi1pBK1iQ0Kk");
+        params.put(APP_KEY_PARAM, "AIzaSyCZkYpPiWoufjD9kTCt7golzT2fkS3duz0");
 
 
 
