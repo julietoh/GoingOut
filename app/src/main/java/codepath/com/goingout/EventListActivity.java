@@ -48,9 +48,14 @@ public class EventListActivity extends AppCompatActivity{
 
     public ArrayList<String> categoryFilter;
     public String locationFilter = "San Francisco";
-    public int priceFilter;
+    boolean locationChanged = false;
+    public int priceFilter = 4;
+    boolean priceChanged = false;
     public int ratingFilter;
+    boolean ratingChanged = false;
     private String dateFilter = "This Week";
+    boolean dateChanged = false;
+
 
 
     // the base URL for the API
@@ -135,9 +140,17 @@ public class EventListActivity extends AppCompatActivity{
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
-                adapter.clear();
-                getEvents(categoryFilter, dateFilter, locationFilter);
-                categoryFilter.clear();
+
+                if (categoryFilter.size()>0 || priceChanged || locationChanged || dateChanged || ratingChanged){
+                    adapter.clear();
+                    getEvents(categoryFilter, dateFilter, locationFilter, priceFilter);
+                    categoryFilter.clear();
+                    priceChanged = false;
+                    locationChanged = false;
+                    dateChanged = false;
+                    ratingChanged = false;
+                }
+
 
             }
 
@@ -186,23 +199,27 @@ public class EventListActivity extends AppCompatActivity{
                     Toast.makeText(getApplicationContext(),
                             "Events shown are from "+((String) adapterEx.getChild(groupPosition, childPosition)).toLowerCase(),
                             Toast.LENGTH_SHORT).show();
+                    dateChanged = true;
                 }else if (groupPosition == 2){
-//                    priceFilter = (int) adapterEx.getChild(groupPosition, childPosition);
+                    priceFilter = (int) ((String) adapterEx.getChild(groupPosition, childPosition)).length();
                     //TODO PRICE AND RATING FILTER!! Pos 2&3
                     Toast.makeText(getApplicationContext(),
                             (String) adapterEx.getChild(groupPosition, childPosition),
                             Toast.LENGTH_SHORT).show();
+                    priceChanged = true;
                 }else if (groupPosition == 3){
 //                    if (childPosition==0)
-//                    ratingFilter = (int) adapterEx.getChild(groupPosition, childPosition);
+                    ratingFilter = Integer.parseInt(((String) adapterEx.getChild(groupPosition, childPosition)).substring(0,1));
                     Toast.makeText(getApplicationContext(),
                             (String) adapterEx.getChild(groupPosition, childPosition),
                             Toast.LENGTH_SHORT).show();
+                    ratingChanged = true;
                 }else if (groupPosition == 4){
                     locationFilter = (String) adapterEx.getChild(groupPosition, childPosition);
                     Toast.makeText(getApplicationContext(),
                             "Events in " + adapterEx.getChild(groupPosition, childPosition)+ " will be displayed",
                             Toast.LENGTH_SHORT).show();
+                    locationChanged = true;
                 }
                 //Nothing here ever fires
                 return true;
@@ -219,7 +236,7 @@ public class EventListActivity extends AppCompatActivity{
             }
         });
 
-        getEvents(filter, dateFilter, locationFilter);
+        getEvents(filter, dateFilter, locationFilter, priceFilter);
 
         Toast.makeText(this, "There are "+filter.size()+" filters you chose", Toast.LENGTH_LONG).show();
 
@@ -347,7 +364,7 @@ public class EventListActivity extends AppCompatActivity{
 
 
     //     get the list of nearby events according to preferences
-    private void getEvents(ArrayList categoryList, String date, String location) {
+    private void getEvents(ArrayList categoryList, String date, String location, final int price) {
         // create the url
         String url = API_BASE_URL;
         // set the request parameters
@@ -380,12 +397,12 @@ public class EventListActivity extends AppCompatActivity{
 
 
 
-//                        event.setVenue(googleClient.getInfo(event));
-
                         events.add(event);
-
-                        // notify adapter that a row was added
                         adapter.notifyItemInserted(events.size() - 1);
+
+
+//                        event.setVenue(googleClient.getInfo(event));
+                        // notify adapter that a row was added
                     }
                     Log.i(TAG, String.format("Loaded %s events", results.length()));
                 } catch (JSONException e) {

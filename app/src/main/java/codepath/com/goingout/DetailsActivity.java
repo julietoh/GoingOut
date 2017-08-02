@@ -63,6 +63,7 @@ public class DetailsActivity extends AppCompatActivity {
 
     public final String APP_TAG = "GoingOutApp";
     public String photoFileName = "photo.jpg";
+    public String textFileName = "text.txt";
     public String videoFileName = "video.mp4";
 
 
@@ -127,13 +128,13 @@ public class DetailsActivity extends AppCompatActivity {
         //initialize the adapter -- movies array list cannot be reinitialized after this point
         postAdapter = new PostAdapter(posts);
 
-        //getPosts();
-
 
         //resolve the recycler view and connect a layout manager and the adapter
         rvPosts = (RecyclerView) findViewById(R.id.rvPosts);
         rvPosts.setLayoutManager(new LinearLayoutManager(this));
         rvPosts.setAdapter(postAdapter);
+        //rvPosts.getLayoutManager().scrollToPosition(0);
+
 
         detailsToolbar = (Toolbar) findViewById(R.id.detailsToolbar);
 
@@ -149,6 +150,8 @@ public class DetailsActivity extends AppCompatActivity {
         stars.getDrawable(2).setColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_ATOP);
 
 
+
+
         if (image_url != null) {
             String GoogleUriString = image_url;
             Uri GoogleUri = Uri.parse(GoogleUriString);
@@ -162,6 +165,7 @@ public class DetailsActivity extends AppCompatActivity {
         }
 
         rvPosts.getLayoutManager().scrollToPosition(0);
+
 
         final CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsingToolbarLayout);
         AppBarLayout app_bar_layout = (AppBarLayout) findViewById(R.id.app_bar_layout);
@@ -199,6 +203,7 @@ public class DetailsActivity extends AppCompatActivity {
                         // plain text option
                         i.putExtra("mode", 2); // pass arbitrary data to launched activity
                         startActivityForResult(i, TEXT_REQUEST_CODE);
+
 
 
                     }
@@ -261,22 +266,19 @@ public class DetailsActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
         Query chronological = databasePosts.orderByChild("order");
         chronological.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                posts.clear();
-
+                //posts.clear();
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     Post post = postSnapshot.getValue(Post.class);
-
                     posts.add(post);
                 }
+                //PostAdapter adapter = new PostAdapter(posts);
+                //rvPosts.setAdapter(adapter);
 
-                PostAdapter adapter = new PostAdapter(posts);
-                rvPosts.setAdapter(adapter);
-
+                postAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -288,56 +290,46 @@ public class DetailsActivity extends AppCompatActivity {
 
     // MOVE THIS ?
     @Override
-    protected void onActivityResult(final int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(final int requestCode, int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        postAdapter.clear();
+        StorageReference fileRef = null;
+        Uri takenMediaUri = null;
 
+        // file path to store image
+        // generate a unique Id
+        UUID randomId = new UUID(3045, 7102);
+        randomId = randomId.randomUUID();
 
         // plain text post
         if (requestCode == TEXT_REQUEST_CODE && resultCode == RESULT_OK) {
-
-                // Extract the data returned from the child Activity.
-                String returnValue = data.getStringExtra("body");
-                addImagePost(null, requestCode, returnValue);
-
-            // post containing video or image
+            // Extract the data returned from the child Activity.
+            //addImagePost(null, requestCode, returnValue);
+            // store into firebase
+            //takenMediaUri = getPhotoFileUri(textFileName, TEXT_REQUEST_CODE);
+            //fileRef = storage.child("Text/")
+                    //.child(randomId.toString());
+            addImagePost(null, requestCode, data.getStringExtra("body"));
+            // video post
         } else {
-            Uri takenMediaUri = null;
-
             if (requestCode == VIDEO_REQUEST_CODE && resultCode == RESULT_OK) {
-                //Uri takenVideoUri = data.getData();
-                //mVideoView.setVideoURI(videoUri);
-                // takenMediaUri = getPhotoFileUri(videoFileName, VIDEO_REQUEST_CODE);
                 takenMediaUri = data.getData();
-            } else if (requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK) {
-                takenMediaUri = getPhotoFileUri(photoFileName, CAMERA_REQUEST_CODE);
-
-                // by this point the camera photo is on disk
-                //Bitmap takenImage = BitmapFactory.decodeFile(takenPhotoUri.getPath());
-
-                // ivPicture.setImageBitmap(takenImage);
-
-            } else { // Result was a failure
-                Toast.makeText(this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
-            }
-            mProgress.setMessage("Uploading ...");
-            mProgress.show();
-
-
-            // file path to store image
-            // generate a unique Id
-            UUID randomId = new UUID(3045, 7102);
-            randomId = randomId.randomUUID();
-            StorageReference fileRef;
-            if (requestCode == CAMERA_REQUEST_CODE) {
-                // place in custom location inside storage to avoid overwrite
-                //StorageReference photosRef = storage.child("Photos/" + takenPhotoUri.getLastPathSegment());
-                fileRef = storage.child("Photos/")
-                        .child(randomId.toString());
-            } else {
                 fileRef = storage.child("Videos/")
                         .child(randomId.toString());
+                // image post
+            } else if (requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK) {
+                takenMediaUri = getPhotoFileUri(photoFileName, CAMERA_REQUEST_CODE);
+                //takenMediaUri = data.getData();
+
+                fileRef = storage.child("Photos/")
+                        .child(randomId.toString());
+                // Result was a failure
+            } else {
+                Toast.makeText(this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
             }
 
+            mProgress.setMessage("Uploading ...");
+            mProgress.show();
             // upload process
             fileRef.putFile(takenMediaUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -346,13 +338,24 @@ public class DetailsActivity extends AppCompatActivity {
                     Toast.makeText(DetailsActivity.this, "Uploaded", Toast.LENGTH_LONG).show();
 
                     @SuppressWarnings("VisibleForTests") Uri downloadUri = taskSnapshot.getDownloadUrl();
-                    addImagePost(downloadUri, requestCode, null);
+                    if (requestCode == TEXT_REQUEST_CODE) {
+                        String returnValue = data.getStringExtra("body");
+                        addImagePost(downloadUri, requestCode, returnValue);
+                    } else {
+                        addImagePost(downloadUri, requestCode, null);
+                    }
                 }
+
             });
-            postAdapter.notifyItemInserted(0);
+
+
             rvPosts.getLayoutManager().scrollToPosition(0);
+
         }
+
+
     }
+
 
     public void addImagePost(Uri uri, final int requestCode, String body) {
         // creates a unique string inside Posts and gets the key
@@ -369,12 +372,17 @@ public class DetailsActivity extends AppCompatActivity {
             // Create a new post with video
             post = new Post(id, currentUser.getFirstName()+" "+currentUser.getLastName(), getTimeStamp(), null, uri.toString(), "arbitrary", -1 * new Date().getTime());
         }
-        // add new post to view
+        databasePosts.child(id).setValue(post);
         posts.add(0, post);
         postAdapter.notifyItemInserted(0);
-        rvPosts.getLayoutManager().scrollToPosition(0);
+        rvPosts.scrollToPosition(0);
 
-        databasePosts.child(id).setValue(post);
+        // add new post to view
+
+
+//        rvPosts.getLayoutManager().scrollToPosition(0);
+        //rvPosts.getLayoutManager().scrollToPosition(0);
+
         //Toast.makeText(this, "added to database", Toast.LENGTH_LONG).show();
 
     }
@@ -418,10 +426,13 @@ public class DetailsActivity extends AppCompatActivity {
             if (requestCode == CAMERA_REQUEST_CODE) {
                 mediaStorageDir = new File(
                         getExternalFilesDir(Environment.DIRECTORY_PICTURES), APP_TAG);
-            } else {
+            } else if (requestCode == VIDEO_REQUEST_CODE){
                 // create video file
                 mediaStorageDir = new File(
                         getExternalFilesDir(Environment.DIRECTORY_MOVIES), APP_TAG);
+            } else {
+                mediaStorageDir = new File(
+                        getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), APP_TAG);
             }
             // Create the storage directory if it does not exist
             if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()){
@@ -433,7 +444,7 @@ public class DetailsActivity extends AppCompatActivity {
 
             // wrap File object into a content provider
             // required for API >= 24
-            // See https://guides.codepath.com/Sharing-Content-with-Intents#sharing-files-with-api-24-or-higher
+
             return FileProvider.getUriForFile(DetailsActivity.this, "com.codepath.fileprovider", file);
         }
         return null;

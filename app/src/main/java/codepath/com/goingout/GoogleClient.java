@@ -59,7 +59,9 @@ public class GoogleClient {
         params.put(TEXT_SEARCH_PARAM, event.getPlace() + " " + event.getCity());
 
 
+
         params.put(APP_KEY_PARAM, "AIzaSyCZkYpPiWoufjD9kTCt7golzT2fkS3duz0");
+
 
 
 

@@ -54,7 +54,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         return new ViewHolder(postView);
     }
 
-
+    public void clear() {
+        posts.clear();
+        notifyDataSetChanged();
+    }
 
     //binds an inflated view to a new item
     @Override

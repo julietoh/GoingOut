@@ -4,6 +4,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.parceler.Parcel;
 
+import static com.github.scribejava.core.model.Verb.HEAD;
+
 /**
  * Created by acamara on 7/20/17.
  */
@@ -37,6 +39,7 @@ public class Venue {
             sb.append(photoRef);
 
             sb.append("&key=AIzaSyCZkYpPiWoufjD9kTCt7golzT2fkS3duz0");
+
             finalURL = sb.toString();
 
         }
