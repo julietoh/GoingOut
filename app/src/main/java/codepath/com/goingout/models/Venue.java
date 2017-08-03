@@ -4,6 +4,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.parceler.Parcel;
 
+import static com.github.scribejava.core.model.Verb.HEAD;
+
 /**
  * Created by acamara on 7/20/17.
  */
@@ -35,8 +37,8 @@ public class Venue {
         if (object.has("photos")) {
             photoRef = object.getJSONArray("photos").getJSONObject(0).getString("photo_reference");
             sb.append(photoRef);
-
             sb.append("&key=AIzaSyBgg7DPYV_DnBXWStA44tuABLf2QpcXsDE");
+
             finalURL = sb.toString();
 
         }

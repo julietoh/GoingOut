@@ -2,7 +2,10 @@ package codepath.com.goingout.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
@@ -163,6 +166,8 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.VH> {
                 tvTitle = (TextView)itemView.findViewById(R.id.tvTitle);
                 tvTime = (TextView)itemView.findViewById(R.id.tvTime);
                 ratingBar = (RatingBar)itemView.findViewById(R.id.rating);
+                LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
+                stars.getDrawable(2).setColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_ATOP);
                 tvLocation = (TextView)itemView.findViewById(R.id.tvLocation);
                 //tvRating = (TextView)itemView.findViewById(R.id.tvRating);
                 tvPrice = (TextView)itemView.findViewById(R.id.tvPrice);
