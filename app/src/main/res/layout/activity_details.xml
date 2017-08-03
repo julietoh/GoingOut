@@ -20,6 +20,7 @@
             app:collapsedTitleTextAppearance="@style/CollapsingToolbarLayoutCollapsedTextStyle"
             app:contentScrim="@color/royalBlue"
             app:expandedTitleTextAppearance="@style/CollapsingToolbarLayoutExpandedTextStyle"
+
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <RelativeLayout
