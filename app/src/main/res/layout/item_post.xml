@@ -3,12 +3,9 @@
     android:id="@+id/cvRoot"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="13dp"
-    android:layout_marginRight="13dp"
     android:layout_marginTop="@dimen/cell_margin"
     android:clickable="true"
     android:foreground="?android:attr/selectableItemBackground"
-    card_view:cardCornerRadius="@dimen/card_corner_radius"
     card_view:cardElevation="@dimen/card_elevation">
 
     <RelativeLayout
@@ -22,24 +19,23 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="false"
             android:layout_centerVertical="false"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
             android:text="User's Name"
             android:textAlignment="center"
             android:textColor="@android:color/black"
-            android:textSize="@dimen/contact_text_size" />
+            android:textSize="@dimen/contact_text_size"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvTimeStamp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="false"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="5dp"
+            android:layout_below="@+id/tvUserName"
+            android:layout_marginLeft="10dp"
             android:text="Time"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/contact_text_size" />
+            android:textColor="@android:color/darker_gray"
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/tvBody"
@@ -48,10 +44,11 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/tvTimeStamp"
-            android:layout_margin="5dp"
+            android:layout_margin="10dp"
             android:text="Post"
             android:textColor="@android:color/black"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:visibility="gone" />
 
         <ProgressBar
             android:id="@+id/progress"
@@ -62,22 +59,22 @@
         <ImageView
             android:id="@+id/ivPicture"
             android:layout_width="wrap_content"
-            android:layout_height="400sp"
+            android:layout_height="400dp"
             android:layout_below="@+id/tvBody"
             android:layout_centerHorizontal="true"
             android:maxHeight="180dp"
             android:maxWidth="320dp"
-            card_view:srcCompat="@color/black"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            card_view:srcCompat="@color/black" />
 
         <VideoView
             android:id="@+id/vvVideo"
             android:layout_width="match_parent"
-            android:layout_height="400sp"
+            android:layout_height="git "
             android:layout_alignBottom="@+id/ivPicture"
-            android:layout_marginBottom="20sp"
             android:layout_below="@+id/ivPicture"
             android:layout_centerInParent="true"
+            android:layout_marginBottom="20sp"
             android:visibility="gone" />
 
 

@@ -28,4 +28,10 @@
         <item name="colorAccent">@android:color/white</item>
     </style>
 
+    <style name="CollapsingToolbarLayoutCollapsedTextStyle">
+        CollapsingToolbarLayoutCollapsedTextStyle
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
 </resources>

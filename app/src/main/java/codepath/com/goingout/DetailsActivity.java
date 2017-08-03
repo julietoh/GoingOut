@@ -137,10 +137,13 @@ public class DetailsActivity extends AppCompatActivity {
 
 
         detailsToolbar = (Toolbar) findViewById(R.id.detailsToolbar);
+        setSupportActionBar(detailsToolbar);
 
         tvDetailTitle.setText(title);
         tvTime.setText(time);
         tvLocation.setText(location);
+
+
 
         detailsToolbar.setTitle("Event: "+title);
         detailsToolbar.setTitleTextColor(getResources().getColor(R.color.white));
@@ -169,6 +172,7 @@ public class DetailsActivity extends AppCompatActivity {
 
 
         final CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsingToolbarLayout);
+        collapsingToolbarLayout.setTitle("Event: "+title);
         AppBarLayout app_bar_layout = (AppBarLayout) findViewById(R.id.app_bar_layout);
         app_bar_layout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             boolean isShow = false;

@@ -120,6 +120,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             holder.ivPicture.setVisibility(View.GONE);
             holder.vvVideo.setVisibility(View.GONE);
             progressBar.setVisibility(View.GONE);
+            holder.tvBody.setVisibility(View.VISIBLE);
 
             Toast.makeText(context, "hi", Toast.LENGTH_LONG);
         }
