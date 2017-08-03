@@ -4,6 +4,9 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -24,6 +27,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -80,6 +84,7 @@ public class DetailsActivity extends AppCompatActivity {
     FloatingActionButton fabUpload;
     Toolbar detailsToolbar;
     ImageView ivBackground;
+    RatingBar ratingBar;
 
     private static final int VIDEO_REQUEST_CODE = 20;
     private static final int CAMERA_REQUEST_CODE = 1;
@@ -138,7 +143,12 @@ public class DetailsActivity extends AppCompatActivity {
         tvLocation.setText(location);
 
         detailsToolbar.setTitle("Event: "+title);
+        detailsToolbar.setTitleTextColor(getResources().getColor(R.color.white));
         ivBackground = (ImageView) findViewById(R.id.ivBackground);
+
+        ratingBar = (RatingBar) findViewById(R.id.ratingBar);
+        LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
+        stars.getDrawable(2).setColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_ATOP);
 
 
 
@@ -250,6 +260,9 @@ public class DetailsActivity extends AppCompatActivity {
                 dialog.show();
             }
         });
+
+        postAdapter.notifyItemRangeChanged(0, postAdapter.getItemCount());
+        rvPosts.getLayoutManager().scrollToPosition(0);
     }
 
 
@@ -338,10 +351,6 @@ public class DetailsActivity extends AppCompatActivity {
                 }
 
             });
-
-
-            rvPosts.getLayoutManager().scrollToPosition(0);
-
         }
 
 
@@ -365,14 +374,9 @@ public class DetailsActivity extends AppCompatActivity {
         }
         databasePosts.child(id).setValue(post);
         posts.add(0, post);
-        postAdapter.notifyItemInserted(0);
-        rvPosts.scrollToPosition(0);
-
-        // add new post to view
-
-
-//        rvPosts.getLayoutManager().scrollToPosition(0);
-        //rvPosts.getLayoutManager().scrollToPosition(0);
+//        postAdapter.notifyItemInserted(0);
+        postAdapter.notifyItemRangeChanged(0, postAdapter.getItemCount());
+        rvPosts.getLayoutManager().scrollToPosition(0);
 
         //Toast.makeText(this, "added to database", Toast.LENGTH_LONG).show();
 

@@ -12,5 +12,6 @@
     <color name="bloodOrange">#C1292E</color>
     <color name="babyWhite">#FDFFFC</color>
     <color name="safetyYellow">#F1D302</color>
+    <color name="white">#FFFFFF</color>
 
 </resources>
