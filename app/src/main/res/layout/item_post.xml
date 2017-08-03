@@ -70,7 +70,7 @@
         <VideoView
             android:id="@+id/vvVideo"
             android:layout_width="match_parent"
-            android:layout_height="git "
+            android:layout_height="600dp"
             android:layout_alignBottom="@+id/ivPicture"
             android:layout_below="@+id/ivPicture"
             android:layout_centerInParent="true"
