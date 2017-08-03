@@ -2,6 +2,7 @@ package codepath.com.goingout.adapters;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -100,6 +101,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         TextView lblListHeader = (TextView) convertView
                 .findViewById(R.id.submenu);
         ImageView headerIcon=    (ImageView)convertView.findViewById(R.id.iconimage);
+        headerIcon.setColorFilter(ContextCompat.getColor(mContext, R.color.safetyYellow));
+
         lblListHeader.setTypeface(null, Typeface.BOLD);
         lblListHeader.setText(headerTitle);
         headerIcon.setImageResource(EventListActivity.images[groupPosition]);
@@ -121,12 +124,13 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         txtListChild.setText(childText);
         txtListChild.setTextOn(childText);
         txtListChild.setTextOff(childText);
+        txtListChild.setBackgroundResource(R.color.tealBlue);
 
-        if (!txtListChild.isChecked()){
-            txtListChild.setBackgroundResource(R.drawable.filter_selector);
-        } else{
-            txtListChild.setBackgroundResource(R.drawable.filter_selector);
-        }
+//        if (!txtListChild.isChecked()){
+//            txtListChild.setBackgroundResource(R.drawable.filter_selector);
+//        } else{
+//            txtListChild.setBackgroundResource(R.drawable.filter_selector);
+//        }
 
         return convertView;
     }

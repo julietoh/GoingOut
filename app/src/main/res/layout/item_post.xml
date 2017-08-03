@@ -3,8 +3,8 @@
     android:id="@+id/cvRoot"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/cell_margin"
     android:clickable="true"
+    android:layout_marginTop="8dp"
     android:foreground="?android:attr/selectableItemBackground"
     card_view:cardElevation="@dimen/card_elevation">
 
@@ -54,6 +54,7 @@
             android:id="@+id/progress"
             android:layout_width="match_parent"
             android:layout_height="100dp"
+            android:layout_marginTop="8dp"
             android:visibility="visible" />
 
         <ImageView

@@ -7,13 +7,13 @@
         android:id="@+id/filter_submenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/filter_selector"
+        android:background="@color/royalBlue"
         android:checked="false"
+        android:clickable="false"
+        android:focusable="false"
         android:padding="10dp"
         android:textAlignment="textStart"
         android:textAllCaps="false"
-        android:focusable="false"
-        android:clickable="false"
-        android:textColor="#000000"
+        android:textColor="@color/safetyYellow"
         android:textSize="18sp" />
 </LinearLayout>

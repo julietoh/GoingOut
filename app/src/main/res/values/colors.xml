@@ -12,6 +12,10 @@
     <color name="bloodOrange">#C1292E</color>
     <color name="babyWhite">#FDFFFC</color>
     <color name="safetyYellow">#F1D302</color>
+    <color name="mellowYellow">#F7E775</color>
     <color name="white">#FFFFFF</color>
+    <color name="paleChestnut">#FFDDA1</color>
+    <color name="paleTaupe">#BAA176</color>
+    <color name="tealBlue">#337CA0</color>
 
 </resources>
