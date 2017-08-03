@@ -49,20 +49,6 @@
                     android:maxHeight="160dp"
                     android:scaleType="fitCenter" />
 
-                <Button
-                    android:id="@+id/btnReviews"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentTop="true"
-                    android:clickable="true"
-                    android:onClick="toReviews"
-                    android:text="See Reviews"
-                    android:textColor="@android:color/black"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-
                 <RatingBar
                     android:id="@+id/ratingBar"
                     style="?android:attr/ratingBarStyleSmall"
