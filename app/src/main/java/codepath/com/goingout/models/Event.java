@@ -5,6 +5,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.parceler.Parcel;
 
+import java.util.Date;
+
 /**
  * Created by joh on 7/12/17.
  */
@@ -24,6 +26,7 @@ public class Event {
     private Post post;
     private String city;
     private String address;
+    private long order;
 
     private boolean isFromJSON;
 
@@ -47,7 +50,7 @@ public class Event {
 
         city = object.getString("city_name");
 
-
+        order =  -1 * new Date().getTime();
 
         isFromJSON = true;
 

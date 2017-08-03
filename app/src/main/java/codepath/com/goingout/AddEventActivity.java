@@ -8,9 +8,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
 import org.parceler.Parcels;
 
 import codepath.com.goingout.models.Event;
@@ -22,14 +19,13 @@ public class AddEventActivity extends AppCompatActivity {
     EditText etTime;
     EditText etLocation;
     Context context;
-    DatabaseReference databaseEvents;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_event);
 
-        databaseEvents = FirebaseDatabase.getInstance().getReference("events");
         this.context = this;
         backButton = (ImageButton) findViewById(R.id.backButton);
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -47,7 +43,11 @@ public class AddEventActivity extends AppCompatActivity {
     }
 
     public void makeEvent(View view) {
+
         Event event = new Event();
+
+
+
         event.setTitle(etTitle.getText().toString());
         event.setDate(etDate.getText().toString()+" "+etTime.getText().toString());
         event.setLocation(etLocation.getText().toString());

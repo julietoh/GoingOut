@@ -20,6 +20,12 @@ import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -83,6 +89,7 @@ public class EventListActivity extends AppCompatActivity{
     List<String> listDataHeader;
     HashMap<String, List<String>> listDataChild;
     ImageButton ibAddEvent;
+    DatabaseReference databaseEvents;
     public static User currentUser;
 
 
@@ -97,6 +104,7 @@ public class EventListActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed);
 
+        databaseEvents = FirebaseDatabase.getInstance().getReference("events");
         filter = getIntent().getStringArrayListExtra("preferences");
         currentUser = Parcels.unwrap(getIntent().getParcelableExtra("current_user"));
 
@@ -235,8 +243,8 @@ public class EventListActivity extends AppCompatActivity{
                 overridePendingTransition(R.anim.slide_in_up, R.anim.stay);
             }
         });
+        loadFromDatabase();
 
-        getEvents(filter, dateFilter, locationFilter, priceFilter);
 
         Toast.makeText(this, "There are "+filter.size()+" filters you chose", Toast.LENGTH_LONG).show();
 
@@ -408,6 +416,7 @@ public class EventListActivity extends AppCompatActivity{
                 } catch (JSONException e) {
                     logError("Failed to parse events", e, true);
                 }
+
             }
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
@@ -463,6 +472,29 @@ public class EventListActivity extends AppCompatActivity{
         }
     }
 
+    protected void loadFromDatabase() {
+        super.onStart();
+        Query chronological = databaseEvents.orderByChild("order");
+        chronological.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //events.clear();
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    Event event = postSnapshot.getValue(Event.class);
+                    events.add(event);
+                }
+                //PostAdapter adapter = new PostAdapter(posts);
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        getEvents(filter, dateFilter, locationFilter, priceFilter);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // REQUEST_CODE is defined above
@@ -470,6 +502,9 @@ public class EventListActivity extends AppCompatActivity{
 
             // Extract name value from result extras
             Event event = Parcels.unwrap(data.getParcelableExtra("event"));
+
+            String id = databaseEvents.push().getKey();
+            databaseEvents.child(id).setValue(event);
 
             events.add(0, event);
             adapter.notifyItemInserted(0);
