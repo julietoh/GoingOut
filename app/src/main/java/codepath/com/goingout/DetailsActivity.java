@@ -137,12 +137,16 @@ public class DetailsActivity extends AppCompatActivity {
 
 
         detailsToolbar = (Toolbar) findViewById(R.id.detailsToolbar);
+        setSupportActionBar(detailsToolbar);
 
         tvDetailTitle.setText(title);
         tvTime.setText(time);
         tvLocation.setText(location);
 
+
+
         detailsToolbar.setTitle("Event: "+title);
+        detailsToolbar.setTitleTextColor(getResources().getColor(R.color.white));
         ivBackground = (ImageView) findViewById(R.id.ivBackground);
 
         ratingBar = (RatingBar) findViewById(R.id.ratingBar);
@@ -168,6 +172,7 @@ public class DetailsActivity extends AppCompatActivity {
 
 
         final CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsingToolbarLayout);
+        collapsingToolbarLayout.setTitle("Event: "+title);
         AppBarLayout app_bar_layout = (AppBarLayout) findViewById(R.id.app_bar_layout);
         app_bar_layout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             boolean isShow = false;
@@ -259,6 +264,9 @@ public class DetailsActivity extends AppCompatActivity {
                 dialog.show();
             }
         });
+
+        postAdapter.notifyItemRangeChanged(0, postAdapter.getItemCount());
+        rvPosts.getLayoutManager().scrollToPosition(0);
     }
 
 
@@ -347,10 +355,6 @@ public class DetailsActivity extends AppCompatActivity {
                 }
 
             });
-
-
-            rvPosts.getLayoutManager().scrollToPosition(0);
-
         }
 
 
@@ -374,14 +378,9 @@ public class DetailsActivity extends AppCompatActivity {
         }
         databasePosts.child(id).setValue(post);
         posts.add(0, post);
-        postAdapter.notifyItemInserted(0);
-        rvPosts.scrollToPosition(0);
-
-        // add new post to view
-
-
-//        rvPosts.getLayoutManager().scrollToPosition(0);
-        //rvPosts.getLayoutManager().scrollToPosition(0);
+//        postAdapter.notifyItemInserted(0);
+        postAdapter.notifyItemRangeChanged(0, postAdapter.getItemCount());
+        rvPosts.getLayoutManager().scrollToPosition(0);
 
         //Toast.makeText(this, "added to database", Toast.LENGTH_LONG).show();
 

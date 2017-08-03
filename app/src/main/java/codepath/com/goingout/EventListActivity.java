@@ -127,6 +127,8 @@ public class EventListActivity extends AppCompatActivity{
 //        toolbar.setTitle(filter.get(0)+" filter applied!");
         setSupportActionBar(toolbar);
 
+
+
         navigationView = (NavigationView) findViewById(R.id.nvView);
 
 
