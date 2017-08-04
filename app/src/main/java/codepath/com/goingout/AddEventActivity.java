@@ -78,12 +78,13 @@ public class AddEventActivity extends AppCompatActivity {
 //            }
         }
     }
-        public void makeEvent(View view) {
-            Event event = new Event();
-            event.setTitle(etTitle.getText().toString());
-            event.setDate(etDate.getText().toString()+" "+etTime.getText().toString());
-            event.setLocation(etLocation.getText().toString());
-            event.setImage(uri.toString());
+
+    public void makeEvent(View view) {
+        Event event = new Event();
+        event.setTitle(etTitle.getText().toString());
+        event.setDate(etDate.getText().toString()+" "+etTime.getText().toString());
+        event.setLocation(etLocation.getText().toString());
+        event.setImage(uri.toString());
 
         Intent intent = new Intent();
         intent.putExtra("event", Parcels.wrap(event));
