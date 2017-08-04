@@ -2,11 +2,12 @@ package codepath.com.goingout.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
@@ -21,10 +22,10 @@ import com.squareup.picasso.Picasso;
 
 import org.parceler.Parcels;
 
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import codepath.com.goingout.DetailsActivity;
 import codepath.com.goingout.EventListActivity;
@@ -82,12 +83,23 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.VH> {
 
             // user added event
             if (event.getImage() != null) {
-                holder.ivBackground.setImageURI(Uri.parse(event.getImage()));
+                //File imageFile = new File(getRealPathFromURI(Uri.parse(event.getImage())));
+                //holder.ivBackground.setImageURI(Uri.fromFile(imageFile));
+//                Glide.with(context)
+//                        .load(event.getImage())
+//                        //.placeholder(placeholderId)
+//                        //.error(placeholderId)
+//                        .centerCrop()
+//                        .into(holder.ivBackground);
+//                //holder.ivBackground.setImageURI(Uri.parse(event.getImage()));
+                Uri uri = Uri.parse(event.getImage());
+                Picasso.with(context).load(uri).into(holder.ivBackground);
                 holder.rootView.setTag(event);
                 holder.tvTitle.setText(event.getTitle());
                 holder.tvTime.setText(event.getDate());
-                holder.tvLocation.setText(event.getPlace() + ", " + event.getAddress());
+                holder.tvLocation.setText(event.getLocation());
                 holder.tvLocal.setVisibility(View.VISIBLE);
+
             } else {
 
                 if (event.venue != null) {
@@ -129,14 +141,31 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.VH> {
             }
         }
 
-        public static Drawable LoadImageFromWebOperations(String url) {
-            try {
-                InputStream is = (InputStream) new URL(url).getContent();
-                Drawable d = Drawable.createFromStream(is, "src name");
-                return d;
-            } catch (Exception e) {
-                return null;
-            }
+    private String getRealPathFromURI(Uri contentURI) {
+        String filePath = "";
+
+        Pattern p = Pattern.compile("(\\d+)$");
+        Matcher m = p.matcher(contentURI.toString());
+        if (!m.find()) {
+            //Log.e(ImageConverter.class.getSimpleName(), "ID for requested image not found: " + uri.toString());
+            return filePath;
+        }
+        String imgId = m.group();
+
+        String[] column = { MediaStore.Images.Media.DATA };
+        String sel = MediaStore.Images.Media._ID + "=?";
+
+        Cursor cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                column, sel, new String[]{ imgId }, null);
+
+        int columnIndex = cursor.getColumnIndex(column[0]);
+
+        if (cursor.moveToFirst()) {
+            filePath = cursor.getString(columnIndex);
+        }
+        cursor.close();
+
+        return filePath;
         }
 
 
