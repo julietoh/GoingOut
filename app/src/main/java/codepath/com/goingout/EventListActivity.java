@@ -1,9 +1,12 @@
 package codepath.com.goingout;
 
 
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -92,6 +95,7 @@ public class EventListActivity extends AppCompatActivity{
     public static int[] images;
 
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -123,6 +127,7 @@ public class EventListActivity extends AppCompatActivity{
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitleTextColor(getResources().getColor(R.color.babyWhite));
+        toolbar.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         ibAddEvent = (ImageButton) findViewById(R.id.ibAddEvent);
 //        toolbar.setTitle(filter.get(0)+" filter applied!");
         setSupportActionBar(toolbar);
@@ -169,7 +174,7 @@ public class EventListActivity extends AppCompatActivity{
 
         rvFeeds.bringToFront();
         toolbar.setNavigationIcon(R.drawable.filter);
-
+        toolbar.getNavigationIcon().setTint(ContextCompat.getColor(this, R.color.babyWhite));
         expandableList= (ExpandableListView) findViewById(R.id.navigationmenu);
         prepareListData();
         adapterEx = new codepath.com.goingout.adapters.ExpandableListAdapter(this, listDataHeader,   listDataChild, expandableList);
@@ -229,6 +234,7 @@ public class EventListActivity extends AppCompatActivity{
         });
 
 
+        ibAddEvent.setColorFilter(ContextCompat.getColor(this, R.color.babyWhite));
         ibAddEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

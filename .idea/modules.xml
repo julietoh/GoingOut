@@ -5,6 +5,9 @@
       <module fileurl="file://$PROJECT_DIR$/GoingOut.iml" filepath="$PROJECT_DIR$/GoingOut.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/eventfulapi/eventfulapi.iml" filepath="$PROJECT_DIR$/eventfulapi/eventfulapi.iml" />
+      <module fileurl="file://$PROJECT_DIR$/submodules/kickflip-android-sdk/kickflip-android-sdk.iml" filepath="$PROJECT_DIR$/submodules/kickflip-android-sdk/kickflip-android-sdk.iml" />
+      <module fileurl="file://$PROJECT_DIR$/submodules/kickflip-android-sdk/sdk/sdk.iml" filepath="$PROJECT_DIR$/submodules/kickflip-android-sdk/sdk/sdk.iml" />
+      <module fileurl="file://$PROJECT_DIR$/submodules/submodules.iml" filepath="$PROJECT_DIR$/submodules/submodules.iml" />
     </modules>
   </component>
 </project>
