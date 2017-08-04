@@ -209,8 +209,6 @@ public class DetailsActivity extends AppCompatActivity {
                         i.putExtra("mode", 2); // pass arbitrary data to launched activity
                         startActivityForResult(i, TEXT_REQUEST_CODE);
 
-
-
                     }
 
                 });
