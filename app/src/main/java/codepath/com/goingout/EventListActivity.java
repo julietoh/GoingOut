@@ -20,6 +20,12 @@ import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -84,9 +90,7 @@ public class EventListActivity extends AppCompatActivity{
     HashMap<String, List<String>> listDataChild;
     ImageButton ibAddEvent;
     public static User currentUser;
-
-
-
+    DatabaseReference databaseEvents;
 
     GoogleClient googleClient;
     public static int[] images;
@@ -97,18 +101,15 @@ public class EventListActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed);
 
+        databaseEvents = FirebaseDatabase.getInstance().getReference("events");
         filter = getIntent().getStringArrayListExtra("preferences");
         currentUser = Parcels.unwrap(getIntent().getParcelableExtra("current_user"));
 
-
         //initialize the client
         client = new AsyncHttpClient();
-
         googleClient = new GoogleClient();
 
         // googleClient = new GoogleClient();
-
-
 //        client = EventfulApp.getRestClient();
 
         //initialize the list of movies
@@ -126,12 +127,8 @@ public class EventListActivity extends AppCompatActivity{
         ibAddEvent = (ImageButton) findViewById(R.id.ibAddEvent);
 //        toolbar.setTitle(filter.get(0)+" filter applied!");
         setSupportActionBar(toolbar);
-
-
-
+        
         navigationView = (NavigationView) findViewById(R.id.nvView);
-
-
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name){
             @Override
@@ -143,7 +140,7 @@ public class EventListActivity extends AppCompatActivity{
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
 
-                if (categoryFilter.size()>0 || priceChanged || locationChanged || dateChanged || ratingChanged){
+                if (categoryFilter.size()>0 || priceChanged || locationChanged || dateChanged || ratingChanged) {
                     adapter.clear();
                     getEvents(categoryFilter, dateFilter, locationFilter, priceFilter);
                     categoryFilter.clear();
@@ -152,7 +149,6 @@ public class EventListActivity extends AppCompatActivity{
                     dateChanged = false;
                     ratingChanged = false;
                 }
-
 
             }
 
@@ -228,7 +224,6 @@ public class EventListActivity extends AppCompatActivity{
             }
         });
 
-
         ibAddEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -238,12 +233,10 @@ public class EventListActivity extends AppCompatActivity{
             }
         });
 
-        getEvents(filter, dateFilter, locationFilter, priceFilter);
-
-        Toast.makeText(this, "There are "+filter.size()+" filters you chose", Toast.LENGTH_LONG).show();
-
 
         newFilter = new ArrayList<>();
+        //Toast.makeText(this, "There are "+filter.size()+" filters you chose", Toast.LENGTH_LONG).show();
+        loadFromDatabase();
     }
 
     private void prepareListData() {
@@ -315,7 +308,6 @@ public class EventListActivity extends AppCompatActivity{
         startActivity(intent);
     }
 
-
 //    private void setupDrawerContent(NavigationView navigationView) {
 //        navigationView.setNavigationItemSelectedListener(
 //                new NavigationView.OnNavigationItemSelectedListener() {
@@ -362,9 +354,6 @@ public class EventListActivity extends AppCompatActivity{
         return item;
     }
 
-
-
-
     //     get the list of nearby events according to preferences
     private void getEvents(ArrayList categoryList, String date, String location, final int price) {
         // create the url
@@ -372,7 +361,6 @@ public class EventListActivity extends AppCompatActivity{
         // set the request parameters
 
         //final GooglePlaces clientelle = new GooglePlaces("AIzaSyCPa7WzZjkYiq1qRofuqSBJIt6G1xvEtJA");
-
         RequestParams params = new RequestParams();
         params.put(APP_KEY_PARAM, "8KFwLj3XshfZCdLP"); // API key, always required
         params.put("page_size", 5);
@@ -464,64 +452,37 @@ public class EventListActivity extends AppCompatActivity{
             Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
         }
     }
-
+    protected void loadFromDatabase() {
+        super.onStart();
+        Query chronological = databaseEvents.orderByChild("order");
+        chronological.addValueEventListener(new ValueEventListener() {
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    Event event = postSnapshot.getValue(Event.class);
+                    events.add(event);
+                }
+                adapter.notifyDataSetChanged();
+            }
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+        getEvents(filter, dateFilter, locationFilter, priceFilter);
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // REQUEST_CODE is defined above
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
-
-            // Extract name value from result extras
             Event event = Parcels.unwrap(data.getParcelableExtra("event"));
+
+            // add image to firebase
+            String id = databaseEvents.push().getKey();
+            databaseEvents.child(id).setValue(event);
 
             events.add(0, event);
             adapter.notifyItemInserted(0);
             rvFeeds.getLayoutManager().scrollToPosition(0);
 
-            // Toast the name to display temporarily on screen
+
             Toast.makeText(this, "Event Posted!", Toast.LENGTH_SHORT).show();
         }
     }
-
-//    public void getFeed() {
-//        client.getEvents(new JsonHttpResponseHandler(){
-//            @Override
-//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-//                Log.d("TwitterClient", response.toString());
-//            }
-//
-//            @Override
-//            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-//                Event event = null;
-//                try {
-//                    for (int i = 0; i<response.length(); i++)
-//                    {
-//                        event = Event.fromJSON(response.getJSONObject(i));
-//                        events.add(event);
-//                        adapter.notifyItemInserted(events.size() - 1);
-//                    }
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
-//                Log.d("TwitterClient", errorResponse.toString());
-//                throwable.printStackTrace();
-//            }
-//
-//            @Override
-//            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-//                Log.d("TwitterClient", errorResponse.toString());
-//                throwable.printStackTrace();
-//            }
-//
-//            @Override
-//            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-//                Log.d("TwitterClient", responseString);
-//                throwable.printStackTrace();
-//            }
-//        });
-//    }
-
 }

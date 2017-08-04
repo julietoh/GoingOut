@@ -80,40 +80,53 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.VH> {
 //            Drawable image = LoadImageFromWebOperations("https://lh4.googleusercontent.com/-1wzlVdxiW14/USSFZnhNqxI/AAAAAAAABGw/YpdANqaoGh4/s1600-w400/Google%2BSydney");
 
 
-            if (event.venue != null) {
-                holder.rootView.setTag(event);
-                holder.tvTitle.setText(event.getTitle());
-                holder.tvTime.setText(event.getDate());
-                holder.tvLocation.setText(event.getPlace() + ", " + event.venue.getLocation());
-                //holder.tvRating.setText(event.venue.getRating() + "");
-                //holder.tvPrice.setText(event.venue.getPrice());
-                holder.tvPrice.setText(event.venue.getPay(event.venue.pay));
-                String GoogleUriString = event.venue.getFinalURL();
-                if (GoogleUriString != null) {
-                    Uri GoogleUri = Uri.parse(GoogleUriString);
-                    int hey = event.venue.getRating();
-                    holder.ratingBar.setRating(hey);
-                    Picasso.with(context).load(GoogleUri).into(holder.ivBackground);
-                }else{
-                    holder.ivBackground.setBackgroundColor(holder.id);
-
-                }
-                //holder.ivBackground.setBackground(image);
-                //holder.ivBackground.setBackgroundColor(holder.id);
-            } else {
+            // user added event
+            if (event.getImage() != null) {
+                holder.ivBackground.setImageURI(Uri.parse(event.getImage()));
                 holder.rootView.setTag(event);
                 holder.tvTitle.setText(event.getTitle());
                 holder.tvTime.setText(event.getDate());
                 holder.tvLocation.setText(event.getPlace() + ", " + event.getAddress());
-                String GoogleUriString = "https://maps.googleapis.com/maps/api/plac/photo?maxwidth=400&photoreference=CnRtAAAATLZNl354RwP_9UKbQ_5Psy40texXePv4oAlgP4qNEkdIrkyse7rPXYGd9D_Uj1rVsQdWT4oRz4QrYAJNpFX7rzqqMlZw2h2E2y5IKMUZ7ouD_SlcHxYq1yL4KbKUv3qtWgTK0A6QbGh87GB3sscrHRIQiG2RrmU_jF4tENr9wGS_YxoUSSDrYjWmrNfeEHSGSc3FyhNLlBU&key=AIzaSyB4MzgjTcqzPIL_6v468qvhyLCbPzeTKlo";
-                Uri GoogleUri = Uri.parse(GoogleUriString);
-                Picasso.with(context).load(GoogleUri).into(holder.ivBackground);
-                //holder.ivBackground.setBackground(image);
-                //holder.ivBackground.setBackgroundColor(holder.id);
-            }
+                holder.tvLocal.setVisibility(View.VISIBLE);
+            } else {
+
+                if (event.venue != null) {
+                    holder.rootView.setTag(event);
+                    holder.tvTitle.setText(event.getTitle());
+                    holder.tvTime.setText(event.getDate());
+                    holder.tvLocation.setText(event.getPlace() + ", " + event.venue.getLocation());
+                    //holder.tvRating.setText(event.venue.getRating() + "");
+                    //holder.tvPrice.setText(event.venue.getPrice());
+                    holder.tvPrice.setText(event.venue.getPay(event.venue.pay));
+                    String GoogleUriString = event.venue.getFinalURL();
+                    if (GoogleUriString != null) {
+                        Uri GoogleUri = Uri.parse(GoogleUriString);
+                        int hey = event.venue.getRating();
+                        holder.ratingBar.setRating(hey);
+                        Picasso.with(context).load(GoogleUri).into(holder.ivBackground);
+                    } else {
+                        //holder.ivBackground.setBackgroundColor(holder.id);
+
+                    }
+                    //holder.ivBackground.setBackground(image);
+                    //holder.ivBackground.setBackgroundColor(holder.id);
+                } else {
+                    holder.rootView.setTag(event);
+                    holder.tvTitle.setText(event.getTitle());
+                    holder.tvTime.setText(event.getDate());
+                    holder.tvLocation.setText(event.getPlace() + ", " + event.getAddress());
+                    String GoogleUriString = "https://maps.googleapis.com/maps/api/plac/photo?maxwidth=400&photoreference=CnRtAAAATLZNl354RwP_9UKbQ_5Psy40texXePv4oAlgP4qNEkdIrkyse7rPXYGd9D_Uj1rVsQdWT4oRz4QrYAJNpFX7rzqqMlZw2h2E2y5IKMUZ7ouD_SlcHxYq1yL4KbKUv3qtWgTK0A6QbGh87GB3sscrHRIQiG2RrmU_jF4tENr9wGS_YxoUSSDrYjWmrNfeEHSGSc3FyhNLlBU&key=AIzaSyB4MzgjTcqzPIL_6v468qvhyLCbPzeTKlo";
+                    Uri GoogleUri = Uri.parse(GoogleUriString);
+                    Picasso.with(context).load(GoogleUri).into(holder.ivBackground);
+                    //holder.ivBackground.setBackground(image);
+                    //holder.ivBackground.setBackgroundColor(holder.id);
+                }
 //        holder.tvRating.getNumStars();
 //            holder.ivBackground.setBackgroundColor(Color.BLACK);
 //            Glide.with(context).load(R.drawable.art.into(holder.ivBackground);
+
+                // user added event
+            }
         }
 
         public static Drawable LoadImageFromWebOperations(String url) {
@@ -144,7 +157,9 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.VH> {
             final int id;
             final LinearLayout llFeed;
             final RatingBar ratingBar;
+            final TextView tvLocal;
             //final RatingBar tvRating;
+
 
             public VH(View itemView, Context c) {
                 super(itemView);
@@ -162,7 +177,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.VH> {
 //                {
 //                    view.serIV(Link of picture)
 //                }
-
+                tvLocal = (TextView) itemView.findViewById(R.id.tvLocal);
                 tvTitle = (TextView)itemView.findViewById(R.id.tvTitle);
                 tvTime = (TextView)itemView.findViewById(R.id.tvTime);
                 ratingBar = (RatingBar)itemView.findViewById(R.id.rating);

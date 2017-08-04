@@ -62,7 +62,6 @@ public class GoogleClient {
 
 
 
-
         // execute a GET request expecting a JSON object response
         client.get(url, params, new JsonHttpResponseHandler() {
             @Override
