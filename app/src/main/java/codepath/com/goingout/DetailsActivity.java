@@ -276,7 +276,7 @@ public class DetailsActivity extends AppCompatActivity {
         chronological.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                //posts.clear();
+                posts.clear();
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     Post post = postSnapshot.getValue(Post.class);
                     posts.add(post);
