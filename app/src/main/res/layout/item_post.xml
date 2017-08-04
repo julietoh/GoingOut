@@ -22,9 +22,10 @@
             android:background="@color/bloodOrange"
             android:paddingLeft="8dp"
             android:paddingTop="8dp"
+            android:paddingBottom="8dp"
             android:text="User's Name"
             android:textAlignment="viewStart"
-            android:textColor="@android:color/black"
+            android:textColor="@color/safetyYellow"
             android:textSize="@dimen/contact_text_size"
             android:textStyle="bold" />
 
@@ -33,7 +34,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvUserName"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="8dp"
+            android:paddingTop="4dp"
             android:text="Time"
             android:textColor="@android:color/darker_gray"
             android:textSize="14sp" />
