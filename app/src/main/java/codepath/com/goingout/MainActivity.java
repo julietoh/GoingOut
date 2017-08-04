@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         currentUser = Parcels.unwrap(getIntent().getParcelableExtra("current_user"));
 
         TextView nameView = (TextView)findViewById(R.id.nameAndSurname);
-        nameView.setText("" + currentUser.getFirstName() + " " + currentUser.getLastName());
+        nameView.setText("" + currentUser.getFirstName() + " " + currentUser.getLastName() + "!");
 
         // logout function
         Button logout = (Button)findViewById(R.id.logout);
