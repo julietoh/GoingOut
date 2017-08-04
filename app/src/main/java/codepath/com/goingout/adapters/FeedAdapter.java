@@ -98,6 +98,12 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.VH> {
                 holder.tvTitle.setText(event.getTitle());
                 holder.tvTime.setText(event.getDate());
                 holder.tvLocation.setText(event.getLocation());
+                if (event.isFromJSON()){
+                    holder.tvLocation.setText(event.getPlace() + ", " + event.getAddress());
+                } else {
+                    holder.tvLocation.setText(event.getLocation());
+                }
+
                 holder.tvLocal.setVisibility(View.VISIBLE);
 
             } else {
