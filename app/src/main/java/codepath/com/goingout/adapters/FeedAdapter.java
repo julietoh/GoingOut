@@ -107,7 +107,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.VH> {
                 holder.tvLocal.setVisibility(View.VISIBLE);
 
             } else {
-
+                holder.tvLocal.setVisibility(View.GONE);
                 if (event.venue != null) {
                     holder.rootView.setTag(event);
                     holder.tvTitle.setText(event.getTitle());
@@ -124,6 +124,9 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.VH> {
                         Picasso.with(context).load(GoogleUri).into(holder.ivBackground);
                     } else {
                         //holder.ivBackground.setBackgroundColor(holder.id);
+                        String GoogleUriStrin = "https://maps.googleapis.com/maps/api/plac/photo?maxwidth=400&photoreference=CnRtAAAATLZNl354RwP_9UKbQ_5Psy40texXePv4oAlgP4qNEkdIrkyse7rPXYGd9D_Uj1rVsQdWT4oRz4QrYAJNpFX7rzqqMlZw2h2E2y5IKMUZ7ouD_SlcHxYq1yL4KbKUv3qtWgTK0A6QbGh87GB3sscrHRIQiG2RrmU_jF4tENr9wGS_YxoUSSDrYjWmrNfeEHSGSc3FyhNLlBU&key=AIzaSyB4MzgjTcqzPIL_6v468qvhyLCbPzeTKlo";
+                        Uri GoogleUri = Uri.parse(GoogleUriStrin);
+                        Picasso.with(context).load(GoogleUri).into(holder.ivBackground);
 
                     }
                     //holder.ivBackground.setBackground(image);
