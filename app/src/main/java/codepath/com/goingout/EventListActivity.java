@@ -472,9 +472,16 @@ public class EventListActivity extends AppCompatActivity{
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
             Event event = Parcels.unwrap(data.getParcelableExtra("event"));
+
+            // add image to firebase
+            String id = databaseEvents.push().getKey();
+            databaseEvents.child(id).setValue(event);
+
             events.add(0, event);
             adapter.notifyItemInserted(0);
             rvFeeds.getLayoutManager().scrollToPosition(0);
+
+
             Toast.makeText(this, "Event Posted!", Toast.LENGTH_SHORT).show();
         }
     }

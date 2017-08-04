@@ -92,4 +92,5 @@ public class AddEventActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.stay, R.anim.slide_out_up);
 
     }
+
 }
