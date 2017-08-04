@@ -45,7 +45,7 @@
         android:layout_marginBottom="5dp"
         android:layout_marginTop="5dp"
         android:textColorHint="@android:color/white"
-        android:hint="What is the title of your party?"
+        android:hint="What is the title of your event?"
         android:textColor="@android:color/white"
         android:textSize="14sp" />
 
