@@ -77,4 +77,8 @@
 
 
     <string name="action_settings">Settings</string>
+    <string name="OK">OK</string>
+    <string name="dialog_ok">OK</string>
+    <string name="dialog_msg_not_ready">We\'re still registering your Kickflip account. Try again in a few seconds.</string>
+    <string name="dialog_title_not_ready">One sec...</string>
 </resources>
