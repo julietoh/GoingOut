@@ -8,20 +8,22 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <ImageView
+            android:id="@+id/iconimage"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:backgroundTint="@color/bloodOrange"
             android:paddingBottom="10dp"
             android:paddingLeft="10dp"
-            android:paddingTop="10dp"
-            android:id="@+id/iconimage"/>
+            android:paddingTop="10dp" />
 
         <TextView
             android:id="@+id/submenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
-            android:textColor="#000000"
+            android:textColor="@color/safetyYellow"
             android:textSize="20sp" />
     </LinearLayout>
 

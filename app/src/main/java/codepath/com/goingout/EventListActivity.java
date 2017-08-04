@@ -127,6 +127,7 @@ public class EventListActivity extends AppCompatActivity{
         ibAddEvent = (ImageButton) findViewById(R.id.ibAddEvent);
 //        toolbar.setTitle(filter.get(0)+" filter applied!");
         setSupportActionBar(toolbar);
+        
         navigationView = (NavigationView) findViewById(R.id.nvView);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name){
