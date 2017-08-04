@@ -19,7 +19,9 @@ import java.util.List;
 import codepath.com.goingout.EventListActivity;
 import codepath.com.goingout.R;
 
-public class ExpandableListAdapter extends BaseExpandableListAdapter {
+public class
+
+ExpandableListAdapter extends BaseExpandableListAdapter {
     private Context mContext;
     private List<String> mListDataHeader; // header titles
     // child data in format of header title, child title

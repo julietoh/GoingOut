@@ -18,7 +18,7 @@ public class Event {
     private String date;
     private String location;
 
-    private String image;
+    public String image;
     private String rating;
     private String place;
     public Venue venue;
@@ -55,10 +55,12 @@ public class Event {
         isFromJSON = true;
 
 
+
     }
 
     // deserialize json
     // extract the values from JSON
+
 
 
     public String getTitle() {
@@ -132,15 +134,6 @@ public class Event {
     }
 
 
-
-    //
-//    public String getImage() {
-//        return image;
-//    }
-//
-//    public void setImage(String image) {
-//        this.image = image;
-//    }
 //
 
 //    public String getPrice() {
