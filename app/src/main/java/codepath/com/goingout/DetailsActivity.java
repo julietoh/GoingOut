@@ -117,6 +117,7 @@ public class DetailsActivity extends AppCompatActivity {
     PostAdapter postAdapter;
     TextView tvDetailTitle;
     TextView tvLocation;
+    TextView tvPrice;
     TextView tvTime;
     ImageView ivPicture;
     VideoView vvVideo;
@@ -145,6 +146,7 @@ public class DetailsActivity extends AppCompatActivity {
         tvDetailTitle = (TextView) findViewById(R.id.tvDetailTitle);
         tvTime = (TextView) findViewById(R.id.tvTime);
         tvLocation = (TextView) findViewById(R.id.tvLocation);
+        tvPrice = (TextView) findViewById(R.id.tvPrice);
         fabUpload = (FloatingActionButton) findViewById(R.id.fabUpload);
         ivPicture = (ImageView) findViewById(R.id.ivPicture);
         vvVideo = (VideoView) findViewById(R.id.vvVideo);
@@ -157,6 +159,7 @@ public class DetailsActivity extends AppCompatActivity {
         final String title = getIntent().getStringExtra("title");
         String time = getIntent().getStringExtra("time");
         String location = getIntent().getStringExtra("location");
+        int rating = getIntent().getIntExtra("rating", 0);
         String price = getIntent().getStringExtra("price");
         String image_url = getIntent().getStringExtra("image_url");
         currentUser = Parcels.unwrap(getIntent().getParcelableExtra("current_user"));
@@ -184,6 +187,9 @@ public class DetailsActivity extends AppCompatActivity {
         tvTime.setText(time);
         tvLocation.setText(location);
 
+        if (price != null) {
+            tvPrice.setText(price);
+        }
 
 
         detailsToolbar.setTitle(title);
@@ -193,6 +199,10 @@ public class DetailsActivity extends AppCompatActivity {
         ratingBar = (RatingBar) findViewById(R.id.ratingBar);
         LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
         stars.getDrawable(2).setColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_ATOP);
+
+        if (rating > 0) {
+            ratingBar.setRating(rating);
+        }
 
 
 
