@@ -1,6 +1,7 @@
 package codepath.com.goingout.adapters;
 
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +36,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     ArrayList<Post> posts;
     //context for rendering
     Context context;
+    MediaPlayer mMediaPlayer;
 
     // initialized with list
     public PostAdapter(ArrayList<Post> posts) {
@@ -70,6 +72,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         final ProgressBar progressBar = holder.progressBar;
         ImageView imageView = holder.ivPicture;
         VideoView videoView = holder.vvVideo;
+        ImageView liveTag = holder.liveTag;
         // add media controller to each video view
         MediaController mediaController = new MediaController(context);
         mediaController.setAnchorView(holder.vvVideo);
@@ -108,12 +111,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             holder.vvVideo.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.GONE);
 
+            if (!post.isLive()){
+                videoView.setVideoPath(post.getVideo());
 
-
-            // load video into video view
-            //videoView.start();
-
-            videoView.setVideoPath(post.getVideo());
+            } else {
+                videoView.setVideoPath(post.getVideo());
+                holder.liveTag.setVisibility(View.VISIBLE);
+            }
 
         } else {
             // both image and video are null, so just plain text post
@@ -144,6 +148,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         ImageView ivPicture;
         VideoView vvVideo;
         ProgressBar progressBar;
+        ImageView liveTag;
         //ImageButton ibPlay;
 
         public ViewHolder(View itemView) {
@@ -155,6 +160,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             ivPicture = (ImageView) itemView.findViewById(R.id.ivPicture);
             vvVideo = (VideoView) itemView.findViewById(R.id.vvVideo);
             progressBar = (ProgressBar) itemView.findViewById(R.id.progress);
+            liveTag = (ImageView) itemView.findViewById(R.id.liveTag);
             //ibPlay = (ImageButton) itemView.findViewById(R.id.ibPlay);
             //itemView.setOnClickListener(this);
 

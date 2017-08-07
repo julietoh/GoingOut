@@ -69,6 +69,7 @@ import io.kickflip.sdk.exception.KickflipException;
 public class DetailsActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
+    private Uri streamUrl;
 
     private boolean mKickflipReady = false;
 
@@ -81,6 +82,9 @@ public class DetailsActivity extends AppCompatActivity {
         @Override
         public void onBroadcastLive(Stream stream) {
             Log.i(TAG, "onBroadcastLive @ " + stream.getKickflipUrl());
+            streamUrl = Uri.parse(stream.getStreamUrl());
+            addImagePost(streamUrl, LIVE_REQUEST_CODE, null);
+
         }
 
         @Override
@@ -124,6 +128,8 @@ public class DetailsActivity extends AppCompatActivity {
     private static final int VIDEO_REQUEST_CODE = 20;
     private static final int CAMERA_REQUEST_CODE = 1;
     private static final int TEXT_REQUEST_CODE = 3;
+    private static final int LIVE_REQUEST_CODE = 10;
+
 
     private StorageReference storage;
     private ProgressDialog mProgress;
@@ -328,14 +334,6 @@ public class DetailsActivity extends AppCompatActivity {
 
                     }
                 });
-//
-//        if (!handleLaunchingIntent()) {
-//            if (savedInstanceState == null) {
-//                getFragmentManager().beginTransaction()
-//                        .replace(R.id.container, new StreamListFragment())
-//                        .commit();
-//            }
-//        }
     }
 
 
@@ -436,13 +434,15 @@ public class DetailsActivity extends AppCompatActivity {
         if (requestCode == TEXT_REQUEST_CODE) {
             // creates a new post with only text
             post = new Post(id, currentUser.getFirstName()+" "+currentUser.getLastName(), getTimeStamp(), body, -1 * new Date().getTime());
-        }
-        else if (requestCode == CAMERA_REQUEST_CODE) {
+        } else if (requestCode == LIVE_REQUEST_CODE) {
+            post = new Post(id, currentUser.getFirstName()+" "+currentUser.getLastName(), getTimeStamp(), null, uri.toString(), "arbitrary", -1 * new Date().getTime(), true);
+
+        } else if (requestCode == CAMERA_REQUEST_CODE) {
             // creates a new post with image
             post = new Post(id, currentUser.getFirstName()+" "+currentUser.getLastName(), getTimeStamp(), null, uri.toString(), 1, -1 * new Date().getTime());
         } else {
             // Create a new post with video
-            post = new Post(id, currentUser.getFirstName()+" "+currentUser.getLastName(), getTimeStamp(), null, uri.toString(), "arbitrary", -1 * new Date().getTime());
+            post = new Post(id, currentUser.getFirstName()+" "+currentUser.getLastName(), getTimeStamp(), null, uri.toString(), "arbitrary", -1 * new Date().getTime(), false);
         }
         databasePosts.child(id).setValue(post);
         posts.add(0, post);
@@ -521,11 +521,6 @@ public class DetailsActivity extends AppCompatActivity {
     private boolean isExternalStorageAvailable() {
         String state = Environment.getExternalStorageState();
         return state.equals(Environment.MEDIA_MOUNTED);
-    }
-
-    public void toReviews(View view) {
-        Intent intent = new Intent(DetailsActivity.this, ReviewActivity.class);
-        startActivity(intent);
     }
 
     private void startBroadcastingActivity() {

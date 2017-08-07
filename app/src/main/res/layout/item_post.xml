@@ -83,6 +83,15 @@
             android:layout_marginBottom="20sp"
             android:visibility="gone" />
 
+        <ImageView
+            android:id="@+id/liveTag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/tvUserName"
+            android:visibility="gone"
+            card_view:srcCompat="@drawable/livetag" />
+
 
     </RelativeLayout>
 
