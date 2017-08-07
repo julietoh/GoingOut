@@ -245,11 +245,15 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.VH> {
                     intent.putExtra("time", tvTime.getText());
                     intent.putExtra("location",tvLocation.getText());
                     if (tvPrice.getText() != null) {
-                    intent.putExtra("price",tvPrice.getText());
+                        intent.putExtra("price",tvPrice.getText());
 
                     }
                     if (event.venue.getFinalURL() != null) {
                         intent.putExtra("image_url", event.venue.getFinalURL());
+                    }
+
+                    if (Integer.toString(event.venue.getRating()) != null) {
+                        intent.putExtra("rating", event.venue.getRating());
                     }
 
                     intent.putExtra("current_user", Parcels.wrap(currentUser));
