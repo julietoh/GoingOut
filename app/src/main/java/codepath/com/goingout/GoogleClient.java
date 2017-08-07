@@ -62,7 +62,7 @@ public class GoogleClient {
         params.put(TEXT_SEARCH_PARAM, event.getPlace() + " " + event.getCity());
 
 
-        params.put(APP_KEY_PARAM, "AIzaSyDUEuKt4fzSuxvB96vEooFBRyp-WO50H6g");
+        params.put(APP_KEY_PARAM, "AIzaSyC-k7XbvPhJifERlEyKr0Hl6qjmC8MO71I");
 
 
 
@@ -105,13 +105,19 @@ public class GoogleClient {
     //public Venue
     public void getDistanceAway(final Event event, final FeedAdapter adapter) {
         // create the url
-        if (event.getVenue() != null) {
+
             String url = API_DISTANCEMATRIX_BASE_URL;
             RequestParams params = new RequestParams();
             // origin is set to Facebook HQ's place ID
             params.put(ORIGIN_PARAM, "place_id:ChIJZa6ezJa8j4AR1p1nTSaRtuQ");
+        // non user event with venue
+        if (event.getImage() == null) {
             params.put(DESTINATION_PARAM, "place_id:" + event.getVenue().getPlaceId());
-            params.put(APP_KEY_PARAM, "AIzaSyAoNx3U8Im6JWOQvByfTRPLWodLvyQsXPQ");
+        } else {
+            // user event without venue
+            params.put(DESTINATION_PARAM, event.getLocation());
+        }
+            params.put(APP_KEY_PARAM, "AIzaSyBF4RtLcPosKQg8kFeBCCVDtBvN5tirNxg");
 
             // execute a GET request expecting a JSON object response
             client.get(url, params, new JsonHttpResponseHandler() {
@@ -128,19 +134,6 @@ public class GoogleClient {
                         String finalText = text.getString("text");
 
                         event.setDistAway(finalText);
-
-
-                        //Log.e(TAG, results.toString());
-                        // iterate through result set and create Movie objects
-//                    if (results.length() > 0) {
-                        //Venue venue = new Venue(results.getJSONObject(0));
-
-                        //Log.e(TAG, venue.toString());
-
-
-                        //event.setVenue(venue);
-//                        event.setVenue(venue);
-//                    }
                     } catch (JSONException e) {
                     }
                     adapter.notifyDataSetChanged();
@@ -152,14 +145,6 @@ public class GoogleClient {
                     logError("Failed to get data from endpoint", throwable, true);
                 }
             });
-//        if (venues.size() > 0) {
-//            return venues.get(0);
-//        } else {
-//            return null;
-//        }
-        }
-
-
     }
 
     private void logError(String message, Throwable error, boolean alertUser) {

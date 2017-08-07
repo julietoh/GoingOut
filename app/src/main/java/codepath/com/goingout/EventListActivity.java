@@ -461,6 +461,7 @@ public class EventListActivity extends AppCompatActivity{
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     Event event = postSnapshot.getValue(Event.class);
                     events.add(event);
+                    googleClient.getDistanceAway(event, adapter);
                 }
                 adapter.notifyDataSetChanged();
             }
@@ -479,6 +480,7 @@ public class EventListActivity extends AppCompatActivity{
             databaseEvents.child(id).setValue(event);
 
             events.add(0, event);
+            googleClient.getDistanceAway(event, adapter);
             adapter.notifyItemInserted(0);
             rvFeeds.getLayoutManager().scrollToPosition(0);
 

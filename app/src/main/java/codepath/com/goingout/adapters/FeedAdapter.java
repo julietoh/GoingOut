@@ -85,7 +85,8 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.VH> {
                 holder.tvTitle.setText(event.getTitle());
                 holder.tvTime.setText(event.getDate());
                 holder.tvLocation.setText(event.getLocation());
-                //holder.tvDistAway.setText(event.getDistAway());
+                holder.tvDistAway.setText(event.getDistAway());
+
 
 
                 if (event.isFromJSON()){
