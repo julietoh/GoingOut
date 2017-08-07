@@ -9,11 +9,12 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
-    <uses-feature android:name="android.hardware.camera"
+    <uses-feature
+        android:name="android.hardware.camera"
         android:required="true" />
 
     <application
@@ -24,7 +25,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.codepath.fileprovider"
@@ -83,10 +83,10 @@
             android:name=".DetailsActivity"
             android:theme="@style/PreferenceActivity" />
         <activity android:name=".ReviewActivity" />
-
-        <activity android:name=".AddEventActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:theme="@style/PreferenceActivity">
+        <activity
+            android:name=".AddEventActivity"
+            android:theme="@style/PreferenceActivity"
+            android:windowSoftInputMode="adjustResize">
         </activity>
 
         <activity android:name=".ComposeActivity">
@@ -96,12 +96,18 @@
             android:name="io.kickflip.sdk.activity.BroadcastActivity"
             android:screenOrientation="landscape">
         </activity>
-
         <activity
             android:name="io.kickflip.sdk.activity.MediaPlayerActivity"
-            android:screenOrientation="landscape" >
+            android:screenOrientation="landscape">
+
         </activity>
 
+        <activity
+            android:name=".CameraActivity"
+            android:keepScreenOn="true"
+            android:screenOrientation="landscape"
+            android:configChanges="orientation|screenSize">
+        </activity>
     </application>
 
 </manifest>
