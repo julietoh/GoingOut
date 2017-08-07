@@ -58,8 +58,47 @@ import java.util.UUID;
 import codepath.com.goingout.adapters.PostAdapter;
 import codepath.com.goingout.models.Post;
 import codepath.com.goingout.models.User;
+import io.kickflip.sdk.Kickflip;
+import io.kickflip.sdk.api.KickflipCallback;
+import io.kickflip.sdk.api.json.Response;
+import io.kickflip.sdk.api.json.Stream;
+import io.kickflip.sdk.av.BroadcastListener;
+import io.kickflip.sdk.av.SessionConfig;
+import io.kickflip.sdk.exception.KickflipException;
 
 public class DetailsActivity extends AppCompatActivity {
+
+    private static final String TAG = "MainActivity";
+    private Uri streamUrl;
+
+    private boolean mKickflipReady = false;
+
+    private BroadcastListener mBroadcastListener = new BroadcastListener() {
+        @Override
+        public void onBroadcastStart() {
+            Log.i(TAG, "onBroadcastStart");
+        }
+
+        @Override
+        public void onBroadcastLive(Stream stream) {
+            Log.i(TAG, "onBroadcastLive @ " + stream.getKickflipUrl());
+            streamUrl = Uri.parse(stream.getStreamUrl());
+            addImagePost(streamUrl, LIVE_REQUEST_CODE, null);
+
+        }
+
+        @Override
+        public void onBroadcastStop() {
+            Log.i(TAG, "onBroadcastStop");
+        }
+
+        @Override
+        public void onBroadcastError(KickflipException error) {
+            Log.i(TAG, "onBroadcastError " + error.getMessage());
+        }
+    };
+
+    private String mRecordingOutputPath = new File(Environment.getExternalStorageDirectory(), "MySampleApp/index.m3u8").getAbsolutePath();
 
     public final String APP_TAG = "GoingOutApp";
     public String photoFileName = "photo.jpg";
@@ -90,6 +129,8 @@ public class DetailsActivity extends AppCompatActivity {
     private static final int VIDEO_REQUEST_CODE = 20;
     private static final int CAMERA_REQUEST_CODE = 1;
     private static final int TEXT_REQUEST_CODE = 3;
+    private static final int LIVE_REQUEST_CODE = 10;
+
 
     private StorageReference storage;
     private ProgressDialog mProgress;
@@ -222,10 +263,24 @@ public class DetailsActivity extends AppCompatActivity {
                     }
 
                 });
-                builder.setNeutralButton("Choose from library",
+                builder.setNeutralButton("Go Live",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 // upload an image
+
+                                if (mKickflipReady) {
+                                    startBroadcastingActivity();
+                                } else {
+                                    new AlertDialog.Builder(context)
+                                            .setTitle(getString(R.string.dialog_title_not_ready))
+                                            .setMessage(getString(R.string.dialog_msg_not_ready))
+                                            .setPositiveButton(getString(R.string.dialog_ok), new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    dialog.dismiss();
+                                                }
+                                            }).show();
+                                }
                             }
                         });
                 builder.setNegativeButton("Take Photo or Video", new DialogInterface.OnClickListener() {
@@ -275,8 +330,21 @@ public class DetailsActivity extends AppCompatActivity {
 
         postAdapter.notifyItemRangeChanged(0, postAdapter.getItemCount());
         rvPosts.getLayoutManager().scrollToPosition(0);
-    }
 
+        Kickflip.setup(this, "F?u=7QKTkeO2RrrPuAhYb-5swB9r2!be1-O_vGip",
+                "73jn;@dWkEXts54N:Z@n;:T_MmUwCxv3Y01PFhjnz!rvQF38GMEaFLV-HtMxZhOrOGk9l@F9.5ZLqpnWzVy@Q5UotLfysiiS;PeJVxi45FRls@@JNmciHR:aO@ABjFQG",
+                new KickflipCallback() {
+                    @Override
+                    public void onSuccess(Response response) {
+                        mKickflipReady = true;
+                    }
+
+                    @Override
+                    public void onError(KickflipException error) {
+
+                    }
+                });
+    }
 
 
     @Override
@@ -376,13 +444,15 @@ public class DetailsActivity extends AppCompatActivity {
         if (requestCode == TEXT_REQUEST_CODE) {
             // creates a new post with only text
             post = new Post(id, currentUser.getFirstName()+" "+currentUser.getLastName(), getTimeStamp(), body, -1 * new Date().getTime());
-        }
-        else if (requestCode == CAMERA_REQUEST_CODE) {
+        } else if (requestCode == LIVE_REQUEST_CODE) {
+            post = new Post(id, currentUser.getFirstName()+" "+currentUser.getLastName(), getTimeStamp(), null, uri.toString(), "arbitrary", -1 * new Date().getTime(), true);
+
+        } else if (requestCode == CAMERA_REQUEST_CODE) {
             // creates a new post with image
             post = new Post(id, currentUser.getFirstName()+" "+currentUser.getLastName(), getTimeStamp(), null, uri.toString(), 1, -1 * new Date().getTime());
         } else {
             // Create a new post with video
-            post = new Post(id, currentUser.getFirstName()+" "+currentUser.getLastName(), getTimeStamp(), null, uri.toString(), "arbitrary", -1 * new Date().getTime());
+            post = new Post(id, currentUser.getFirstName()+" "+currentUser.getLastName(), getTimeStamp(), null, uri.toString(), "arbitrary", -1 * new Date().getTime(), false);
         }
         databasePosts.child(id).setValue(post);
         posts.add(0, post);
@@ -463,9 +533,16 @@ public class DetailsActivity extends AppCompatActivity {
         return state.equals(Environment.MEDIA_MOUNTED);
     }
 
-    public void toReviews(View view) {
-        Intent intent = new Intent(DetailsActivity.this, ReviewActivity.class);
-        startActivity(intent);
+    private void startBroadcastingActivity() {
+        configureNewBroadcast();
+        Kickflip.startBroadcastActivity(this, mBroadcastListener);
+    }
+
+    private void configureNewBroadcast() {
+        // Should reset mRecordingOutputPath between recordings
+        SessionConfig config = Util.create720pSessionConfig(mRecordingOutputPath);
+        //SessionConfig config = Util.create420pSessionConfig(mRecordingOutputPath);
+        Kickflip.setSessionConfig(config);
     }
 
 }

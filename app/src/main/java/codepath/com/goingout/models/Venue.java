@@ -16,6 +16,9 @@ public class Venue {
     public String price;
     public String finalURL;
     public int pay;
+    public double longitude;
+    public double latitude;
+    public String placeId;
 
     public Venue(){
     }
@@ -38,6 +41,7 @@ public class Venue {
 
             sb.append("&key=AIzaSyC35S2fuIarW5_4vaqZi-AUA0J8nDbYuSE");
 
+
             finalURL = sb.toString();
 
         }
@@ -45,6 +49,16 @@ public class Venue {
         if (object.has("rating")) {
             rating = object.getInt("rating");
         }
+        if (object.has("place_id")) {
+            placeId = object.getString("place_id");
+        }
+
+//        if (object.has("geometry")) {
+//            if (object.has("location")){
+//                latitude = object.getJSONObject("geometry").getJSONObject("location").getDouble("lat");
+//                longitude = object.getJSONObject("geometry").getJSONObject("location").getDouble("lng");
+//            }
+//        }
 
 
     }
@@ -101,5 +115,29 @@ public class Venue {
 
     public void setPay(int pay) {
         this.pay = pay;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getPlaceId() {
+        return placeId;
+    }
+
+    public void setPlaceId(String placeId) {
+        this.placeId = placeId;
     }
 }

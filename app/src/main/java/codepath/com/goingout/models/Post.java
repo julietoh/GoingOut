@@ -20,6 +20,7 @@ public class Post {
     private String string;
     private int num;
     private long order;
+    private boolean isLive;
 
 
 
@@ -48,7 +49,7 @@ public class Post {
     }
 
     // video, with arbitrary string
-    public Post(String postId, String username, String timeStamp, String body, String video, String string, long order) {
+    public Post(String postId, String username, String timeStamp, String body, String video, String string, long order, boolean isLive) {
         this.postId = postId;
         this.username = username;
         this.timeStamp = timeStamp;
@@ -56,6 +57,8 @@ public class Post {
         this.video = video;
         this.string = string;
         this.order = order;
+        this.isLive = isLive;
+
 
     }
 
@@ -85,4 +88,9 @@ public class Post {
     public long getOrder() {
         return order;
     }
+
+    public boolean isLive() {
+        return isLive;
+    }
+
 }

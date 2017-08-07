@@ -22,6 +22,7 @@ public class Event {
     private String rating;
     private String place;
     public Venue venue;
+    private String distAway;
 
     private Post post;
     private String city;
@@ -53,6 +54,7 @@ public class Event {
         order =  -1 * new Date().getTime();
 
         isFromJSON = true;
+
 
 
 
@@ -162,7 +164,6 @@ public class Event {
 //        this.rating = rating;
 //    }
 
-
     public Venue getVenue() {
         return venue;
     }
@@ -197,5 +198,13 @@ public class Event {
 
     public boolean isFromJSON() {
         return isFromJSON;
+    }
+
+    public String getDistAway() {
+        return distAway;
+    }
+
+    public void setDistAway(String distAway) {
+        this.distAway = distAway;
     }
 }
