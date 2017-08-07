@@ -87,10 +87,14 @@
             android:id="@+id/liveTag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:maxHeight="5dp"
             android:layout_alignParentEnd="true"
             android:layout_below="@+id/tvUserName"
-            android:visibility="gone"
-            card_view:srcCompat="@drawable/livetag" />
+            android:scaleType="centerCrop"
+            android:tint="@android:color/holo_red_dark"
+            android:visibility="visible"
+            card_view:srcCompat="@drawable/livetag"
+            android:layout_alignBottom="@+id/tvTimeStamp" />
 
 
     </RelativeLayout>

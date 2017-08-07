@@ -186,7 +186,7 @@ public class DetailsActivity extends AppCompatActivity {
 
 
 
-        detailsToolbar.setTitle("Event: "+title);
+        detailsToolbar.setTitle(title);
         detailsToolbar.setTitleTextColor(getResources().getColor(R.color.white));
         ivBackground = (ImageView) findViewById(R.id.ivBackground);
 

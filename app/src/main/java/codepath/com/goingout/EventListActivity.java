@@ -2,8 +2,11 @@ package codepath.com.goingout;
 
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.content.res.ResourcesCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -164,7 +167,12 @@ public class EventListActivity extends AppCompatActivity{
 
 
         rvFeeds.bringToFront();
-        toolbar.setNavigationIcon(R.drawable.filter);
+
+        Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.filter, null);
+        drawable = DrawableCompat.wrap(drawable);
+        DrawableCompat.setTint(drawable, getResources().getColor(R.color.babyWhite));
+        toolbar.setNavigationIcon(drawable);
+
 
         expandableList= (ExpandableListView) findViewById(R.id.navigationmenu);
         prepareListData();
