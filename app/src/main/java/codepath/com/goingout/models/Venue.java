@@ -16,6 +16,9 @@ public class Venue {
     public String price;
     public String finalURL;
     public int pay;
+    public double longitude;
+    public double latitude;
+    public String placeId;
 
     public Venue(){
     }
@@ -36,7 +39,7 @@ public class Venue {
             photoRef = object.getJSONArray("photos").getJSONObject(0).getString("photo_reference");
             sb.append(photoRef);
 
-            sb.append("&key=AIzaSyAyF3z_Ht0XlEtlMCeJP6Ji8u612terb1g");
+            sb.append("&key=AIzaSyAoNx3U8Im6JWOQvByfTRPLWodLvyQsXPQ");
 
             finalURL = sb.toString();
 
@@ -45,6 +48,16 @@ public class Venue {
         if (object.has("rating")) {
             rating = object.getInt("rating");
         }
+        if (object.has("place_id")) {
+            placeId = object.getString("place_id");
+        }
+
+//        if (object.has("geometry")) {
+//            if (object.has("location")){
+//                latitude = object.getJSONObject("geometry").getJSONObject("location").getDouble("lat");
+//                longitude = object.getJSONObject("geometry").getJSONObject("location").getDouble("lng");
+//            }
+//        }
 
 
     }
@@ -101,5 +114,29 @@ public class Venue {
 
     public void setPay(int pay) {
         this.pay = pay;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getPlaceId() {
+        return placeId;
+    }
+
+    public void setPlaceId(String placeId) {
+        this.placeId = placeId;
     }
 }

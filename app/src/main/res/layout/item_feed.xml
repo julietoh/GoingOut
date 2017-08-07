@@ -118,5 +118,14 @@
             android:textColor="#ffffff"
             android:text=" local" />
 
+        <TextView
+            android:id="@+id/tvDistAway"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/tvLocal"
+            android:textColor="#ffffff"
+            android:text="TextView" />
+
     </RelativeLayout>
 </android.support.v7.widget.CardView>

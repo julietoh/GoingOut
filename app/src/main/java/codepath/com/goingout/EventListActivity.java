@@ -389,6 +389,7 @@ public class EventListActivity extends AppCompatActivity{
 
                         events.add(event);
                         adapter.notifyItemInserted(events.size() - 1);
+                        //googleClient.getDistanceAway(event, adapter);
 
 
 //                        event.setVenue(googleClient.getInfo(event));

@@ -27,6 +27,9 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 public class GoogleClient {
     public final static String API_PHOTO_SEARCH_BASE_URL = "https://maps.googleapis.com/maps/api/place/photo?";
     public final static String API_TEXT_SEARCH_BASE_URL = "https://maps.googleapis.com/maps/api/place/textsearch/json?";
+    public final static String API_DISTANCEMATRIX_BASE_URL = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial";
+    public final static String ORIGIN_PARAM = "origins";
+    public final static String DESTINATION_PARAM = "destinations";
     // the parameter name for the API key
     public final static String APP_KEY_PARAM = "key";
     public final static String PHOTO_SEARCH_PARAM = "maxwidth=400&photoreference";
@@ -38,11 +41,11 @@ public class GoogleClient {
 
     // instance fields
     public AsyncHttpClient client = new AsyncHttpClient();
+    public AsyncHttpClient mapsClient = new AsyncHttpClient();
 
 
     //GooglePlaces clientelle = new GooglePlaces("AIzaSyCPa7WzZjkYiq1qRofuqSBJIt6G1xvEtJA");
     //List<Place> places = clientelle.getPlacesByQuery("Empire State Building", GooglePlaces.MAXIMUM_RESULTS);
-    ;
     // the list of events
     private ArrayList<Venue> venues = new ArrayList<>();
 
@@ -57,11 +60,7 @@ public class GoogleClient {
         // set the request parameters
         RequestParams params = new RequestParams();
         params.put(TEXT_SEARCH_PARAM, event.getPlace() + " " + event.getCity());
-
-
-        params.put(APP_KEY_PARAM, "AIzaSyAyF3z_Ht0XlEtlMCeJP6Ji8u612terb1g");
-
-
+        params.put(APP_KEY_PARAM, "AIzaSyAoNx3U8Im6JWOQvByfTRPLWodLvyQsXPQ");
 
         // execute a GET request expecting a JSON object response
         client.get(url, params, new JsonHttpResponseHandler() {
@@ -69,22 +68,18 @@ public class GoogleClient {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 // load the results into movies list
                 try {
-
                     JSONArray results = response.getJSONArray("results");
                     Log.e(TAG, results.toString());
 
                     // iterate through result set and create Movie objects
 //                    if (results.length() > 0) {
                     Venue venue = new Venue(results.getJSONObject(0));
-
-
                     Log.e(TAG, venue.toString());
-
-
 
                     event.setVenue(venue);
 //                        event.setVenue(venue);
 //                    }
+                    getDistanceAway(event, adapter);
                 } catch (JSONException e) {
                 }
                 adapter.notifyDataSetChanged();
@@ -101,6 +96,64 @@ public class GoogleClient {
 //            return null;
 //        }
 
+    }
+
+    //public Venue
+    public void getDistanceAway(final Event event, final FeedAdapter adapter) {
+        // create the url
+        if (event.getVenue() != null) {
+            String url = API_DISTANCEMATRIX_BASE_URL;
+            RequestParams params = new RequestParams();
+            // origin is set to Facebook HQ's place ID
+            params.put(ORIGIN_PARAM, "place_id:ChIJZa6ezJa8j4AR1p1nTSaRtuQ");
+            params.put(DESTINATION_PARAM, "place_id:" + event.getVenue().getPlaceId());
+            params.put(APP_KEY_PARAM, "AIzaSyAoNx3U8Im6JWOQvByfTRPLWodLvyQsXPQ");
+
+            // execute a GET request expecting a JSON object response
+            client.get(url, params, new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    // load the results into movies list
+                    try {
+
+                        JSONArray rows = response.getJSONArray("rows");
+                        JSONObject element0 = rows.getJSONObject(0);
+                        JSONArray elements = element0.getJSONArray("elements");
+                        JSONObject distAway = elements.getJSONObject(0);
+                        JSONObject text = distAway.getJSONObject("distance");
+                        String finalText = text.getString("text");
+
+                        event.setDistAway(finalText);
+
+
+                        //Log.e(TAG, results.toString());
+                        // iterate through result set and create Movie objects
+//                    if (results.length() > 0) {
+                        //Venue venue = new Venue(results.getJSONObject(0));
+
+                        //Log.e(TAG, venue.toString());
+
+
+                        //event.setVenue(venue);
+//                        event.setVenue(venue);
+//                    }
+                    } catch (JSONException e) {
+                    }
+                    adapter.notifyDataSetChanged();
+
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                    logError("Failed to get data from endpoint", throwable, true);
+                }
+            });
+//        if (venues.size() > 0) {
+//            return venues.get(0);
+//        } else {
+//            return null;
+//        }
+        }
 
 
     }
