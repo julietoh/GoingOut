@@ -60,7 +60,11 @@ public class GoogleClient {
         // set the request parameters
         RequestParams params = new RequestParams();
         params.put(TEXT_SEARCH_PARAM, event.getPlace() + " " + event.getCity());
-        params.put(APP_KEY_PARAM, "AIzaSyAoNx3U8Im6JWOQvByfTRPLWodLvyQsXPQ");
+
+
+        params.put(APP_KEY_PARAM, "AIzaSyDUEuKt4fzSuxvB96vEooFBRyp-WO50H6g");
+
+
 
         // execute a GET request expecting a JSON object response
         client.get(url, params, new JsonHttpResponseHandler() {
