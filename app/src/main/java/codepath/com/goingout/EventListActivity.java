@@ -53,7 +53,6 @@ public class EventListActivity extends AppCompatActivity{
     private RecyclerView rvFeeds;
     private FeedAdapter adapter;
     ArrayList<String> filter;
-    ArrayList<String> newFilter;
 
     public ArrayList<String> categoryFilter;
     public String locationFilter = "San Francisco";
@@ -242,8 +241,6 @@ public class EventListActivity extends AppCompatActivity{
         });
 
 
-        newFilter = new ArrayList<>();
-        //Toast.makeText(this, "There are "+filter.size()+" filters you chose", Toast.LENGTH_LONG).show();
         loadFromDatabase();
     }
 

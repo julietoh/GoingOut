@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class ComposeActivity extends AppCompatActivity {
 
@@ -29,7 +30,9 @@ public class ComposeActivity extends AppCompatActivity {
 
     }
 
-    public void onSubmit(View v) {
-
+    @Override
+    public void onBackPressed()
+    {
+        Toast.makeText(this, "Please write a message", Toast.LENGTH_SHORT).show();
     }
 }
