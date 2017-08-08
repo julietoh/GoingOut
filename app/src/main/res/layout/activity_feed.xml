@@ -43,6 +43,7 @@
                     android:layout_alignParentTop="true"
                     android:layout_margin="5dp"
                     android:background="@android:color/transparent"
+                    android:tint="@color/babyWhite"
                     android:src="@drawable/add_event" />
 
             </RelativeLayout>

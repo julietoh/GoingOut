@@ -1,7 +1,6 @@
 package codepath.com.goingout.adapters;
 
 import android.content.Context;
-import android.media.MediaPlayer;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
@@ -36,7 +34,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     ArrayList<Post> posts;
     //context for rendering
     Context context;
-    MediaPlayer mMediaPlayer;
 
     // initialized with list
     public PostAdapter(ArrayList<Post> posts) {
@@ -51,6 +48,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         LayoutInflater inflater = LayoutInflater.from(context);
         //create the view using the item_poat layout
         View postView = inflater.inflate(R.layout.item_post, parent, false);
+        postView.findViewById(R.id.liveTag).bringToFront();
 
         //return a new ViewHolder
         return new ViewHolder(postView);
@@ -82,6 +80,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         if (post.getImage() != null) {
             holder.ivPicture.setVisibility(View.VISIBLE);
             holder.vvVideo.setVisibility(View.GONE);
+            liveTag.setVisibility(View.GONE);
 
             // load from post
             // load image using glide
@@ -114,9 +113,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             if (!post.isLive()){
                 videoView.setVideoPath(post.getVideo());
 
-            } else {
+
+            } else if (post.isLive()) {
                 videoView.setVideoPath(post.getVideo());
-                holder.liveTag.setVisibility(View.VISIBLE);
+                liveTag.setVisibility(View.GONE);
+
             }
 
         } else {
@@ -124,9 +125,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             holder.ivPicture.setVisibility(View.GONE);
             holder.vvVideo.setVisibility(View.GONE);
             progressBar.setVisibility(View.GONE);
+            liveTag.setVisibility(View.GONE);
             holder.tvBody.setVisibility(View.VISIBLE);
-
-            Toast.makeText(context, "hi", Toast.LENGTH_LONG);
         }
     }
 
@@ -161,8 +161,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             vvVideo = (VideoView) itemView.findViewById(R.id.vvVideo);
             progressBar = (ProgressBar) itemView.findViewById(R.id.progress);
             liveTag = (ImageView) itemView.findViewById(R.id.liveTag);
-            //ibPlay = (ImageButton) itemView.findViewById(R.id.ibPlay);
-            //itemView.setOnClickListener(this);
 
         }
 
