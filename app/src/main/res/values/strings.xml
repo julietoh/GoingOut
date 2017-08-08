@@ -1,7 +1,7 @@
 <resources>
     <string name="facebook_app_id">274274976385926</string>
     <string name="fb_login_protocol_scheme">fb274274976385926</string>
-    <string name="app_name">Going Out</string>
+    <string name="app_name">Socialive</string>
     <string name="ok">OK</string>
     <string name="hello_user">Hello %1$s!</string>
     <string name="success">Success</string>

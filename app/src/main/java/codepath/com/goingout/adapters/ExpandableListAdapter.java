@@ -103,7 +103,7 @@ ExpandableListAdapter extends BaseExpandableListAdapter {
         TextView lblListHeader = (TextView) convertView
                 .findViewById(R.id.submenu);
         ImageView headerIcon=    (ImageView)convertView.findViewById(R.id.iconimage);
-        headerIcon.setColorFilter(ContextCompat.getColor(mContext, R.color.safetyYellow));
+        headerIcon.setColorFilter(ContextCompat.getColor(mContext, R.color.tealBlue));
 
         lblListHeader.setTypeface(null, Typeface.BOLD);
         lblListHeader.setText(headerTitle);
