@@ -42,6 +42,8 @@ public class Venue {
             sb.append("&key=AIzaSyB_vvM5MytC0iauPGC9Hz5QCYTQ-B9M7KQ");
 
 
+
+
             finalURL = sb.toString();
 
         }
