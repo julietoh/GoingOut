@@ -39,7 +39,7 @@ public class Venue {
             photoRef = object.getJSONArray("photos").getJSONObject(0).getString("photo_reference");
             sb.append(photoRef);
 
-            sb.append("&key=AIzaSyC35S2fuIarW5_4vaqZi-AUA0J8nDbYuSE");
+            sb.append("&key=AIzaSyDlCaoioyQ0NCeq-lUE08aVq993GdGSWs0");
 
 
             finalURL = sb.toString();
