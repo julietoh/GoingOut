@@ -14,6 +14,6 @@
         android:padding="10dp"
         android:textAlignment="textStart"
         android:textAllCaps="false"
-        android:textColor="@color/safetyYellow"
+        android:textColor="@color/babyWhite"
         android:textSize="18sp" />
 </LinearLayout>

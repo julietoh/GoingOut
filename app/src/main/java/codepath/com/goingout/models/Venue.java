@@ -39,8 +39,8 @@ public class Venue {
             photoRef = object.getJSONArray("photos").getJSONObject(0).getString("photo_reference");
             sb.append(photoRef);
 
-
             sb.append("&key=AIzaSyBRhZnAo0GN16qiCQ_Pbqqr-31hITepk1g");
+
 
 
 

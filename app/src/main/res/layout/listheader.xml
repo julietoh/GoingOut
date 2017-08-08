@@ -13,7 +13,7 @@
             android:id="@+id/iconimage"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:backgroundTint="@color/bloodOrange"
+            android:backgroundTint="@color/babyWhite"
             android:paddingBottom="10dp"
             android:paddingLeft="10dp"
             android:paddingTop="10dp" />
@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
-            android:textColor="@color/safetyYellow"
+            android:textColor="@color/tealBlue"
             android:textSize="20sp" />
     </LinearLayout>
 

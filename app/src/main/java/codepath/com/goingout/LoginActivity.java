@@ -1,9 +1,16 @@
 package codepath.com.goingout;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
@@ -28,13 +35,41 @@ public class LoginActivity extends AppCompatActivity {
     private ProfileTracker profileTracker;
     Profile profile;
 
-    String firstName;
+    LoginButton loginButton;
+    Animation fade_in, fade_out;
+    ViewFlipper viewFlipper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_login);
+
+        loginButton = (LoginButton) findViewById(R.id.login_button);
+        loginButton.setVisibility(View.GONE);
+        ImageView ivFbCustomButton = (ImageView) findViewById(R.id.ivFbCustomButton);
+        ivFbCustomButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                com.facebook.login.widget.LoginButton btn = new com.facebook.login.widget.LoginButton(LoginActivity.this);
+                btn.performClick();
+            }
+        });
+
+        viewFlipper = (ViewFlipper) this.findViewById(R.id.bckgrndViewFlipper1);
+        fade_in = AnimationUtils.loadAnimation(this, android.R.anim.fade_in);
+        fade_out = AnimationUtils.loadAnimation(this, android.R.anim.fade_out);
+
+        TextView tx = (TextView)findViewById(R.id.textView2);
+        Typeface custom_font = Typeface.createFromAsset(getAssets(),  "fonts/funkydori.ttf");
+        tx.setTypeface(custom_font);
+
+        viewFlipper.setInAnimation(fade_in);
+        viewFlipper.setOutAnimation(fade_out);
+
+        viewFlipper.setAutoStart(true);
+        viewFlipper.setFlipInterval(1500);
+        viewFlipper.startFlipping();
 
         callbackManager = CallbackManager.Factory.create();
         accessTokenTracker = new AccessTokenTracker() {
